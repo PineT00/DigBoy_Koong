@@ -1,13 +1,21 @@
 #pragma once
 
+class TileMap;
+class AniTest;
+
 class SceneDev1 : public Scene
 {
 protected:
-	sf::RectangleShape ground;
+
 
 public:
+	TileMap* tileMap = nullptr;
+	AniTest* player = nullptr;
+
 	SceneDev1(SceneIds id);
 	virtual ~SceneDev1();
+
+	sf::Vector2f ClampByTileMap(const sf::Vector2f point);
 
 	void Init() override;
 	void Release() override;

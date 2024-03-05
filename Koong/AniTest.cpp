@@ -1,5 +1,7 @@
 #include "pch.h"
 #include "AniTest.h"
+#include "SceneDev1.h"
+#include "TileMap.h"
 
 AniTest::AniTest(const std::string& name)
 	: SpriteGo(name)
@@ -19,13 +21,9 @@ void AniTest::Init()
 	{
 		AnimationClip clip;
 		clip.id = "Idle";
-		clip.fps = 8;
+		clip.fps = 2;
 		clip.loopTypes = AnimationLoopTypes::Loop;
-
-		for (int i = 0; i < 8; ++i)
-		{
-			clip.frames.push_back({"graphics/sprite_sheet.png", {i * 120, 0, 120, 120} });
-		}
+		clip.frames.push_back({ "graphics/sprite_sheet.png", {0, 0, 120, 120} });
 		animator.AddClip(clip);
 	}
 
@@ -64,6 +62,7 @@ void AniTest::Reset()
 	animator.Play("Idle");
 	SetOrigin(Origins::BC);
 	SetPosition({ 0.f, 0.f });
+	sceneDev1 = dynamic_cast<SceneDev1*>(SCENE_MGR.GetCurrentScene());
 }
 
 void AniTest::Update(float dt)
@@ -83,16 +82,31 @@ void AniTest::Update(float dt)
 	velocity.x = h * speed;
 	velocity.y += gravity * dt;
 
-	position += velocity * dt;
+	//position += velocity * dt;
 
-	if (position.y > 0.f)
-	{
-		isGrounded = true;
-		position.y = 0.f;
-		velocity.y = 0.f;
+	//if (position.y > 0.f)
+	//{
+	//	isGrounded = true;
+	//	position.y = 0.f;
+	//	velocity.y = 0.f;
 
-	}
-	SetPosition(position);
+	//}
+
+
+	//sf::FloatRect rect = tileMap->GetGlobalBounds();
+
+	//sf::FloatRect rectPlayer = sprite.getGlobalBounds();
+
+	//if (rectPlayer.intersects(rect))
+	//{
+	//	velocity.y = 0.f;
+	//	isGrounded = true;
+	//}
+
+
+	sf::Vector2f pos = position + velocity * dt;
+
+	SetPosition(pos);
 
 	if (h != 0.f)
 	{

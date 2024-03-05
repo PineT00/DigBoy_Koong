@@ -5,6 +5,10 @@ class Utils
 public:
 	static float Clamp(float v, float min, float max);
 
+	static sf::Vector2f Clamp(const sf::Vector2f& v, const sf::FloatRect& rect);
+
+	static sf::FloatRect ResizeRect(const sf::FloatRect& rect, const sf::Vector2f& delta);
+
 	// Random
 	static float RandomValue(); // 0.0f ~ 1.0f
 	static float RandomRange(float min, float max);
@@ -29,4 +33,6 @@ public:
 	static float DegreeToRadian(float degree);
 	static float Angle(const sf::Vector2f& vec);
 
+	static float Lerp(float min, float max, float t);
+	static sf::Vector2f Lerp(const sf::Vector2f& min, const sf::Vector2f& max, float t);
 };

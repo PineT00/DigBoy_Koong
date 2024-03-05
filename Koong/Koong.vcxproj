@@ -109,7 +109,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>.;.\SFML-2.6.1\include;.\Framework;.\GameObjects;.\Scenes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;.\SFML-2.6.1\include;.\Framework;.\GameObjects;.\Scenes;.\DataTables;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
@@ -137,6 +137,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Animator.cpp" />
+    <ClCompile Include="AniTest.cpp" />
+    <ClCompile Include="DataTables\DataTable.cpp" />
+    <ClCompile Include="DataTables\DataTableMgr.cpp" />
+    <ClCompile Include="DataTables\StringTable.cpp" />
+    <ClCompile Include="DataTables\ZombieTable.cpp" />
     <ClCompile Include="Framework\Framework.cpp" />
     <ClCompile Include="Framework\InputMgr.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
@@ -148,7 +154,6 @@
     <ClCompile Include="main.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
@@ -165,6 +170,13 @@
     <ClCompile Include="GameObjects\Zombie.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Animator.h" />
+    <ClInclude Include="AniTest.h" />
+    <ClInclude Include="DataTables\DataTable.h" />
+    <ClInclude Include="DataTables\DataTableMgr.h" />
+    <ClInclude Include="DataTables\rapidcsv.h" />
+    <ClInclude Include="DataTables\StringTable.h" />
+    <ClInclude Include="DataTables\ZombieTable.h" />
     <ClInclude Include="Framework\Framework.h" />
     <ClInclude Include="Framework\Defines.h" />
     <ClInclude Include="Framework\InputMgr.h" />
@@ -172,9 +184,8 @@
     <ClInclude Include="Framework\Singleton.h" />
     <ClInclude Include="Framework\Utils.h" />
     <ClInclude Include="GameObjects\GameObject.h" />
-    <ClInclude Include="ParticleSystem.h" />
-    <ClInclude Include="pch.h" />
     <ClInclude Include="GameObjects\Player.h" />
+    <ClInclude Include="pch.h" />
     <ClInclude Include="Scenes\SceneGame.h" />
     <ClInclude Include="Scenes\Scene.h" />
     <ClInclude Include="Framework\SceneMgr.h" />

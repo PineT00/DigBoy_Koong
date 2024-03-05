@@ -12,13 +12,19 @@ protected:
 	int rows = 10;
 	int cols = 10;
 
-	sf::Vector2i cellCount = { 10, 10 };
-	sf::Vector2f cellSize = { 50.f, 50.f };
+	sf::Vector2i cellCount = { 20, 6 };
+	sf::Vector2f cellSize = { 42.f, 42.f }; //¿‚æ∆¥√∏Æ±‚
 
 	sf::Transform transform;
 
 public:
 	TileMap(const std::string& name = "");
+
+	virtual sf::FloatRect GetLocalBounds() override;
+	virtual sf::FloatRect GetGlobalBounds() override;
+
+	const sf::Vector2i& GetCellCount() const { return cellCount; }
+	const sf::Vector2f& GetCellSize() const { return cellSize; }
 
 	void Set(sf::Vector2i& count, sf::Vector2f& size);
 

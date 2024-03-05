@@ -6,6 +6,20 @@ TileMap::TileMap(const std::string& name)
 {
 }
 
+sf::FloatRect TileMap::GetLocalBounds()
+{
+    sf::FloatRect bounds = va.getBounds();
+    bounds.left = origin.x;
+    bounds.top = origin.y;
+    return bounds;
+}
+
+sf::FloatRect TileMap::GetGlobalBounds()
+{
+    sf::FloatRect bounds = va.getBounds();
+    return transform.transformRect(bounds);
+}
+
 void TileMap::Set(sf::Vector2i& count, sf::Vector2f& size)
 {
     cellCount = count;
@@ -24,19 +38,44 @@ void TileMap::Set(sf::Vector2i& count, sf::Vector2f& size)
 
     sf::Vector2f texCoord0[4] = {
         { 0, 0 },
-        { 50.f, 0 },
-        { 50.f, 50.f },
-        { 0, 50.f },
+        { 42.f, 0 },
+        { 42.f, 42.f },
+        { 0, 42.f },
+    };
+
+    int level[] =
+    {
+        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+        1,1,1,1,1,30,30,1,1,1,30,30,1,1,1,1,1,1,1,1,
+        1,1,1,1,1,30,30,1,1,1,30,30,1,1,1,1,1,1,1,1,
+        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+        1,1,1,1,1,10,1,1,1,1,1,10,1,1,1,1,1,1,1,1,
+        1,1,1,1,1,1,5,5,5,5,5,1,1,1,1,1,1,1,1,1,
+        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
     };
 
     for (int i = 0; i < count.y; ++i)
     {
         for (int j = 0; j < count.x; ++j)
         {
-            int texIndex = Utils::RandomRange(0, 3);
-            if (i == 0 || i == count.y - 1 || j == 0 || j == count.x - 1)
+
+            int texIndexY = level[i * count.x + j];
+            int texIndexX = 0;
+
+            if (texIndexY > 5)
             {
-                texIndex = 3;
+                if(texIndexY % 5 == 0)
+                {
+                    texIndexX = (texIndexY / 5) - 1;
+                    texIndexY = 5;
+                }
+                else
+                {
+                    texIndexX = texIndexY / 5;
+                    texIndexY = texIndexY % 5;
+                }
             }
 
             int quadIndex = i * count.x + j;
@@ -47,7 +86,9 @@ void TileMap::Set(sf::Vector2i& count, sf::Vector2f& size)
                 int vertexIndex = ((quadIndex * 4) + k);
                 va[vertexIndex].position = quadPos + posOffset[k];
                 va[vertexIndex].texCoords = texCoord0[k] ;
-                va[vertexIndex].texCoords.y += texIndex * 50.f;
+
+                va[vertexIndex].texCoords.x += texIndexX * 42.f;
+                va[vertexIndex].texCoords.y += texIndexY * 42.f;
             }
 
         }
@@ -82,13 +123,6 @@ void TileMap::SetOrigin(Origins preset)
     origin.y = bound.height * ((int)originPreset / 3) * 0.5f;
     UpdateTransform();
 
-
-    //auto delta = prevOrigin - origin;
-    //for (int i = 0; i < va.getVertexCount(); ++i)
-    //{
-    //    va[i].position += delta;
-    //}
-    //originPreset = preset;
 }
 
 void TileMap::SetOrigin(const sf::Vector2f& newOrigin)
@@ -100,12 +134,6 @@ void TileMap::SetOrigin(const sf::Vector2f& newOrigin)
 
 void TileMap::SetPosition(const sf::Vector2f& pos)
 {
-    //sf::Vector2f delta = pos - position;
-    //for(int i = 0; i < va.getVertexCount(); ++i)
-    //{
-    //    va[i].position += delta;
-    //}
-    //position = pos;
 
     GameObject::SetPosition(pos);
     transform.translate(position);
@@ -147,7 +175,7 @@ void TileMap::SetFlipY(bool flip)
 void TileMap::Init()
 {
     GameObject::Init();
-    SetSpriteSheetId("graphics/background_sheet.png");
+    SetSpriteSheetId("graphics/FSADIGBOY19-9.png");
     Set(cellCount, cellSize);
     //SetOrigin(Origins::MC);
 }
