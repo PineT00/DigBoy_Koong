@@ -12,6 +12,9 @@ public:
 	TileMap* tileMap = nullptr;
 	AniTest* player = nullptr;
 
+	sf::RectangleShape t;
+	sf::RectangleShape p;
+
 	SceneDev1(SceneIds id);
 	virtual ~SceneDev1();
 

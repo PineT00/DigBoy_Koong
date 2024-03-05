@@ -64,6 +64,9 @@ void SceneDev1::Update(float dt)
 {
 	Scene::Update(dt);
 
+
+
+
 	sf::FloatRect rect = tileMap->GetGlobalBounds();
 	sf::FloatRect rectPlayer = player->GetGlobalBounds();
 
@@ -72,5 +75,8 @@ void SceneDev1::Update(float dt)
 		player->velocity.y = 0.f;
 		player->isGrounded = true;
 	}
+
+	t.setSize({ rect.width, rect.height });
+	p.setSize({ rectPlayer.width, rectPlayer.height });
 
 }
