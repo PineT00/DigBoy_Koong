@@ -3,6 +3,21 @@
 class TileMap :
     public GameObject
 {
+
+public:
+	enum TileType
+	{
+		Empty,
+		Stone,
+		Soil,
+		Coil,
+	};
+
+	struct TileCh
+	{
+
+	};
+
 protected:
     sf::VertexArray va;
 	std::string spriteSheetId;
@@ -12,15 +27,17 @@ protected:
 	int rows = 10;
 	int cols = 10;
 
-	sf::Vector2i cellCount = { 20, 2 };
+	sf::Vector2i cellCount = { 20, 3 };
 	sf::Vector2f cellSize = { 42.f, 42.f }; //¿‚æ∆¥√∏Æ±‚
 
 	sf::Transform transform;
 
-
-
 public:
-	bool isDigging = false;
+	std::vector<int> level;
+
+	sf::FloatRect GetTileBound(int x, int y);
+
+	void SetCollisionArray();
 
 	TileMap(const std::string& name = "");
 
@@ -54,7 +71,6 @@ public:
 
 	void Update(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
-
 
 };
 

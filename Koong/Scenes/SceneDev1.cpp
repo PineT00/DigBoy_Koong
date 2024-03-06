@@ -13,6 +13,14 @@ SceneDev1::~SceneDev1()
 {
 }
 
+bool SceneDev1::IsInTileMap(const sf::Vector2f& point)
+{
+	sf::FloatRect rect = tileMap->GetGlobalBounds();
+	rect = Utils::ResizeRect(rect, tileMap->GetCellSize() * -2.f);
+
+	return rect.contains(point);
+}
+
 sf::Vector2f SceneDev1::ClampByTileMap(const sf::Vector2f point)
 {
 	sf::FloatRect rect = tileMap->GetGlobalBounds();
@@ -67,6 +75,12 @@ void SceneDev1::Update(float dt)
 	sf::Vector2f worldViewCenter = worldView.getCenter();
 	worldViewCenter = Utils::Lerp(worldViewCenter, player->GetPosition(), dt * 2.5f);
 	worldView.setCenter(worldViewCenter);
+
+
+	if (InputMgr::GetMouseButtonDown(sf::Mouse::Left))
+	{
+		sf::Vector2f clickPos = InputMgr::GetMousePos();
+	}
 
 	Scene::Update(dt);
 

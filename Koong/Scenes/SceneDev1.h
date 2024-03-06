@@ -17,6 +17,8 @@ public:
 	SceneDev1(SceneIds id);
 	virtual ~SceneDev1();
 
+	bool IsInTileMap(const sf::Vector2f& point);
+
 	sf::Vector2f ClampByTileMap(const sf::Vector2f point);
 
 	void Init() override;

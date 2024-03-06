@@ -125,14 +125,45 @@ void PlayerBody::Update(float dt)
 	{
 		const sf::FloatRect& playerBounds = sprite.getGlobalBounds();
 		const sf::FloatRect& groundBounds = tileMap->GetGlobalBounds();
-
-
 		if (playerBounds.intersects(groundBounds))
 		{
-			pos.y = tileMap->GetGlobalBounds().top;
-			velocity.y = 0.f;
-			SetPosition(pos);
-			isGrounded = true;
+			auto count = tileMap->GetCellCount();
+			for (int i = 0; i < count.y; ++i)
+			{
+				for (int j = 0; j < count.x; ++j)
+				{
+					if (tileMap->level[i * count.x + j] == 3)
+						continue;
+
+					if (tileMap->GetTileBound(j, i).intersects(playerBounds))
+					{
+						if (tileMap->GetTileBound(j, i).top > playerBounds.height)
+						{
+							pos.y = tileMap->GetTileBound(j, i).top;
+							velocity.y = 0.f;
+						}
+						/*if (tileMap->GetTileBound(j, i).height < playerBounds.top)
+						{
+							pos.y = tileMap->GetTileBound(j, i).height;
+						}
+						if (tileMap->GetTileBound(j, i).left >= playerBounds.width)
+						{
+							pos.x = tileMap->GetTileBound(j, i).left;
+						}
+						if (tileMap->GetTileBound(j, i).width <= playerBounds.left)
+						{
+							pos.x = tileMap->GetTileBound(j, i).width;
+						}*/
+						std::cout << j << ", " << i << std::endl;
+
+						/*pos.y = tileMap->GetTileBound(j, i).top;
+						velocity.y = 0.f;*/
+
+						SetPosition(pos);
+						isGrounded = true;
+					}
+				}
+			}
 		}
 	}
 }

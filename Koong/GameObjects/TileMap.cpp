@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "TileMap.h"
 
+
+
 TileMap::TileMap(const std::string& name)
     :GameObject(name)
 {
@@ -43,10 +45,11 @@ void TileMap::Set(sf::Vector2i& count, sf::Vector2f& size)
         { 0, 42.f },
     };
 
-    int level[] =
+    level =
     {
-        1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,1,1,1,
-        1,1,1,1,1,5,5,1,1,1,5,1,1,0,0,1,1,1,1,1,
+        1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,3,1,1,1,1,
+        1,1,1,1,1,5,5,1,1,1,5,1,1,1,3,1,1,1,1,1,
+        1,1,1,1,1,5,5,1,1,1,5,1,1,1,1,1,1,1,1,1,
     };
 
     for (int i = 0; i < count.y; ++i)
@@ -83,13 +86,26 @@ void TileMap::Set(sf::Vector2i& count, sf::Vector2f& size)
                 va[vertexIndex].texCoords.x += texIndexX * 42.f;
                 va[vertexIndex].texCoords.y += texIndexY * 42.f;
             }
-
         }
-
     }
 
 
 
+}
+
+sf::FloatRect TileMap::GetTileBound(int x, int y)
+{
+    sf::FloatRect bound;
+    bound.left = position.x + cellSize.x * x;
+    bound.top = position.y + cellSize.y * y;
+    bound.width = cellSize.x;
+    bound.height = cellSize.y;
+    return bound;
+}
+
+void TileMap::SetCollisionArray()
+{
+    
 }
 
 void TileMap::SetSpriteSheetId(const std::string& id)
@@ -173,6 +189,7 @@ void TileMap::Init()
     GameObject::Init();
     SetSpriteSheetId("graphics/FSADIGBOY19-9.png");
     Set(cellCount, cellSize);
+    SetCollisionArray();
     //SetOrigin(Origins::MC);
 }
 
@@ -189,6 +206,13 @@ void TileMap::Reset()
 void TileMap::Update(float dt)
 {
     GameObject::Update(dt);
+    for (int i = 0; i < cellCount.y; ++i)
+    {
+        for (int j = 0; j < cellCount.x; ++j)
+        {
+            int tileValue = level[i * cellCount.x + j];
+        }
+    }
 }
 
 void TileMap::Draw(sf::RenderWindow& window)
@@ -204,11 +228,34 @@ void TileMap::Draw(sf::RenderWindow& window)
     {
         sf::FloatRect rect = GetGlobalBounds();
         sf::RectangleShape t;
-        t.setSize({ rect.width, rect.height });
-        t.setPosition(rect.left, rect.top);
+
+        t.setSize({ cellSize.x, cellSize.y });
         t.setOutlineColor(sf::Color::Red);
         t.setOutlineThickness(1.f);
         t.setFillColor(sf::Color::Transparent);
-        window.draw(t);
+
+        for (int i = 0; i < cellCount.y; ++i)
+        {
+            for (int j = 0; j < cellCount.x; ++j)
+            {
+                // 각 타일의 위치 계산
+                sf::Vector2f tilePos(rect.left + j * cellSize.x, rect.top + i * cellSize.y);
+
+                // 각 타일을 그릴 박스의 위치 및 크기 설정
+                t.setPosition(tilePos);
+                t.setSize({ cellSize.x, cellSize.y });
+
+                int tileValue = level[i * cellCount.x + j];
+
+                
+
+                if (tileValue != 0)
+                {
+                    window.draw(t);
+                }
+
+            }
+        }
     }
 }
+
