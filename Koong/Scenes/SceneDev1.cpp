@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "SceneDev1.h"
-#include "AniTest.h"
+#include "PlayerBody.h"
+#include "PlayerHead.h"
 #include "TileMap.h"
 
 
@@ -23,16 +24,16 @@ sf::Vector2f SceneDev1::ClampByTileMap(const sf::Vector2f point)
 void SceneDev1::Init()
 {
 
-
-
 	tileMap = new TileMap("Ground");
 	AddGo(tileMap);
 
-	player = new AniTest("Player");
+	player = new PlayerBody("Player");
 	AddGo(player);
 
-	Scene::Init();
+	playerHead = new PlayerHead("Player Head");
+	AddGo(playerHead);
 
+	Scene::Init();
 }
 
 void SceneDev1::Release()
@@ -49,8 +50,9 @@ void SceneDev1::Enter()
 	uiView.setSize(windowSize);
 	uiView.setCenter(centerPos);
 
+	tileMap->SetPosition({-400,100});
+	player->SetPosition({ 0,0 });
 
-	tileMap->SetPosition({-400,0});
 
 	Scene::Enter();
 }
@@ -62,21 +64,10 @@ void SceneDev1::Exit()
 
 void SceneDev1::Update(float dt)
 {
+	sf::Vector2f worldViewCenter = worldView.getCenter();
+	worldViewCenter = Utils::Lerp(worldViewCenter, player->GetPosition(), dt * 2.5f);
+	worldView.setCenter(worldViewCenter);
+
 	Scene::Update(dt);
-
-
-
-
-	sf::FloatRect rect = tileMap->GetGlobalBounds();
-	sf::FloatRect rectPlayer = player->GetGlobalBounds();
-
-	if (rectPlayer.intersects(rect))
-	{
-		player->velocity.y = 0.f;
-		player->isGrounded = true;
-	}
-
-	t.setSize({ rect.width, rect.height });
-	p.setSize({ rectPlayer.width, rectPlayer.height });
 
 }

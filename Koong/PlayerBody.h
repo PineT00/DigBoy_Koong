@@ -1,14 +1,12 @@
-#pragma once
 #include "SpriteGo.h"
 #include "Animator.h"
 
 class TileMap;
 
-class AniTest : public SpriteGo
+class PlayerBody : public SpriteGo
 {
 protected:
 	Animator animator;
-	Animator animatorH;
 
 	float gravity = 700.f;
 	float speed = 300.f;
@@ -17,9 +15,8 @@ protected:
 	TileMap* tileMap;
 
 public:
-
-	AniTest(const std::string& name = "");
-	~AniTest();
+	PlayerBody(const std::string& name = "");
+	~PlayerBody();
 
 	sf::Vector2f velocity;
 	bool isGrounded = true;

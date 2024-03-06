@@ -1,18 +1,18 @@
 #include "pch.h"
-#include "AniTest.h"
+#include "PlayerBody.h"
 #include "SceneDev1.h"
 #include "TileMap.h"
 
-AniTest::AniTest(const std::string& name)
+PlayerBody::PlayerBody(const std::string& name)
 	: SpriteGo(name), tileMap(tileMap)
 {
 }
 
-AniTest::~AniTest()
+PlayerBody::~PlayerBody()
 {
 }
 
-void AniTest::Init()
+void PlayerBody::Init()
 {
 	SpriteGo::Init();
 
@@ -25,15 +25,6 @@ void AniTest::Init()
 		clip.loopTypes = AnimationLoopTypes::Loop;
 		clip.frames.push_back({ "graphics/spriteSheetBody.png", {0, 0, 33, 24} });
 		animator.AddClip(clip);
-	}
-
-	{
-		AnimationClip clip;
-		clip.id = "Idle";
-		clip.fps = 2;
-		clip.loopTypes = AnimationLoopTypes::Loop;
-		clip.frames.push_back({ "graphics/spriteSheetBody.png", {0, 0, 42, 33} });
-		animatorH.AddClip(clip);
 	}
 
 	{
@@ -60,7 +51,7 @@ void AniTest::Init()
 
 }
 
-void AniTest::Reset()
+void PlayerBody::Reset()
 {
 	animator.Play("Idle");
 	SetOrigin(Origins::BC);
@@ -69,7 +60,7 @@ void AniTest::Reset()
 	tileMap = dynamic_cast<TileMap*>(SCENE_MGR.GetCurrentScene()->FindGo("Ground"));
 }
 
-void AniTest::Update(float dt)
+void PlayerBody::Update(float dt)
 {
 	SpriteGo::Update(dt);
 	animator.Update(dt);
@@ -84,7 +75,7 @@ void AniTest::Update(float dt)
 		animator.Play("Boost");
 		velocity.y += -booster * dt;
 		std::cout << velocity.y << std::endl;
-		
+
 		if (velocity.y <= -500.f)
 		{
 			velocity.y = -500.f;
@@ -146,7 +137,7 @@ void AniTest::Update(float dt)
 	}
 }
 
-void AniTest::Draw(sf::RenderWindow& window)
+void PlayerBody::Draw(sf::RenderWindow& window)
 {
 	SpriteGo::Draw(window);
 

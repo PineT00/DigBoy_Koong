@@ -45,15 +45,8 @@ void TileMap::Set(sf::Vector2i& count, sf::Vector2f& size)
 
     int level[] =
     {
-        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-        1,1,1,1,1,30,30,1,1,1,30,30,1,1,1,1,1,1,1,1,
-        1,1,1,1,1,30,30,1,1,1,30,30,1,1,1,1,1,1,1,1,
-        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-        1,1,1,1,1,10,1,1,1,1,1,10,1,1,1,1,1,1,1,1,
-        1,1,1,1,1,1,5,5,5,5,5,1,1,1,1,1,1,1,1,1,
-        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+        1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,1,1,1,
+        1,1,1,1,1,5,5,1,1,1,5,1,1,0,0,1,1,1,1,1,
     };
 
     for (int i = 0; i < count.y; ++i)
@@ -94,6 +87,9 @@ void TileMap::Set(sf::Vector2i& count, sf::Vector2f& size)
         }
 
     }
+
+
+
 }
 
 void TileMap::SetSpriteSheetId(const std::string& id)
@@ -204,4 +200,15 @@ void TileMap::Draw(sf::RenderWindow& window)
 
     window.draw(va, state);
 
+    if (SCENE_MGR.GetDeveloperMode())
+    {
+        sf::FloatRect rect = GetGlobalBounds();
+        sf::RectangleShape t;
+        t.setSize({ rect.width, rect.height });
+        t.setPosition(rect.left, rect.top);
+        t.setOutlineColor(sf::Color::Red);
+        t.setOutlineThickness(1.f);
+        t.setFillColor(sf::Color::Transparent);
+        window.draw(t);
+    }
 }

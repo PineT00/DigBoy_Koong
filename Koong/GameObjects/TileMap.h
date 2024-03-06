@@ -12,12 +12,16 @@ protected:
 	int rows = 10;
 	int cols = 10;
 
-	sf::Vector2i cellCount = { 20, 6 };
+	sf::Vector2i cellCount = { 20, 2 };
 	sf::Vector2f cellSize = { 42.f, 42.f }; //¿‚æ∆¥√∏Æ±‚
 
 	sf::Transform transform;
 
+
+
 public:
+	bool isDigging = false;
+
 	TileMap(const std::string& name = "");
 
 	virtual sf::FloatRect GetLocalBounds() override;

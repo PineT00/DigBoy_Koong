@@ -1,7 +1,8 @@
 #pragma once
 
 class TileMap;
-class AniTest;
+class PlayerBody;
+class PlayerHead;
 
 class SceneDev1 : public Scene
 {
@@ -10,10 +11,8 @@ protected:
 
 public:
 	TileMap* tileMap = nullptr;
-	AniTest* player = nullptr;
-
-	sf::RectangleShape t;
-	sf::RectangleShape p;
+	PlayerBody* player = nullptr;
+	PlayerHead* playerHead = nullptr;
 
 	SceneDev1(SceneIds id);
 	virtual ~SceneDev1();

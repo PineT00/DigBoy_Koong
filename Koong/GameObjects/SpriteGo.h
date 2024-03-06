@@ -7,6 +7,7 @@ protected:
 	std::string texturId;
 
 public:
+
 	SpriteGo(const std::string& name = "");
 
 	void SetTexture(const std::string& textureId);

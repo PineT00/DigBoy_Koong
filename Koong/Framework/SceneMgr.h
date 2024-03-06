@@ -18,6 +18,8 @@ protected:
 	SceneIds startScene = SceneIds::SceneDev1;
 	SceneIds currentScene = startScene;
 
+	bool isDeveloperMode = false;
+
 	SceneMgr() = default;
 	virtual ~SceneMgr();
 
@@ -28,6 +30,7 @@ public:
 	void ChangeScene(SceneIds id);
 
 	Scene* GetCurrentScene() { return scenes[(int)currentScene]; }
+	bool GetDeveloperMode() { return isDeveloperMode; }
 
 	void Update(float dt);
 	void Draw(sf::RenderWindow& window);
