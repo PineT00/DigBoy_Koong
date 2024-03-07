@@ -13,13 +13,8 @@ public:
 		Coil,
 	};
 
-	struct TileCh
-	{
-
-	};
-
 protected:
-    sf::VertexArray va;
+
 	std::string spriteSheetId;
 	sf::Texture* texture;
 	TileMap* tilemap;
@@ -33,6 +28,11 @@ protected:
 	sf::Transform transform;
 
 public:
+	sf::VertexArray va;
+
+	sf::Vector2f posOffset[4];
+	sf::Vector2f texCoord0[4];
+
 	std::vector<int> level;
 
 	sf::FloatRect GetTileBound(int x, int y);

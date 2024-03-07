@@ -58,7 +58,7 @@ void SceneDev1::Enter()
 	uiView.setSize(windowSize);
 	uiView.setCenter(centerPos);
 
-	tileMap->SetPosition({-400,100});
+	tileMap->SetPosition({ 0,0 });
 	player->SetPosition({ 0,0 });
 
 
