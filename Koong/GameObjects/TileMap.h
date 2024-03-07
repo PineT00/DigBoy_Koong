@@ -6,7 +6,7 @@ class TileMap :
 
 public:
 	std::vector<int> level;
-	sf::Vector2i cellCount = { 15, 6 };
+	sf::Vector2i cellCount = { 20, 10 };
 
 protected:
 

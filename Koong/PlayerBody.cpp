@@ -93,7 +93,7 @@ void PlayerBody::Reset()
 {
 	animator.Play("Idle");
 	SetOrigin(Origins::BC);
-	SetPosition({ 0.f, 0.f });
+	SetPosition({ 400.f, -200.f });
 
 
 	tileMap = dynamic_cast<TileMap*>(SCENE_MGR.GetCurrentScene()->FindGo("Ground"));

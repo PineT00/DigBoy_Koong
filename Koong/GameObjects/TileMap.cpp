@@ -89,7 +89,7 @@ void TileMap::Set(sf::Vector2i& count, sf::Vector2f& size)
     //    70,70,1,1,1,5,5,1,1,1,5,1,1,1,1,1,1,1,70,70,
     //};
 
-    SetLevel("tables/MapTable.csv");
+    SetLevel("tables/MapTable2010.csv");
 
     for (int i = 0; i < count.y; ++i)
     {
