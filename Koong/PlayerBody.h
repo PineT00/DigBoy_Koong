@@ -30,6 +30,11 @@ public:
 	sf::Vector2f velocity;
 	bool isGrounded = true;
 
+	sf::Vector2i count;
+	sf::Vector2f size;
+
+	void changeTile(int x, int y);
+
 	void Init() override;
 	void Reset() override;
 	void Update(float dt) override;

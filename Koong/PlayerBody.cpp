@@ -12,6 +12,25 @@ PlayerBody::~PlayerBody()
 {
 }
 
+void PlayerBody::changeTile(int x, int y)
+{
+	tileMap->level[x * count.x + y] = 2;
+
+	int quadIndex = x * count.x + y;
+	sf::Vector2f quadPos(size.x * y, size.y * x);
+
+	//텍스쳐 변경. 타일맵에 있는 오프셋과 코드를 불러와야..
+	for (int k = 0; k < 4; k++)
+	{
+		int vertexIndex = ((quadIndex * 4) + k);
+		tileMap->va[vertexIndex].position = quadPos + tileMap->posOffset[k];
+		tileMap->va[vertexIndex].texCoords = tileMap->texCoord0[k];
+
+		tileMap->va[vertexIndex].texCoords.x += 0 * 42.f;
+		tileMap->va[vertexIndex].texCoords.y += 2 * 42.f;
+	}
+}
+
 void PlayerBody::Init()
 {
 	SpriteGo::Init();
@@ -68,7 +87,6 @@ void PlayerBody::Init()
 	Utils::SetOrigin(buttomCheck, Origins::MC);
 	buttomCheck.setSize(vCheckerSize);
 	buttomCheck.setPosition({ 0.f, 0.f });
-
 }
 
 void PlayerBody::Reset()
@@ -79,6 +97,10 @@ void PlayerBody::Reset()
 
 
 	tileMap = dynamic_cast<TileMap*>(SCENE_MGR.GetCurrentScene()->FindGo("Ground"));
+
+	//타일맵 숫자, 사이즈 가져오기
+	count = tileMap->GetCellCount();
+	size = tileMap->GetCellSize();
 }
 
 void PlayerBody::Update(float dt)
@@ -112,7 +134,7 @@ void PlayerBody::Update(float dt)
 
 	if (InputMgr::GetKey(sf::Keyboard::Up))
 	{
-		isGrounded = false;
+		//isGrounded = false;
 		animator.Play("Boost");
 		velocity.y += -booster * dt;
 		//std::cout << velocity.y << std::endl;
@@ -133,8 +155,8 @@ void PlayerBody::Update(float dt)
 	}
 
 
-	sf::Vector2f pos = position + velocity * dt;
 
+	sf::Vector2f pos = position + velocity * dt;
 
 	SetPosition(pos);
 
@@ -175,8 +197,6 @@ void PlayerBody::Update(float dt)
 
 			std::cout << playerCellX << ", " << playerCellY << std::endl;
 
-			auto count = tileMap->GetCellCount();
-			auto size = tileMap->GetCellSize();
 
 			// 주변 8개의 인접한 셀에 대해서만 충돌 체크
 
@@ -188,7 +208,7 @@ void PlayerBody::Update(float dt)
 					{
 						sf::FloatRect tileBounds = tileMap->GetTileBound(j, i);
 
-						if (tileMap->level[i * count.x + j] == 0 || tileMap->level[i * count.x + j] == 3)
+						if (tileMap->level[i * count.x + j] == 0 || tileMap->level[i * count.x + j] == 2)
 							continue;
 
 						if (tileBounds.intersects(playerBounds))
@@ -197,26 +217,12 @@ void PlayerBody::Update(float dt)
 							{
 								pos.y = tileBounds.top;
 								velocity.y = 0.f;
+								isGrounded = true;
 
 								//통과 가능한 타일로 변경.(텍스쳐변경은 없음)
-								if (InputMgr::GetKeyDown(sf::Keyboard::Space))
+								if (isGrounded && InputMgr::GetKeyDown(sf::Keyboard::Space))
 								{
-									tileMap->level[i * count.x + j] = 3;
-
-									int quadIndex = i * count.x + j;
-									sf::Vector2f quadPos(size.x * j, size.y * i);
-
-									//텍스쳐 변경. 타일맵에 있는 오프셋과 코드를 불러와야..
-									for (int k = 0; k < 4; k++)
-									{				
-										
-										int vertexIndex = ((quadIndex * 4) + k);
-										tileMap->va[vertexIndex].position = quadPos + tileMap->posOffset[k];
-										tileMap->va[vertexIndex].texCoords = tileMap->texCoord0[k];
-
-										tileMap->va[vertexIndex].texCoords.x += 0 * 42.f;
-										tileMap->va[vertexIndex].texCoords.y += 3 * 42.f;
-									}
+									changeTile(i, j);
 								}
 							}
 							if (topCheck.getGlobalBounds().intersects(tileBounds) && velocity.y < 0)
@@ -228,23 +234,21 @@ void PlayerBody::Update(float dt)
 							if (h == -1 && leftCheck.getGlobalBounds().intersects(tileBounds))
 							{
 								
-								if (InputMgr::GetKeyDown(sf::Keyboard::Left))
-								{
-									tileMap->level[i * count.x + j] = 3;
-								}
+								changeTile(i, j);
+
 								pos.x = tileBounds.left + tileBounds.width + 20.f;
 							}
 							if (h == 1 && rightCheck.getGlobalBounds().intersects(tileBounds))
 							{
-								pos.x = tileBounds.left - 20.f;
+								changeTile(i, j);
 								
-
+								pos.x = tileBounds.left - 20.f;
 							}
 
 							//std::cout << j << ", " << i << std::endl;
 
 							SetPosition(pos);
-							isGrounded = true;
+							
 						}
 					}
 				}

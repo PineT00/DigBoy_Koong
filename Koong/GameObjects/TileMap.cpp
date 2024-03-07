@@ -22,6 +22,39 @@ sf::FloatRect TileMap::GetGlobalBounds()
     return transform.transformRect(bounds);
 }
 
+void TileMap::SetLevel(const std::string& filename)
+{
+    std::ifstream file(filename);
+    std::string line;
+
+    //int value = std::stoi(line);
+
+    if (file.is_open())
+    {
+        while (getline(file, line))
+        {
+            std::istringstream iss(line);
+            int value;
+
+            while (iss >> value) //iss의 값을 value로 옮기는데 성공하면
+            {
+                level.push_back(value);
+
+                if (iss.peek() == ',') //다음 읽을 문자 확인
+                    iss.ignore();
+                else
+                    break;
+            }
+        }
+        file.close();
+    }
+    else
+    {
+        std::cout << "파일을 열 수 없습니다." << std::endl;
+    }
+}
+
+
 void TileMap::Set(sf::Vector2i& count, sf::Vector2f& size)
 {
     cellCount = count;
@@ -42,19 +75,21 @@ void TileMap::Set(sf::Vector2i& count, sf::Vector2f& size)
     texCoord0[3] = { 0, 42.f };
 
 
-    level =
-    {
-        70,70,1,1,1,5,5,1,1,1,5,1,1,1,3,3,1,1,70,70,
-        70,70,1,1,1,5,5,1,1,1,5,1,1,1,1,3,1,1,70,70,
-        70,70,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,70,70,
-        70,70,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,70,70,
-        70,70,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,70,70,
-        70,70,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,70,70,
-        70,70,1,1,1,5,5,1,1,1,5,1,1,1,3,3,1,1,70,70,
-        70,70,1,1,1,5,5,1,1,1,5,1,3,1,3,1,1,1,70,70,
-        70,70,1,1,1,5,5,1,1,1,5,3,3,3,3,1,1,1,70,70,
-        70,70,1,1,1,5,5,1,1,1,5,1,1,1,1,1,1,1,70,70,
-    };
+    //level =
+    //{
+    //    70,70,1,1,1,5,5,1,1,1,5,1,1,1,2,2,1,1,70,70,
+    //    70,70,1,1,1,5,5,1,1,1,5,1,1,1,1,2,1,1,70,70,
+    //    70,70,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,70,70,
+    //    70,70,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,70,70,
+    //    70,70,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,70,70,
+    //    70,70,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,70,70,
+    //    70,70,1,1,1,5,5,1,1,1,5,1,1,1,2,2,1,1,70,70,
+    //    70,70,1,1,1,5,5,1,1,1,5,1,2,1,2,1,1,1,70,70,
+    //    70,70,1,1,1,5,5,1,1,1,5,2,2,2,2,1,1,1,70,70,
+    //    70,70,1,1,1,5,5,1,1,1,5,1,1,1,1,1,1,1,70,70,
+    //};
+
+    SetLevel("tables/MapTable.csv");
 
     for (int i = 0; i < count.y; ++i)
     {
@@ -107,16 +142,13 @@ sf::FloatRect TileMap::GetTileBound(int x, int y)
     return bound;
 }
 
-void TileMap::SetCollisionArray()
-{
-    
-}
-
 void TileMap::SetSpriteSheetId(const std::string& id)
 {
     spriteSheetId = id;
     texture = &RES_MGR_TEXTURE.Get(spriteSheetId);
 }
+
+
 
 void TileMap::UpdateTransform()
 {
@@ -193,7 +225,6 @@ void TileMap::Init()
     GameObject::Init();
     SetSpriteSheetId("graphics/FSADIGBOY19-9.png");
     Set(cellCount, cellSize);
-    SetCollisionArray();
     //SetOrigin(Origins::MC);
 }
 
@@ -253,7 +284,7 @@ void TileMap::Draw(sf::RenderWindow& window)
 
                 
 
-                if (tileValue != 3 || 0)
+                if (tileValue != 2 || 0)
                 {
                     window.draw(t);
                 }

@@ -5,13 +5,8 @@ class TileMap :
 {
 
 public:
-	enum TileType
-	{
-		Empty,
-		Stone,
-		Soil,
-		Coil,
-	};
+	std::vector<int> level;
+	sf::Vector2i cellCount = { 15, 6 };
 
 protected:
 
@@ -22,7 +17,7 @@ protected:
 	int rows = 10;
 	int cols = 10;
 
-	sf::Vector2i cellCount = { 20, 10 };
+
 	sf::Vector2f cellSize = { 42.f, 42.f }; //¿‚æ∆¥√∏Æ±‚
 
 	sf::Transform transform;
@@ -33,11 +28,8 @@ public:
 	sf::Vector2f posOffset[4];
 	sf::Vector2f texCoord0[4];
 
-	std::vector<int> level;
 
 	sf::FloatRect GetTileBound(int x, int y);
-
-	void SetCollisionArray();
 
 	TileMap(const std::string& name = "");
 
@@ -46,6 +38,8 @@ public:
 
 	const sf::Vector2i& GetCellCount() const { return cellCount; }
 	const sf::Vector2f& GetCellSize() const { return cellSize; }
+
+	void SetLevel(const std::string& filename);
 
 	void Set(sf::Vector2i& count, sf::Vector2f& size);
 
