@@ -49,6 +49,26 @@ void PlayerBody::Init()
 		animator.AddClip(clip);
 	}
 
+	leftCheck.setFillColor(sf::Color::Red);
+	Utils::SetOrigin(leftCheck, Origins::MC);
+	leftCheck.setSize(hCheckerSize);
+	leftCheck.setPosition({ 0.f, 0.f });
+
+	rightCheck.setFillColor(sf::Color::Red);
+	Utils::SetOrigin(rightCheck, Origins::MC);
+	rightCheck.setSize(hCheckerSize);
+	rightCheck.setPosition({ 0.f, 0.f });
+
+	topCheck.setFillColor(sf::Color::Red);
+	Utils::SetOrigin(topCheck, Origins::MC);
+	topCheck.setSize(vCheckerSize);
+	topCheck.setPosition({ 0.f, 0.f });
+
+	buttomCheck.setFillColor(sf::Color::Red);
+	Utils::SetOrigin(buttomCheck, Origins::MC);
+	buttomCheck.setSize(vCheckerSize);
+	buttomCheck.setPosition({ 0.f, 0.f });
+
 }
 
 void PlayerBody::Reset()
@@ -57,11 +77,36 @@ void PlayerBody::Reset()
 	SetOrigin(Origins::BC);
 	SetPosition({ 0.f, 0.f });
 
+
 	tileMap = dynamic_cast<TileMap*>(SCENE_MGR.GetCurrentScene()->FindGo("Ground"));
 }
 
 void PlayerBody::Update(float dt)
 {
+	sf::Vector2f CheckPos = sprite.getPosition();
+	CheckPos.x += -5.f;
+	CheckPos.y += -2.f;
+	buttomCheck.setPosition(CheckPos);
+
+	CheckPos = sprite.getPosition();
+	CheckPos.x += -5.f;
+	CheckPos.y += -40.f;
+	topCheck.setPosition(CheckPos);
+
+	CheckPos = sprite.getPosition();
+	CheckPos.x += -20.f;
+	CheckPos.y += -15.f;
+	leftCheck.setPosition(CheckPos);
+
+	CheckPos = sprite.getPosition();
+	CheckPos.x += 15.f;
+	CheckPos.y += -15.f;
+	rightCheck.setPosition(CheckPos);
+
+
+
+
+
 	SpriteGo::Update(dt);
 	animator.Update(dt);
 
@@ -125,39 +170,44 @@ void PlayerBody::Update(float dt)
 	{
 		const sf::FloatRect& playerBounds = sprite.getGlobalBounds();
 		const sf::FloatRect& groundBounds = tileMap->GetGlobalBounds();
+		//const sf::FloatRect& wallCheckBounds = leftCheck.getGlobalBounds();
+
 		if (playerBounds.intersects(groundBounds))
 		{
 			auto count = tileMap->GetCellCount();
+
 			for (int i = 0; i < count.y; ++i)
 			{
 				for (int j = 0; j < count.x; ++j)
 				{
-					if (tileMap->level[i * count.x + j] == 3)
+					sf::FloatRect tileBounds = tileMap->GetTileBound(j, i);
+
+					if (tileMap->level[i * count.x + j] == 3 || tileMap->level[i * count.x + j] == 0)
 						continue;
 
-					if (tileMap->GetTileBound(j, i).intersects(playerBounds))
+					if (tileBounds.intersects(playerBounds))
 					{
-						if (tileMap->GetTileBound(j, i).top > playerBounds.height)
+						if (buttomCheck.getGlobalBounds().intersects(tileBounds) && velocity.y >= 0)
 						{
-							pos.y = tileMap->GetTileBound(j, i).top;
+							pos.y = tileBounds.top;
 							velocity.y = 0.f;
 						}
-						/*if (tileMap->GetTileBound(j, i).height < playerBounds.top)
+						if (topCheck.getGlobalBounds().intersects(tileBounds) && velocity.y < 0)
 						{
-							pos.y = tileMap->GetTileBound(j, i).height;
+							pos.y = tileBounds.top + tileBounds.height + 30.f;
+							velocity.y = -0.5f;
 						}
-						if (tileMap->GetTileBound(j, i).left >= playerBounds.width)
-						{
-							pos.x = tileMap->GetTileBound(j, i).left;
-						}
-						if (tileMap->GetTileBound(j, i).width <= playerBounds.left)
-						{
-							pos.x = tileMap->GetTileBound(j, i).width;
-						}*/
-						std::cout << j << ", " << i << std::endl;
 
-						/*pos.y = tileMap->GetTileBound(j, i).top;
-						velocity.y = 0.f;*/
+						if (h == -1 && leftCheck.getGlobalBounds().intersects(tileBounds))
+						{
+							pos.x = tileBounds.left + tileBounds.width + 20.f;
+						}
+						if (h == 1 && rightCheck.getGlobalBounds().intersects(tileBounds))
+						{
+							pos.x = tileBounds.left - 20.f;
+						}
+						
+						std::cout << j << ", " << i << std::endl;
 
 						SetPosition(pos);
 						isGrounded = true;
@@ -172,4 +222,8 @@ void PlayerBody::Draw(sf::RenderWindow& window)
 {
 	SpriteGo::Draw(window);
 
+	window.draw(leftCheck);
+	window.draw(rightCheck);
+	window.draw(topCheck);
+	window.draw(buttomCheck);
 }

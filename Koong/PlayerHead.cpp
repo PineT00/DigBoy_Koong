@@ -56,7 +56,7 @@ void PlayerHead::Reset()
 void PlayerHead::Update(float dt)
 {
 	sf::Vector2f pos = player->GetPosition();
-	pos.y -= 20.f;
+	pos.y -= 17.f;
 	SetPosition(pos);
 
 	float h = InputMgr::GetAxisRaw(Axis::Horizontal);

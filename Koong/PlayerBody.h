@@ -14,6 +14,15 @@ protected:
 
 	TileMap* tileMap;
 
+	sf::RectangleShape leftCheck;
+	sf::RectangleShape rightCheck;
+	sf::RectangleShape topCheck;
+	sf::RectangleShape buttomCheck;
+
+	sf::Vector2f vCheckerSize = { 10.f, 5.f };
+	sf::Vector2f hCheckerSize = { 5.f, 5.f };
+	
+
 public:
 	PlayerBody(const std::string& name = "");
 	~PlayerBody();
