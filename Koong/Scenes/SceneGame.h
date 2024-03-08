@@ -1,17 +1,12 @@
 #pragma once
 #include "Scene.h"
 
-class Player;
 class TileMap;
-class Zombie;
-
 
 class SceneGame : public Scene
 {
 protected:
-	Player* player = nullptr;
 	TileMap* tileMap = nullptr;
-	//Zombie* zombie = nullptr;
 
 public:
 	SceneGame(SceneIds id);

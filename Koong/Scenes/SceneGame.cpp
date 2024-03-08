@@ -1,8 +1,6 @@
 #include "pch.h"
 #include "SceneGame.h"
-#include "Player.h"
 #include "TileMap.h"
-#include "Zombie.h"
 
 SceneGame::SceneGame(SceneIds id)
     :Scene(id)
@@ -11,13 +9,7 @@ SceneGame::SceneGame(SceneIds id)
 
 void SceneGame::Init()
 {
-    tileMap = new TileMap("Background");
-    AddGo(tileMap);
 
-    player = new Player("Player");
-    AddGo(player);
-
-    //zombie = new Zombie("Zombie");
 
     Scene::Init();
 }
@@ -48,7 +40,6 @@ void SceneGame::Enter()
     tileMap->SetRotation(0);
     tileMap->SetOrigin(Origins::MC);
 
-    player->SetPosition({ 0.f, 0.f });
 }
 
 void SceneGame::Exit()
@@ -59,17 +50,6 @@ void SceneGame::Exit()
 void SceneGame::Update(float dt)
 {
     Scene::Update(dt);
-
-    worldView.setCenter(player->GetPosition());
-    if (InputMgr::GetKeyDown(sf::Keyboard::Space))
-    {
-        Zombie::Types zombieType = (Zombie::Types)Utils::RandomRange(0, Zombie::TotalTypes);
-        Zombie* zombie = Zombie::Create(zombieType);
-        zombie->Init();
-        zombie->Reset();
-        zombie->SetPosition(Utils::RandomInUnitCircle() * 500.f + player->GetPosition());
-        AddGo(zombie);
-    }
 }
 
 void SceneGame::Draw(sf::RenderWindow& window)

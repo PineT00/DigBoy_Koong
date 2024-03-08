@@ -1,5 +1,6 @@
 #pragma once
 
+class SpriteGo;
 class TileMap;
 class PlayerBody;
 class PlayerHead;
@@ -10,9 +11,11 @@ protected:
 
 
 public:
+	SpriteGo* backGround = nullptr;
 	TileMap* tileMap = nullptr;
 	PlayerBody* player = nullptr;
 	PlayerHead* playerHead = nullptr;
+
 
 	SceneDev1(SceneIds id);
 	virtual ~SceneDev1();

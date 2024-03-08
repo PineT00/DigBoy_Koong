@@ -134,10 +134,9 @@ void PlayerBody::Update(float dt)
 
 	if (InputMgr::GetKey(sf::Keyboard::Up))
 	{
-		//isGrounded = false;
 		animator.Play("Boost");
 		velocity.y += -booster * dt;
-		//std::cout << velocity.y << std::endl;
+
 
 		if (velocity.y <= -500.f)
 		{
@@ -153,8 +152,6 @@ void PlayerBody::Update(float dt)
 			velocity.y = 800.f;
 		}
 	}
-
-
 
 	sf::Vector2f pos = position + velocity * dt;
 
@@ -195,11 +192,10 @@ void PlayerBody::Update(float dt)
 			int playerCellX = static_cast<int>(GetPosition().x / tileMap->GetCellSize().x);
 			int playerCellY = static_cast<int>(GetPosition().y / tileMap->GetCellSize().y) - 1;
 
-			std::cout << playerCellX << ", " << playerCellY << std::endl;
+			//std::cout << playerCellX << ", " << playerCellY << std::endl;
 
 
 			// 주변 8개의 인접한 셀에 대해서만 충돌 체크
-
 			for (int i = playerCellY - 1; i <= playerCellY + 1; ++i)
 			{
 				for (int j = playerCellX - 1; j <= playerCellX + 1; ++j)
@@ -219,12 +215,13 @@ void PlayerBody::Update(float dt)
 								velocity.y = 0.f;
 								isGrounded = true;
 
-								//통과 가능한 타일로 변경.(텍스쳐변경은 없음)
-								if (isGrounded && InputMgr::GetKeyDown(sf::Keyboard::Space))
+								if (isGrounded && InputMgr::GetKeyDown(sf::Keyboard::Down))
 								{
 									changeTile(i, j);
 								}
 							}
+						
+
 							if (topCheck.getGlobalBounds().intersects(tileBounds) && velocity.y < 0)
 							{
 								pos.y = tileBounds.top + tileBounds.height + 30.f;
@@ -233,19 +230,20 @@ void PlayerBody::Update(float dt)
 
 							if (h == -1 && leftCheck.getGlobalBounds().intersects(tileBounds))
 							{
-								
-								changeTile(i, j);
-
+								if (isGrounded)
+								{
+									changeTile(i, j);
+								}
 								pos.x = tileBounds.left + tileBounds.width + 20.f;
 							}
 							if (h == 1 && rightCheck.getGlobalBounds().intersects(tileBounds))
 							{
-								changeTile(i, j);
-								
+								if (isGrounded)
+								{
+									changeTile(i, j);
+								}
 								pos.x = tileBounds.left - 20.f;
 							}
-
-							//std::cout << j << ", " << i << std::endl;
 
 							SetPosition(pos);
 							
@@ -255,6 +253,16 @@ void PlayerBody::Update(float dt)
 			}
 		}
 	}
+
+	if (abs(velocity.y) < 0.1f)
+	{
+		isGrounded = true;
+	}
+	else
+	{
+		isGrounded = false;
+	}
+
 }
 
 void PlayerBody::Draw(sf::RenderWindow& window)

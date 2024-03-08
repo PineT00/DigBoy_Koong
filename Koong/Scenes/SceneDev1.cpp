@@ -3,6 +3,7 @@
 #include "PlayerBody.h"
 #include "PlayerHead.h"
 #include "TileMap.h"
+#include "SpriteGo.h"
 
 
 SceneDev1::SceneDev1(SceneIds id) : Scene(id)
@@ -31,15 +32,21 @@ sf::Vector2f SceneDev1::ClampByTileMap(const sf::Vector2f point)
 
 void SceneDev1::Init()
 {
+	backGround = new SpriteGo("BackGround");
+	backGround->SetTexture("graphics/FSADIGBOY19-466.jpg");
+	backGround->SetOrigin(Origins::MC);
+	backGround->SetScale({ 1.5f, 1.5f });
+	AddGo(backGround);
 
 	tileMap = new TileMap("Ground");
-	AddGo(tileMap);
+	AddGo(tileMap, World);
 
 	player = new PlayerBody("Player");
 	AddGo(player);
 
 	playerHead = new PlayerHead("Player Head");
 	AddGo(playerHead);
+
 
 	Scene::Init();
 }
@@ -75,6 +82,7 @@ void SceneDev1::Update(float dt)
 	sf::Vector2f worldViewCenter = worldView.getCenter();
 	worldViewCenter = Utils::Lerp(worldViewCenter, player->GetPosition(), dt * 2.5f);
 	worldView.setCenter(worldViewCenter);
+	backGround->SetPosition(worldViewCenter);
 
 
 	if (InputMgr::GetMouseButtonDown(sf::Mouse::Left))
