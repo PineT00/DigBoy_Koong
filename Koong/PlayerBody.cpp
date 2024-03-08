@@ -12,23 +12,76 @@ PlayerBody::~PlayerBody()
 {
 }
 
-void PlayerBody::changeTile(int x, int y)
+void PlayerBody::TextureChange(int x, int y, int rowX, int columnY)
 {
-	tileMap->level[x * count.x + y] = 2;
-
 	int quadIndex = x * count.x + y;
 	sf::Vector2f quadPos(size.x * y, size.y * x);
 
-	//텍스쳐 변경. 타일맵에 있는 오프셋과 코드를 불러와야..
 	for (int k = 0; k < 4; k++)
 	{
 		int vertexIndex = ((quadIndex * 4) + k);
 		tileMap->va[vertexIndex].position = quadPos + tileMap->posOffset[k];
 		tileMap->va[vertexIndex].texCoords = tileMap->texCoord0[k];
 
-		tileMap->va[vertexIndex].texCoords.x += 0 * 42.f;
-		tileMap->va[vertexIndex].texCoords.y += 2 * 42.f;
+		tileMap->va[vertexIndex].texCoords.x += rowX * 42.f;
+		tileMap->va[vertexIndex].texCoords.y += columnY * 42.f;
 	}
+}
+
+void PlayerBody::changeTile(int x, int y)
+{
+	int quadIndex = x * count.x + y;
+	sf::Vector2f quadPos(size.x * y, size.y * x);
+
+
+	if (tileMap->level[x * count.x + y] == 56 || tileMap->level[x * count.x + y] == 60)
+	{
+		tileMap->level[x * count.x + y] = 72;
+		TextureChange(x, y, 8, 4);
+	}
+
+	else if (tileMap->level[x * count.x + y] == 72)
+	{
+		tileMap->level[x * count.x + y] += 1;
+		TextureChange(x, y, 9, 4);
+	}
+
+	else if (tileMap->level[x * count.x + y] == 73)
+	{
+		tileMap->level[x * count.x + y] += 1;
+		TextureChange(x, y, 10, 4);
+	}
+
+	else if (tileMap->level[x * count.x + y] == 74)
+	{
+		tileMap->level[x * count.x + y] += 1;
+		TextureChange(x, y, 11, 4);
+	}
+
+	else if (tileMap->level[x * count.x + y] == 75)
+	{
+		tileMap->level[x * count.x + y] += 1;
+		TextureChange(x, y, 12, 4);
+	}
+
+	else if (tileMap->level[x * count.x + y] == 76)
+	{
+		tileMap->level[x * count.x + y] += 1;
+		TextureChange(x, y, 13, 4);
+	}
+
+	else if (tileMap->level[x * count.x + y] == 77)
+	{
+		tileMap->level[x * count.x + y] += 1;
+		TextureChange(x, y, 14, 4);
+	}
+
+	else if (tileMap->level[x * count.x + y] == 78)
+	{
+		tileMap->level[x * count.x + y] = 32;
+		TextureChange(x, y, 0, 2);
+	}
+
 }
 
 void PlayerBody::Init()
@@ -68,22 +121,33 @@ void PlayerBody::Init()
 		animator.AddClip(clip);
 	}
 
-	leftCheck.setFillColor(sf::Color::Red);
+	{
+		AnimationClip clip;
+		clip.id = "Drill";
+		clip.fps = 2;
+		clip.loopTypes = AnimationLoopTypes::Loop;
+
+		clip.frames.push_back({ "graphics/FSADIGBOY19-33.png", {0, 0, 33, 24} });
+
+		animator.AddClip(clip);
+	}
+
+	leftCheck.setFillColor(sf::Color::Transparent);
 	Utils::SetOrigin(leftCheck, Origins::MC);
 	leftCheck.setSize(hCheckerSize);
 	leftCheck.setPosition({ 0.f, 0.f });
 
-	rightCheck.setFillColor(sf::Color::Red);
+	rightCheck.setFillColor(sf::Color::Transparent);
 	Utils::SetOrigin(rightCheck, Origins::MC);
 	rightCheck.setSize(hCheckerSize);
 	rightCheck.setPosition({ 0.f, 0.f });
 
-	topCheck.setFillColor(sf::Color::Red);
+	topCheck.setFillColor(sf::Color::Transparent);
 	Utils::SetOrigin(topCheck, Origins::MC);
 	topCheck.setSize(vCheckerSize);
 	topCheck.setPosition({ 0.f, 0.f });
 
-	buttomCheck.setFillColor(sf::Color::Red);
+	buttomCheck.setFillColor(sf::Color::Transparent);
 	Utils::SetOrigin(buttomCheck, Origins::MC);
 	buttomCheck.setSize(vCheckerSize);
 	buttomCheck.setPosition({ 0.f, 0.f });
@@ -204,8 +268,8 @@ void PlayerBody::Update(float dt)
 					{
 						sf::FloatRect tileBounds = tileMap->GetTileBound(j, i);
 
-						if (tileMap->level[i * count.x + j] == 0 || tileMap->level[i * count.x + j] == 2)
-							continue;
+						if (tileMap->level[i * count.x + j] == 0 || tileMap->level[i * count.x + j] == 32)
+							continue; //통과처리할 타일 종류
 
 						if (tileBounds.intersects(playerBounds))
 						{
@@ -217,6 +281,7 @@ void PlayerBody::Update(float dt)
 
 								if (isGrounded && InputMgr::GetKey(sf::Keyboard::Down))
 								{
+									isDrill = true;
 									digTime += dt;
 									if (digTime >= digTimer)
 									{
@@ -224,14 +289,17 @@ void PlayerBody::Update(float dt)
 										digTime = 0.f;
 									}
 									std::cout << digTime << std::endl;
-									
+								}
+								else
+								{
+									//isDrill = false;
 								}
 							}
 						
 
 							if (topCheck.getGlobalBounds().intersects(tileBounds) && velocity.y < 0)
 							{
-								pos.y = tileBounds.top + tileBounds.height + 30.f;
+								pos.y = tileBounds.top + tileBounds.height + 25.f;
 								velocity.y = -0.5f;
 							}
 
@@ -247,7 +315,7 @@ void PlayerBody::Update(float dt)
 									}
 									std::cout << digTime << std::endl;
 								}
-								pos.x = tileBounds.left + tileBounds.width + 20.f;
+								pos.x = tileBounds.left + tileBounds.width + 17.f;
 							}
 							if (h == 1 && rightCheck.getGlobalBounds().intersects(tileBounds))
 							{
@@ -260,7 +328,7 @@ void PlayerBody::Update(float dt)
 										digTime = 0.f;
 									}
 								}
-								pos.x = tileBounds.left - 20.f;
+								pos.x = tileBounds.left - 17.f;
 							}
 
 							SetPosition(pos);
@@ -290,9 +358,20 @@ void PlayerBody::Draw(sf::RenderWindow& window)
 	window.draw(rightCheck);
 	window.draw(topCheck);
 	window.draw(buttomCheck);
-}
 
-void PlayerBody::Dig(float delta)
-{
 
+	if (SCENE_MGR.GetDeveloperMode())
+	{
+		leftCheck.setFillColor(sf::Color::Red);
+		rightCheck.setFillColor(sf::Color::Red);
+		topCheck.setFillColor(sf::Color::Red);
+		buttomCheck.setFillColor(sf::Color::Red);
+	}
+	else
+	{
+		leftCheck.setFillColor(sf::Color::Transparent);
+		rightCheck.setFillColor(sf::Color::Transparent);
+		topCheck.setFillColor(sf::Color::Transparent);
+		buttomCheck.setFillColor(sf::Color::Transparent);
+	}
 }

@@ -42,6 +42,16 @@ void PlayerHead::Init()
 		clip.frames.push_back({ "graphics/spriteSheetHead.png", {0, 0, 40, 33} });
 		animator.AddClip(clip);
 	}
+
+	{
+		AnimationClip clip;
+		clip.id = "Drill";
+		clip.fps = 2;
+		clip.loopTypes = AnimationLoopTypes::Loop;
+
+		clip.frames.push_back({ "graphics/spriteSheetHead.png", {0, 132, 40, 33} });
+		animator.AddClip(clip);
+	}
 }
 
 void PlayerHead::Reset()
@@ -83,6 +93,11 @@ void PlayerHead::Update(float dt)
 	else if (animator.GetCurrentClipId() == "Boost" && player->isGrounded)
 	{
 		animator.Play("Idle");
+	}
+	
+	else if (player->isDrill)
+	{
+		animator.Play("Drill");
 	}
 
 }

@@ -96,21 +96,13 @@ void TileMap::Set(sf::Vector2i& count, sf::Vector2f& size)
         for (int j = 0; j < count.x; ++j)
         {
 
-            int texIndexY = level[i * count.x + j];
-            int texIndexX = 0;
+            int texIndexX = level[i * count.x + j];
+            int texIndexY = 0;
 
-            if (texIndexY > 5)
+            if (texIndexX > 15)
             {
-                if(texIndexY % 5 == 0)
-                {
-                    texIndexX = (texIndexY / 5) - 1;
-                    texIndexY = 5;
-                }
-                else
-                {
-                    texIndexX = texIndexY / 5;
-                    texIndexY = texIndexY % 5;
-                }
+                texIndexY = texIndexX / 16;
+                texIndexX = texIndexX % 16;
             }
 
             int quadIndex = i * count.x + j;
@@ -284,7 +276,7 @@ void TileMap::Draw(sf::RenderWindow& window)
 
                 
 
-                if (tileValue != 2 || 0)
+                if (tileValue != 32 || 0)
                 {
                     window.draw(t);
                 }
