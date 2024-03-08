@@ -43,11 +43,11 @@ public:
 	sf::Vector2f size;
 
 	bool GetIsDrill() { return isDrill; }
-
-	void TextureChange(int x, int y, int rowX, int columnY);
-	void changeTile(int x, int y);
-
 	void LocateDrill(float r, float x, float y);
+
+	sf::FloatRect GetSpriteGlobalBound() { return sprite.getGlobalBounds(); }
+
+	void OnItem();
 
 	void Init() override;
 	void Reset() override;

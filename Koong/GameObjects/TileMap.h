@@ -1,15 +1,19 @@
 #pragma once
 #include "GameObject.h"
+
+//class OreGo;
+
 class TileMap :
     public GameObject
 {
 
 public:
 	std::vector<int> level;
-	sf::Vector2i cellCount = { 20, 10 };
+
+	//OreGo* ore;
+	//std::vector<OreGo> ores;
 
 protected:
-
 	std::string spriteSheetId;
 	sf::Texture* texture;
 	TileMap* tilemap;
@@ -17,7 +21,7 @@ protected:
 	int rows = 10;
 	int cols = 10;
 
-
+	sf::Vector2i cellCount = { 20, 10 };
 	sf::Vector2f cellSize = { 42.f, 42.f }; //¿‚æ∆¥√∏Æ±‚
 
 	sf::Transform transform;
@@ -41,6 +45,10 @@ public:
 
 	void SetLevel(const std::string& filename);
 
+	void TextureChange(int x, int y, int rowX, int columnY);
+	void changeTile(int x, int y);
+
+
 	void Set(sf::Vector2i& count, sf::Vector2f& size);
 
 	void SetSpriteSheetId(const std::string& id);
@@ -52,7 +60,6 @@ public:
 	void SetPosition(const sf::Vector2f& pos) override;
 	void Translate(const sf::Vector2f& delta) override;
 	void SetRotation(float r) override;
-
 	void SetScale(const sf::Vector2f& scale) override;
 
 	void SetFlipX(bool flip) override;
@@ -60,9 +67,7 @@ public:
 
 	void Init() override;
 	void Release() override;
-
 	void Reset() override;
-
 	void Update(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
 

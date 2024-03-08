@@ -1,25 +1,28 @@
 #pragma once
 #include "SpriteGo.h"
+
+class PlayerBody;
+
 class OreGo :
     public SpriteGo
 {
 
 protected:
+    std::string coilTexture = "graphics/FSADIGBOY19-24.png";
+
+    std::vector<int> oreLevel;
 
 public:
-    SpriteGo* coil = new SpriteGo;
-    SpriteGo* coper = new SpriteGo;
-    SpriteGo* silver = new SpriteGo;
-    SpriteGo* gold = new SpriteGo;
+    PlayerBody* player;
 
     OreGo(const std::string& name = "");
     ~OreGo() = default;
 
-    void ShowOre();
+    void SetOre(sf::Vector2f pos);
 
-	void SetTexture(const std::string& textureId);
-	void Reset() override;
-	void Draw(sf::RenderWindow& window) override;
+    void Init() override;
+    void Reset() override;
+    void Update(float dt) override;
 
 };
 

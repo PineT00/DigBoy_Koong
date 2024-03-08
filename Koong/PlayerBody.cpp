@@ -12,90 +12,14 @@ PlayerBody::~PlayerBody()
 {
 }
 
-void PlayerBody::TextureChange(int x, int y, int rowX, int columnY)
-{
-	int quadIndex = x * count.x + y;
-	sf::Vector2f quadPos(size.x * y, size.y * x);
-
-	for (int k = 0; k < 4; k++)
-	{
-		int vertexIndex = ((quadIndex * 4) + k);
-		tileMap->va[vertexIndex].position = quadPos + tileMap->posOffset[k];
-		tileMap->va[vertexIndex].texCoords = tileMap->texCoord0[k];
-
-		tileMap->va[vertexIndex].texCoords.x += rowX * 42.f;
-		tileMap->va[vertexIndex].texCoords.y += columnY * 42.f;
-	}
-}
-
-void PlayerBody::changeTile(int x, int y)
-{
-	sf::Vector2f quadPos(size.x * y, size.y * x);
-	//±¤¹°Å¸ÀÏÀÇ °æ¿ì
-	if (tileMap->level[x * count.x + y] == 80) 
-	{
-		tileMap->level[x * count.x + y] = 72;
-		TextureChange(x, y, 8, 4);
-		coil->SetTexture("graphics/FSADIGBOY19-24.png");
-		coil->SetOrigin(Origins::MC);
-		coil->SetPosition({ quadPos.x + 20.f, quadPos.y + 20.f });
-		coil->SetActive(true);
-	}
-
-	//ÀÏ¹ÝÅ¸ÀÏÀÇ °æ¿ì(Èë)
-	else if (tileMap->level[x * count.x + y] == 56 || tileMap->level[x * count.x + y] == 60)
-	{
-		tileMap->level[x * count.x + y] = 72;
-		TextureChange(x, y, 8, 4);
-	}
-
-	else if (tileMap->level[x * count.x + y] == 72)
-	{
-		tileMap->level[x * count.x + y] += 1;
-		TextureChange(x, y, 9, 4);
-	}
-
-	else if (tileMap->level[x * count.x + y] == 73)
-	{
-		tileMap->level[x * count.x + y] += 1;
-		TextureChange(x, y, 10, 4);
-	}
-
-	else if (tileMap->level[x * count.x + y] == 74)
-	{
-		tileMap->level[x * count.x + y] += 1;
-		TextureChange(x, y, 11, 4);
-	}
-
-	else if (tileMap->level[x * count.x + y] == 75)
-	{
-		tileMap->level[x * count.x + y] += 1;
-		TextureChange(x, y, 12, 4);
-	}
-
-	else if (tileMap->level[x * count.x + y] == 76)
-	{
-		tileMap->level[x * count.x + y] += 1;
-		TextureChange(x, y, 13, 4);
-	}
-
-	else if (tileMap->level[x * count.x + y] == 77)
-	{
-		tileMap->level[x * count.x + y] += 1;
-		TextureChange(x, y, 14, 4);
-	}
-
-	else if (tileMap->level[x * count.x + y] == 78)
-	{
-		tileMap->level[x * count.x + y] = 32;
-		TextureChange(x, y, 0, 2);
-	}
-
-}
-
 void PlayerBody::LocateDrill(float r, float x, float y)
 {
 	
+}
+
+void PlayerBody::OnItem()
+{
+	std::cout << "±¤¼®È¹µæ" << std::endl;
 }
 
 void PlayerBody::Init()
@@ -307,7 +231,6 @@ void PlayerBody::Update(float dt)
 
 								if (isGrounded && InputMgr::GetKey(sf::Keyboard::Down))
 								{
-									pos.y = tileBounds.top + 5.f;
 									isDrill = true;
 									drill.SetRotation(0.f);
 									drill.SetPosition(drillPosDown);
@@ -315,10 +238,10 @@ void PlayerBody::Update(float dt)
 									digTime += dt;
 									if (digTime >= digTimer)
 									{
-										changeTile(i, j);
+										tileMap->changeTile(i, j);
 										digTime = 0.f;
 									}
-									std::cout << digTime << std::endl;
+									//std::cout << digTime << std::endl;
 								}
 								else
 								{
@@ -344,10 +267,9 @@ void PlayerBody::Update(float dt)
 									digTime += dt;
 									if (digTime >= digTimer)
 									{
-										changeTile(i, j);
+										tileMap->changeTile(i, j);
 										digTime = 0.f;
 									}
-									std::cout << digTime << std::endl;
 								}
 								pos.x = tileBounds.left + tileBounds.width + 16.f;
 							}
@@ -362,7 +284,7 @@ void PlayerBody::Update(float dt)
 									digTime += dt;
 									if (digTime >= digTimer)
 									{
-										changeTile(i, j);
+										tileMap->changeTile(i, j);
 										digTime = 0.f;
 									}
 								}

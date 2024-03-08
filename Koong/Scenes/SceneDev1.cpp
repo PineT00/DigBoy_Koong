@@ -47,7 +47,6 @@ void SceneDev1::Init()
 	playerHead = new PlayerHead("Player Head");
 	AddGo(playerHead);
 
-
 	Scene::Init();
 }
 

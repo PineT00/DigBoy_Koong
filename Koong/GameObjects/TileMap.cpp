@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "TileMap.h"
-
+#include "OreGo.h"
 
 
 TileMap::TileMap(const std::string& name)
@@ -20,6 +20,82 @@ sf::FloatRect TileMap::GetGlobalBounds()
 {
     sf::FloatRect bounds = va.getBounds();
     return transform.transformRect(bounds);
+}
+
+void TileMap::TextureChange(int x, int y, int rowX, int columnY)
+{
+    int quadIndex = x * cellCount.x + y;
+    sf::Vector2f quadPos(cellSize.x * y, cellSize.y * x);
+
+    for (int k = 0; k < 4; k++)
+    {
+        int vertexIndex = ((quadIndex * 4) + k);
+        va[vertexIndex].position = quadPos + posOffset[k];
+        va[vertexIndex].texCoords = texCoord0[k];
+
+        va[vertexIndex].texCoords.x += rowX * 42.f;
+        va[vertexIndex].texCoords.y += columnY * 42.f;
+    }
+}
+
+void TileMap::changeTile(int x, int y)
+{
+    sf::Vector2f quadPos(cellSize.x * y, cellSize.y * x);
+    //광물타일의 경우
+    if (level[x * cellCount.x + y] == 80)
+    {
+        level[x * cellCount.x + y] = 72;
+        TextureChange(x, y, 8, 4);
+    }
+
+    //일반타일의 경우(흙)
+    else if (level[x * cellCount.x + y] == 56 || level[x * cellCount.x + y] == 60)
+    {
+        level[x * cellCount.x + y] = 72;
+        TextureChange(x, y, 8, 4);
+    }
+
+    else if (level[x * cellCount.x + y] == 72)
+    {
+        level[x * cellCount.x + y] += 1;
+        TextureChange(x, y, 9, 4);
+    }
+
+    else if (level[x * cellCount.x + y] == 73)
+    {
+        level[x * cellCount.x + y] += 1;
+        TextureChange(x, y, 10, 4);
+    }
+
+    else if (level[x * cellCount.x + y] == 74)
+    {
+        level[x * cellCount.x + y] += 1;
+        TextureChange(x, y, 11, 4);
+    }
+
+    else if (level[x * cellCount.x + y] == 75)
+    {
+        level[x * cellCount.x + y] += 1;
+        TextureChange(x, y, 12, 4);
+    }
+
+    else if (level[x * cellCount.x + y] == 76)
+    {
+        level[x * cellCount.x + y] += 1;
+        TextureChange(x, y, 13, 4);
+    }
+
+    else if (level[x * cellCount.x + y] == 77)
+    {
+        level[x * cellCount.x + y] += 1;
+        TextureChange(x, y, 14, 4);
+    }
+
+    else if (level[x * cellCount.x + y] == 78)
+    {
+        level[x * cellCount.x + y] = 32;
+        TextureChange(x, y, 0, 2);
+    }
 }
 
 void TileMap::SetLevel(const std::string& filename)
@@ -117,9 +193,17 @@ void TileMap::Set(sf::Vector2i& count, sf::Vector2f& size)
                 va[vertexIndex].texCoords.x += texIndexX * 42.f;
                 va[vertexIndex].texCoords.y += texIndexY * 42.f;
             }
+
+            if (level[i * count.x + j] == 80)
+            {
+                OreGo* ore = new OreGo;
+                ore->SetOre(quadPos);
+                // ore를 vector에 추가
+                //ores.push_back(*ore);
+                SCENE_MGR.GetCurrentScene()->AddGo(ore);
+            }
         }
     }
-
 
 
 }
@@ -217,7 +301,6 @@ void TileMap::Init()
     GameObject::Init();
     SetSpriteSheetId("graphics/FSADIGBOY19-9.png");
     Set(cellCount, cellSize);
-    //SetOrigin(Origins::MC);
 }
 
 void TileMap::Release()
@@ -244,7 +327,7 @@ void TileMap::Update(float dt)
 
 void TileMap::Draw(sf::RenderWindow& window)
 {
-    //GameObject::Draw(window);
+    GameObject::Draw(window);
     sf::RenderStates state;
     state.texture = texture;
     state.transform = transform;
@@ -273,8 +356,6 @@ void TileMap::Draw(sf::RenderWindow& window)
                 t.setSize({ cellSize.x, cellSize.y });
 
                 int tileValue = level[i * cellCount.x + j];
-
-                
 
                 if (tileValue != 32 || 0)
                 {
