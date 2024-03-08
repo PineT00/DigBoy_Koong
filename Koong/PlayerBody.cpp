@@ -215,9 +215,16 @@ void PlayerBody::Update(float dt)
 								velocity.y = 0.f;
 								isGrounded = true;
 
-								if (isGrounded && InputMgr::GetKeyDown(sf::Keyboard::Down))
+								if (isGrounded && InputMgr::GetKey(sf::Keyboard::Down))
 								{
-									changeTile(i, j);
+									digTime += dt;
+									if (digTime >= digTimer)
+									{
+										changeTile(i, j);
+										digTime = 0.f;
+									}
+									std::cout << digTime << std::endl;
+									
 								}
 							}
 						
@@ -232,7 +239,13 @@ void PlayerBody::Update(float dt)
 							{
 								if (isGrounded)
 								{
-									changeTile(i, j);
+									digTime += dt;
+									if (digTime >= digTimer)
+									{
+										changeTile(i, j);
+										digTime = 0.f;
+									}
+									std::cout << digTime << std::endl;
 								}
 								pos.x = tileBounds.left + tileBounds.width + 20.f;
 							}
@@ -240,7 +253,12 @@ void PlayerBody::Update(float dt)
 							{
 								if (isGrounded)
 								{
-									changeTile(i, j);
+									digTime += dt;
+									if (digTime >= digTimer)
+									{
+										changeTile(i, j);
+										digTime = 0.f;
+									}
 								}
 								pos.x = tileBounds.left - 20.f;
 							}
@@ -272,4 +290,9 @@ void PlayerBody::Draw(sf::RenderWindow& window)
 	window.draw(rightCheck);
 	window.draw(topCheck);
 	window.draw(buttomCheck);
+}
+
+void PlayerBody::Dig(float delta)
+{
+
 }

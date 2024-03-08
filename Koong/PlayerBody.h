@@ -12,6 +12,10 @@ protected:
 	float speed = 300.f;
 	float booster = 500.f;
 
+	bool isDig = false;
+	float digTime = 0.f;
+	float digTimer = 2.f;
+
 	TileMap* tileMap;
 
 	sf::RectangleShape leftCheck;
@@ -34,6 +38,7 @@ public:
 	sf::Vector2f size;
 
 	void changeTile(int x, int y);
+	void Dig(float delta);
 
 	void Init() override;
 	void Reset() override;
