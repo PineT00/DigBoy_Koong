@@ -13,6 +13,10 @@ protected:
 	float booster = 500.f;
 	float hp = 100.f; //¹Ì±¸Çö
 
+	bool isDrill = false;
+	float digTime = 0.f;
+	float digTimer = 0.1f;
+
 	TileMap* tileMap;
 
 	sf::RectangleShape leftCheck;
@@ -23,13 +27,14 @@ protected:
 	sf::Vector2f vCheckerSize = { 10.f, 5.f };
 	sf::Vector2f hCheckerSize = { 5.f, 5.f };
 
+	SpriteGo drill;
+	float drillDown = 0;
+
+	SpriteGo* coil = new SpriteGo;
+
 public:
 	PlayerBody(const std::string& name = "");
 	~PlayerBody();
-
-	bool isDrill = false;
-	float digTime = 0.f;
-	float digTimer = 0.1f;
 
 	sf::Vector2f velocity;
 	bool isGrounded = true;
@@ -37,8 +42,12 @@ public:
 	sf::Vector2i count;
 	sf::Vector2f size;
 
+	bool GetIsDrill() { return isDrill; }
+
 	void TextureChange(int x, int y, int rowX, int columnY);
 	void changeTile(int x, int y);
+
+	void LocateDrill(float r, float x, float y);
 
 	void Init() override;
 	void Reset() override;

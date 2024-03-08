@@ -8,7 +8,8 @@ class PlayerHead;
 class SceneDev1 : public Scene
 {
 protected:
-
+	float tileMapLeftEnd = 0;
+	float tileMapRightEnd = 0;
 
 public:
 	SpriteGo* backGround = nullptr;

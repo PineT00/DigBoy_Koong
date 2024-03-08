@@ -36,7 +36,7 @@ void PlayerHead::Init()
 	{
 		AnimationClip clip; //상승하는 효과가 추가되야 함
 		clip.id = "Boost";
-		clip.fps = 2;
+		clip.fps = 2; 
 		clip.loopTypes = AnimationLoopTypes::Loop;
 
 		clip.frames.push_back({ "graphics/spriteSheetHead.png", {0, 0, 40, 33} });
@@ -49,7 +49,7 @@ void PlayerHead::Init()
 		clip.fps = 2;
 		clip.loopTypes = AnimationLoopTypes::Loop;
 
-		clip.frames.push_back({ "graphics/spriteSheetHead.png", {0, 132, 40, 33} });
+		clip.frames.push_back({ "graphics/spriteSheetHead.png", {0, 66, 40, 33} });
 		animator.AddClip(clip);
 	}
 }
@@ -70,6 +70,8 @@ void PlayerHead::Update(float dt)
 	SetPosition(pos);
 
 	float h = InputMgr::GetAxisRaw(Axis::Horizontal);
+
+
 
 	if (h != 0.f)
 	{
@@ -95,11 +97,14 @@ void PlayerHead::Update(float dt)
 		animator.Play("Idle");
 	}
 	
-	else if (player->isDrill)
+	if (animator.GetCurrentClipId() == "Idle" && player->GetIsDrill())
 	{
 		animator.Play("Drill");
 	}
-
+	if (animator.GetCurrentClipId() == "Drill" && !player->GetIsDrill())
+	{
+		animator.Play("Idle");
+	}
 }
 
 void PlayerHead::Draw(sf::RenderWindow& window)

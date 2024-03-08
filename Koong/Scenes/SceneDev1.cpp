@@ -69,6 +69,9 @@ void SceneDev1::Enter()
 	player->SetPosition({ 0,0 });
 
 
+	tileMapLeftEnd = tileMap->GetPosition().x;
+	tileMapRightEnd = tileMapLeftEnd + tileMap->GetCellCount().x * tileMap->GetCellSize().x;
+
 	Scene::Enter();
 }
 
@@ -80,10 +83,15 @@ void SceneDev1::Exit()
 void SceneDev1::Update(float dt)
 {
 	sf::Vector2f worldViewCenter = worldView.getCenter();
-	worldViewCenter = Utils::Lerp(worldViewCenter, player->GetPosition(), dt * 2.5f);
+
+	worldViewCenter.y = Utils::Lerp(worldViewCenter.y, player->GetPosition().y, dt * 2.5f);
+
+	if (player->GetPosition().x > tileMapLeftEnd && player->GetPosition().x < tileMapRightEnd)
+	{
+		worldViewCenter.x = Utils::Lerp(worldViewCenter.x, player->GetPosition().x, dt * 2.5f);
+	}
 	worldView.setCenter(worldViewCenter);
 	backGround->SetPosition(worldViewCenter);
-
 
 	if (InputMgr::GetMouseButtonDown(sf::Mouse::Left))
 	{

@@ -30,11 +30,20 @@ void PlayerBody::TextureChange(int x, int y, int rowX, int columnY)
 
 void PlayerBody::changeTile(int x, int y)
 {
-	int quadIndex = x * count.x + y;
 	sf::Vector2f quadPos(size.x * y, size.y * x);
+	//광물타일의 경우
+	if (tileMap->level[x * count.x + y] == 80) 
+	{
+		tileMap->level[x * count.x + y] = 72;
+		TextureChange(x, y, 8, 4);
+		coil->SetTexture("graphics/FSADIGBOY19-24.png");
+		coil->SetOrigin(Origins::MC);
+		coil->SetPosition({ quadPos.x + 20.f, quadPos.y + 20.f });
+		coil->SetActive(true);
+	}
 
-
-	if (tileMap->level[x * count.x + y] == 56 || tileMap->level[x * count.x + y] == 60)
+	//일반타일의 경우(흙)
+	else if (tileMap->level[x * count.x + y] == 56 || tileMap->level[x * count.x + y] == 60)
 	{
 		tileMap->level[x * count.x + y] = 72;
 		TextureChange(x, y, 8, 4);
@@ -82,6 +91,11 @@ void PlayerBody::changeTile(int x, int y)
 		TextureChange(x, y, 0, 2);
 	}
 
+}
+
+void PlayerBody::LocateDrill(float r, float x, float y)
+{
+	
 }
 
 void PlayerBody::Init()
@@ -151,6 +165,11 @@ void PlayerBody::Init()
 	Utils::SetOrigin(buttomCheck, Origins::MC);
 	buttomCheck.setSize(vCheckerSize);
 	buttomCheck.setPosition({ 0.f, 0.f });
+
+	drill.SetTexture("graphics/FSADIGBOY19-33.png");
+	drill.SetOrigin(Origins::MC);
+	drill.SetPosition({ 0.f, 0.f });
+
 }
 
 void PlayerBody::Reset()
@@ -188,6 +207,13 @@ void PlayerBody::Update(float dt)
 	CheckPos.x += 15.f;
 	CheckPos.y += -15.f;
 	rightCheck.setPosition(CheckPos);
+
+	sf::Vector2f drillPosDown = sprite.getPosition();
+	sf::Vector2f drillPosLeft = { drillPosDown.x - 15 , drillPosDown.y - 15};
+	sf::Vector2f drillPosRight = { drillPosDown.x + 15 , drillPosDown.y - 15 };
+
+	drill.SetPosition(drillPosDown);
+	drill.SetActive(false);
 
 	SpriteGo::Update(dt);
 	animator.Update(dt);
@@ -281,7 +307,11 @@ void PlayerBody::Update(float dt)
 
 								if (isGrounded && InputMgr::GetKey(sf::Keyboard::Down))
 								{
+									pos.y = tileBounds.top + 5.f;
 									isDrill = true;
+									drill.SetRotation(0.f);
+									drill.SetPosition(drillPosDown);
+									drill.SetActive(true);
 									digTime += dt;
 									if (digTime >= digTimer)
 									{
@@ -292,7 +322,7 @@ void PlayerBody::Update(float dt)
 								}
 								else
 								{
-									//isDrill = false;
+									isDrill = false;
 								}
 							}
 						
@@ -307,6 +337,10 @@ void PlayerBody::Update(float dt)
 							{
 								if (isGrounded)
 								{
+									isDrill = true;
+									drill.SetRotation(90);
+									drill.SetPosition(drillPosLeft);
+									drill.SetActive(true);
 									digTime += dt;
 									if (digTime >= digTimer)
 									{
@@ -315,12 +349,16 @@ void PlayerBody::Update(float dt)
 									}
 									std::cout << digTime << std::endl;
 								}
-								pos.x = tileBounds.left + tileBounds.width + 17.f;
+								pos.x = tileBounds.left + tileBounds.width + 16.f;
 							}
 							if (h == 1 && rightCheck.getGlobalBounds().intersects(tileBounds))
 							{
 								if (isGrounded)
 								{
+									isDrill = true;
+									drill.SetRotation(270);
+									drill.SetPosition(drillPosRight);
+									drill.SetActive(true);
 									digTime += dt;
 									if (digTime >= digTimer)
 									{
@@ -328,7 +366,7 @@ void PlayerBody::Update(float dt)
 										digTime = 0.f;
 									}
 								}
-								pos.x = tileBounds.left - 17.f;
+								pos.x = tileBounds.left - 16.f;
 							}
 
 							SetPosition(pos);
@@ -358,6 +396,12 @@ void PlayerBody::Draw(sf::RenderWindow& window)
 	window.draw(rightCheck);
 	window.draw(topCheck);
 	window.draw(buttomCheck);
+	coil->Draw(window);
+
+	if (drill.GetActive())
+	{
+		drill.Draw(window);
+	}
 
 
 	if (SCENE_MGR.GetDeveloperMode())
