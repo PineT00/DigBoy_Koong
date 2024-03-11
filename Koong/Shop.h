@@ -1,11 +1,16 @@
 #pragma once
 #include "SpriteGo.h"
+
 class Shop :
     public SpriteGo
 {
 
 protected:
 	Animator animator;
+
+	SpriteGo propeller;
+	SpriteGo shop;
+	SpriteGo board;
 
 public:
 	Shop(const std::string& name = "");

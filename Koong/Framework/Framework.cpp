@@ -37,8 +37,8 @@ void Framework::Do()
         InputMgr::Update(GetDT());
 
         SOUND_MGR.Update(GetDT());
-
         SCENE_MGR.Update(GetDT());
+
         window.clear();
         SCENE_MGR.Draw(window);
         window.display();

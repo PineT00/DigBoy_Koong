@@ -4,6 +4,7 @@
 #include "PlayerHead.h"
 #include "TileMap.h"
 #include "SpriteGo.h"
+#include "Shop.h"
 
 
 SceneDev1::SceneDev1(SceneIds id) : Scene(id)
@@ -47,6 +48,10 @@ void SceneDev1::Init()
 
 	playerHead = new PlayerHead("Player Head");
 	AddGo(playerHead);
+
+	Shop* shop = new Shop("Shop");
+	AddGo(shop);
+
 
 	mainScreen = new SpriteGo("MainScreen");
 	mainScreen->SetTexture("graphics/FSADIGBOY19-481.jpg");
