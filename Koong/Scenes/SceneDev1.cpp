@@ -5,6 +5,7 @@
 #include "TileMap.h"
 #include "SpriteGo.h"
 #include "Shop.h"
+#include "UiHud.h"
 
 
 SceneDev1::SceneDev1(SceneIds id) : Scene(id)
@@ -43,14 +44,17 @@ void SceneDev1::Init()
 	tileMap = new TileMap("Ground");
 	AddGo(tileMap, World);
 
+	Shop* shop = new Shop("Shop");
+	AddGo(shop);
+
 	player = new PlayerBody("Player");
 	AddGo(player);
 
 	playerHead = new PlayerHead("Player Head");
 	AddGo(playerHead);
 
-	Shop* shop = new Shop("Shop");
-	AddGo(shop);
+	hud = new UiHud("Hud");
+	AddGo(hud, Ui);
 
 
 	mainScreen = new SpriteGo("MainScreen");

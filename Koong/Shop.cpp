@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Shop.h"
+#include "PlayerBody.h"
 
 Shop::Shop(const std::string& name)
 	:SpriteGo(name)
@@ -10,12 +11,11 @@ void Shop::Init()
 {
 	SpriteGo::Init();
 
-	animator.SetTarget(&sprite);
-
+	animator1.SetTarget(&propeller);
 	{
 		AnimationClip clip;
 		clip.id = "rotate";
-		clip.fps = 12;
+		clip.fps = 10;
 		clip.loopTypes = AnimationLoopTypes::Loop;
 		clip.frames.push_back({ "graphics/shop/FSADIGBOY19-propeller.png", {0, 0, 122, 50} });
 		clip.frames.push_back({ "graphics/shop/FSADIGBOY19-propeller.png", {0, 50, 122, 50} });
@@ -23,34 +23,63 @@ void Shop::Init()
 		clip.frames.push_back({ "graphics/shop/FSADIGBOY19-propeller.png", {0, 150, 122, 50} });
 		clip.frames.push_back({ "graphics/shop/FSADIGBOY19-propeller.png", {0, 200, 122, 50} });
 		clip.frames.push_back({ "graphics/shop/FSADIGBOY19-propeller.png", {0, 250, 122, 50} });
-		animator.AddClip(clip);
+		animator1.AddClip(clip);
 	}
 
+	animator2.SetTarget(&portal);
+	{
+		AnimationClip clip;
+		clip.id = "portal";
+		clip.fps = 8;
+		clip.loopTypes = AnimationLoopTypes::Loop;
+		clip.frames.push_back({ "graphics/shop/FSADIGBOY19-232.png", {0, 0, 87, 93} });
+		clip.frames.push_back({ "graphics/shop/FSADIGBOY19-233.png", {0, 0, 87, 93} });
+		clip.frames.push_back({ "graphics/shop/FSADIGBOY19-234.png", {0, 0, 87, 93} });
+		clip.frames.push_back({ "graphics/shop/FSADIGBOY19-235.png", {0, 0, 87, 93} });
+		clip.frames.push_back({ "graphics/shop/FSADIGBOY19-236.png", {0, 0, 87, 93} });
+		clip.frames.push_back({ "graphics/shop/FSADIGBOY19-237.png", {0, 0, 87, 93} });
+		clip.frames.push_back({ "graphics/shop/FSADIGBOY19-238.png", {0, 0, 87, 93} });
+		clip.frames.push_back({ "graphics/shop/FSADIGBOY19-239.png", {0, 0, 87, 93} });
+		animator2.AddClip(clip);
+	}
+
+	NPC.SetTexture("graphics/shop/FSADIGBOY19-220.png");
 	shop.SetTexture("graphics/shop/FSADIGBOY19-shop.png");
 
+	propeller.setPosition({ 95.f, -235.f });
+	portal.setPosition({ 115.f, -80.f });
+
+	shop.SetOrigin(Origins::TC);
+	shop.SetPosition({ 160.f, -255.f });
+
+	NPC.SetOrigin(Origins::TC);
+	NPC.SetPosition({ 155.f, -70.f });
 }
 
 void Shop::Reset()
 {
 	SpriteGo::Reset();
 
-	SetOrigin(Origins::BC);
-	SetPosition({ 100.f, -240.f });
+	animator1.Play("rotate");
 
-	shop.SetOrigin(Origins::TC);
-	shop.SetPosition({ 160.f, -260.f });
-	animator.Play("rotate");
+	animator2.Play("portal");
+
+	player = dynamic_cast<PlayerBody*>(SCENE_MGR.GetCurrentScene()->FindGo("Player"));
 
 }
 
 void Shop::Update(float dt)
 {
 	SpriteGo::Update(dt);
-	animator.Update(dt);
+	animator1.Update(dt);
+	animator2.Update(dt);
 
-	if (InputMgr::GetMouseButton(sf::Mouse::Left))
+	sf::FloatRect bound = NPC.GetGlobalBounds();
+	sf::FloatRect playerBound = player->GetSpriteGlobalBound();
+
+	if (bound.intersects(playerBound) && InputMgr::GetKeyDown(sf::Keyboard::Space))
 	{
-		animator.Play("rotate");
+		player->SellAll();
 	}
 
 }
@@ -58,5 +87,10 @@ void Shop::Update(float dt)
 void Shop::Draw(sf::RenderWindow& window)
 {
 	SpriteGo::Draw(window);
+
 	shop.Draw(window);
+	NPC.Draw(window);
+	window.draw(propeller);
+	window.draw(portal);
+
 }

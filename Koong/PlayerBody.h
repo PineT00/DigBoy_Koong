@@ -10,15 +10,22 @@ protected:
 
 	float speed = 300.f;
 	float booster = 500.f;
-	float hp = 100.f; //미구현
+
+	float hpMax = 100.f;
+	float airMax = 100.f;
+	float hp = hpMax;
+	float air = airMax;
+
 
 	bool isDrill = false;
 	float digTime = 0.f;
 	float digTimer = 0.1f;
 
-
 	//인벤토리
 	int coilNum = 0;
+	int silverNum = 0;
+	int goldNum = 0;
+	int money = 0;
 
 	TileMap* tileMap;
 
@@ -38,10 +45,8 @@ protected:
 public:
 	float gravity = 700.f;
 
-	PlayerBody(const std::string& name = "");
-	~PlayerBody();
-
 	sf::Vector2f velocity;
+
 	bool isGrounded = true;
 
 	sf::Vector2i count;
@@ -52,11 +57,22 @@ public:
 
 	sf::FloatRect GetSpriteGlobalBound() { return sprite.getGlobalBounds(); }
 
+	float GetMaxHP() { return hpMax; }
+	float GetMaxAir() { return airMax; }
+	float GetHP() { return hp; }
+	float GetAir() { return air; }
+
+	PlayerBody(const std::string& name = "");
+	~PlayerBody();
+
 	void OnItem();
+	void SellAll();
 
 	void Init() override;
 	void Reset() override;
 	void Update(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
+
+
 };
 

@@ -17,11 +17,20 @@ void PlayerBody::LocateDrill(float r, float x, float y)
 	
 }
 
+
 void PlayerBody::OnItem()
 {
 	std::cout << "±¤¼®È¹µæ" << std::endl;
 	coilNum += 1;
 	std::cout << "ÇöÀç±¤¼® ¼ö : " << coilNum << std::endl;
+}
+
+void PlayerBody::SellAll()
+{
+	std::cout << "±¤¼®Á¤»ê" << std::endl;
+	money += coilNum * 100;
+	coilNum = 0;
+	std::cout << "ÇöÀç º¸À¯±Ý : " << money << std::endl;
 }
 
 void PlayerBody::Init()
@@ -208,6 +217,20 @@ void PlayerBody::Update(float dt)
 			int playerCellX = static_cast<int>(GetPosition().x / tileMap->GetCellSize().x);
 			int playerCellY = static_cast<int>(GetPosition().y / tileMap->GetCellSize().y) - 1;
 
+			if (playerCellY > 0)
+			{
+				air -= 5.f * dt;
+				std::cout << air << std::endl;
+				if (air <= 0.f)
+				{
+					air = 0.f;
+					hp -= 1.f * dt;
+				}
+			}
+			else
+			{
+				air = airMax;
+			}
 			//std::cout << playerCellX << ", " << playerCellY << std::endl;
 
 
@@ -225,8 +248,15 @@ void PlayerBody::Update(float dt)
 
 						if (tileBounds.intersects(playerBounds))
 						{
+
 							if (buttomCheck.getGlobalBounds().intersects(tileBounds) && velocity.y >= 0)
 							{
+								if (velocity.y > 300.f)
+								{
+									hp -= 10.f;
+									std::cout << "À¸¾Ç!" << std::endl;
+								}
+
 								pos.y = tileBounds.top;
 								velocity.y = 0.f;
 								isGrounded = true;

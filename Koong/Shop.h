@@ -1,16 +1,23 @@
 #pragma once
 #include "SpriteGo.h"
 
+class PlayerBody;
+
 class Shop :
     public SpriteGo
+
 {
-
 protected:
-	Animator animator;
+	Animator animator1;
+	sf::Sprite propeller;
 
-	SpriteGo propeller;
+	Animator animator2;
+	sf::Sprite portal;
+
+	PlayerBody* player;
 	SpriteGo shop;
-	SpriteGo board;
+	SpriteGo NPC;
+
 
 public:
 	Shop(const std::string& name = "");
