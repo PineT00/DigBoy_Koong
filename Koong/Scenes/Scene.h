@@ -18,6 +18,9 @@ protected:
 	std::list<GameObject*> gameObjects;
 	std::list<GameObject*> uiGameObjects;
 
+	std::list<GameObject*> removeGameObjects;
+	std::list<GameObject*> resortingGameObjects;
+
 	sf::View worldView;
 	sf::View uiView;
 
@@ -41,6 +44,8 @@ public:
 	virtual void Exit() {};
 
 	virtual void Update(float dt);
+	virtual void LateUpdate(float dt);
+	virtual void FixedUpdate(float dt);
 	virtual void Draw(sf::RenderWindow& window);
 
 	virtual GameObject* FindGo(const std::string& name, Layers layer = Layers::Everything);
@@ -49,6 +54,7 @@ public:
 
 	virtual GameObject* AddGo(GameObject* obj, Layers layer = Layers::World);
 	virtual void RemoveGo(GameObject* obj);
+	virtual void ResortGo(GameObject* obj);
 
 	Scene(const Scene&) = delete;
 	Scene(Scene&&) = delete;

@@ -123,6 +123,12 @@ void UiHud::Init()
 	invenSprite.SetTexture("graphics/ui/FSADIGBOY19-322.png");
 	invenEmpty.SetTexture("graphics/ui/FSADIGBOY19-305.png");
 	invenBlocked.SetTexture("graphics/ui/FSADIGBOY19-321.png");
+
+
+	test.setFont(RES_MGR_FONT.Get("NanumSquareRoundEB.ttf"));
+	test.setString("SFML!");
+	test.setCharacterSize(34);
+	test.setFillColor(sf::Color::White);
 }
 
 void UiHud::Release()
@@ -200,5 +206,6 @@ void UiHud::Draw(sf::RenderWindow& window)
 
 	inventory.Draw(window);
 
+	window.draw(test);
 
 }

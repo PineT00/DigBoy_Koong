@@ -35,6 +35,7 @@ void Scene::Init()
 	{
 		obj->Init();
 	}
+
 	for (auto obj : uiGameObjects)
 	{
 		obj->Init();
@@ -47,12 +48,13 @@ void Scene::Release()
 	{
 		delete obj;
 	}
-	gameObjects.clear();
 
 	for (auto obj : uiGameObjects)
 	{
 		delete obj;
 	}
+
+	gameObjects.clear();
 	uiGameObjects.clear();
 }
 
@@ -62,6 +64,7 @@ void Scene::Enter()
 	{
 		obj->Reset();
 	}
+
 	for (auto obj : uiGameObjects)
 	{
 		obj->Reset();
@@ -77,6 +80,7 @@ void Scene::Update(float dt)
 			obj->Update(dt);
 		}
 	}
+
 	for (auto obj : uiGameObjects)
 	{
 		if (obj->GetActive())
@@ -86,11 +90,98 @@ void Scene::Update(float dt)
 	}
 }
 
+void Scene::LateUpdate(float dt)
+{
+	for (auto obj : gameObjects)
+	{
+		if (obj->GetActive())
+		{
+			obj->LateUpdate(dt);
+		}
+	}
+
+	for (auto obj : uiGameObjects)
+	{
+		if (obj->GetActive())
+		{
+			obj->LateUpdate(dt);
+		}
+	}
+
+	for (auto obj : resortingGameObjects)
+	{
+		auto it = std::find(gameObjects.begin(), gameObjects.end(), obj);
+		if (it != gameObjects.end())
+		{
+			gameObjects.remove(obj);
+			AddGo(obj, Layers::World);
+			continue;
+		}
+
+		it = std::find(uiGameObjects.begin(), uiGameObjects.end(), obj);
+		if (it != uiGameObjects.end())
+		{
+			uiGameObjects.remove(obj);
+			AddGo(obj, Layers::Ui);
+			continue;
+		}
+	}
+
+	for (auto obj : removeGameObjects)
+	{
+		gameObjects.remove(obj);
+		uiGameObjects.remove(obj);
+
+		delete obj;
+	}
+	removeGameObjects.clear();
+}
+
+void Scene::FixedUpdate(float dt)
+{
+	for (auto obj : gameObjects)
+	{
+		if (obj->GetActive())
+		{
+			obj->FixedUpdate(dt);
+		}
+	}
+
+	for (auto obj : uiGameObjects)
+	{
+		if (obj->GetActive())
+		{
+			obj->FixedUpdate(dt);
+		}
+	}
+}
+
 void Scene::Draw(sf::RenderWindow& window)
 {
+	// gameObjects.sort();
+	//std::sort(gameObjects.begin(), gameObjects.end(),
+	//	[](GameObject* a, GameObject* b) {
+	//		// a + b
+	//		if (a->sortLayer != b->sortLayer)
+	//		{
+	//			return a->sortLayer < b->sortLayer;
+	//		}
+	//		return a->sortOrder < b->sortOrder;
+	//	});
+	//std::sort(uiGameObjects.begin(), uiGameObjects.end(),
+	//	[](GameObject* a, GameObject* b) {
+	//		// a + b
+	//		if (a->sortLayer != b->sortLayer)
+	//		{
+	//			return a->sortLayer < b->sortLayer;
+	//		}
+	//		return a->sortOrder < b->sortOrder;
+	//	});
+
 	const sf::View& saveView = window.getView();
-	
+
 	window.setView(worldView);
+
 	for (auto obj : gameObjects)
 	{
 		if (obj->GetActive())
@@ -108,7 +199,7 @@ void Scene::Draw(sf::RenderWindow& window)
 		}
 	}
 
-	window.setView(saveView);
+	window.setView(saveView); // 처음 사용한 뷰를 다시 되돌린다.
 }
 
 GameObject* Scene::FindGo(const std::string& name, Layers layer)
@@ -123,6 +214,7 @@ GameObject* Scene::FindGo(const std::string& name, Layers layer)
 			}
 		}
 	}
+
 	if ((layer & Layers::Ui) == Layers::Ui)
 	{
 		for (auto obj : uiGameObjects)
@@ -133,6 +225,7 @@ GameObject* Scene::FindGo(const std::string& name, Layers layer)
 			}
 		}
 	}
+
 	return nullptr;
 }
 
@@ -150,6 +243,7 @@ int Scene::FindGoAll(const std::string& name, std::list<GameObject*>& list, Laye
 			}
 		}
 	}
+
 	if ((layer & Layers::Ui) == Layers::Ui)
 	{
 		for (auto obj : uiGameObjects)
@@ -170,24 +264,67 @@ GameObject* Scene::AddGo(GameObject* obj, Layers layer)
 	{
 		if (std::find(gameObjects.begin(), gameObjects.end(), obj) == gameObjects.end())
 		{
+			if (gameObjects.empty())
+			{
+				gameObjects.push_back(obj);
+				return obj;
+			}
+
+			auto it = gameObjects.begin();
+			while (it != gameObjects.end())
+			{
+				if (GameObject::CompareDrawOrder(obj, *it))
+				{
+					gameObjects.insert(it, obj);
+					return obj;
+				}
+				++it;
+			}
 			gameObjects.push_back(obj);
 			return obj;
 		}
 	}
-	if (layer == Layers::Ui) 
+
+	if (layer == Layers::Ui)
 	{
 		if (std::find(uiGameObjects.begin(), uiGameObjects.end(), obj) == uiGameObjects.end())
 		{
+			if (uiGameObjects.empty())
+			{
+				uiGameObjects.push_back(obj);
+				return obj;
+			}
+
+			auto it = uiGameObjects.begin();
+			while (it != uiGameObjects.end())
+			{
+				if (GameObject::CompareDrawOrder(obj, *it))
+				{
+					uiGameObjects.insert(it, obj);
+					return obj;
+				}
+				++it;
+			}
 			uiGameObjects.push_back(obj);
 			return obj;
 		}
 	}
-
 	return nullptr;
 }
 
 void Scene::RemoveGo(GameObject* obj)
 {
-	gameObjects.remove(obj);
-	uiGameObjects.remove(obj);
+	//obj->SetActive(false);
+	if (std::find(removeGameObjects.begin(), removeGameObjects.end(), obj) == removeGameObjects.end())
+	{
+		removeGameObjects.push_back(obj);
+	}
+}
+
+void Scene::ResortGo(GameObject* obj)
+{
+	if (std::find(resortingGameObjects.begin(), resortingGameObjects.end(), obj) == resortingGameObjects.end())
+	{
+		resortingGameObjects.push_back(obj);
+	}
 }

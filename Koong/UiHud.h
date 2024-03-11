@@ -12,7 +12,7 @@ protected:
 	sf::Vector2f resolution = referenceResolution;
 
 	//std::string formatScore = "SCORE: ";
-	//std::string formatFps = "FPS: ";
+	sf::Text test;
 
 	//
 	//TextGo textFps;
