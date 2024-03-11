@@ -2,7 +2,7 @@
 
 int main()
 {
-    FRAMEWORK.Init(1080, 1080, "Koong");
+    FRAMEWORK.Init(1280, 960, "Koong");
     FRAMEWORK.Do();
     FRAMEWORK.Release();
     return 0;

@@ -32,11 +32,6 @@ sf::Vector2f SceneDev1::ClampByTileMap(const sf::Vector2f point)
 
 void SceneDev1::Init()
 {
-	mainScreen = new SpriteGo("MainScreen");
-	mainScreen->SetTexture("graphics/FSADIGBOY19-481.jpg");
-	mainScreen->SetOrigin(Origins::MC);
-	mainScreen->SetScale({ 1.5f, 1.5f });
-	AddGo(mainScreen);
 
 	backGround = new SpriteGo("BackGround");
 	backGround->SetTexture("graphics/FSADIGBOY19-466.jpg");
@@ -52,6 +47,13 @@ void SceneDev1::Init()
 
 	playerHead = new PlayerHead("Player Head");
 	AddGo(playerHead);
+
+	mainScreen = new SpriteGo("MainScreen");
+	mainScreen->SetTexture("graphics/FSADIGBOY19-481.jpg");
+	mainScreen->SetOrigin(Origins::TL);
+	mainScreen->SetScale({ 2.f, 2.f });
+	mainScreen->SetPosition({ 0.f, 0.f });
+	AddGo(mainScreen, Ui);
 
 	Scene::Init();
 }
@@ -77,7 +79,7 @@ void SceneDev1::Enter()
 	tileMapLeftEnd = tileMap->GetPosition().x;
 	tileMapRightEnd = tileMapLeftEnd + tileMap->GetCellCount().x * tileMap->GetCellSize().x;
 
-
+	player->SetActive(false);
 
 	Scene::Enter();
 }
@@ -166,11 +168,11 @@ void SceneDev1::SetStatus(Status newStatus)
 	{
 	case Status::Awake:
 		mainScreen->SetActive(true);
-		player->gravity = 0.f;
 		FRAMEWORK.SetTimeScale(0.f);
 		break;
 	case Status::Game:
-		player->gravity = 700.f;
+		player->SetActive(true);
+		mainScreen->SetActive(false);
 		SOUND_MGR.PlayBgm("sound/FSADIGBOY19-MainBGM.mp3", false);
 		FRAMEWORK.SetTimeScale(1.f);
 		break;
