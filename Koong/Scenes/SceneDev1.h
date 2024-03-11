@@ -7,11 +7,23 @@ class PlayerHead;
 
 class SceneDev1 : public Scene
 {
+public:
+	enum class Status
+	{
+		Awake,
+		Game,
+		GameOver,
+		Pause
+	};
+
 protected:
+	Status currStatus = Status::Awake;
+
 	float tileMapLeftEnd = 0;
 	float tileMapRightEnd = 0;
 
 public:
+	SpriteGo* mainScreen = nullptr;
 	SpriteGo* backGround = nullptr;
 	TileMap* tileMap = nullptr;
 	PlayerBody* player = nullptr;
@@ -32,4 +44,12 @@ public:
 	void Exit() override;
 
 	void Update(float dt) override;
+
+	void UpdateAwake(float dt);
+	void UpdateGame(float dt);
+	void UpdateGameOver(float dt);
+	void UpdatePause(float dt);
+
+	void SetStatus(Status newStatus);
+	Status GetStatus() { return currStatus; }
 };

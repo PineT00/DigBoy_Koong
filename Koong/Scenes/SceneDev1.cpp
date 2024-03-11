@@ -32,6 +32,12 @@ sf::Vector2f SceneDev1::ClampByTileMap(const sf::Vector2f point)
 
 void SceneDev1::Init()
 {
+	mainScreen = new SpriteGo("MainScreen");
+	mainScreen->SetTexture("graphics/FSADIGBOY19-481.jpg");
+	mainScreen->SetOrigin(Origins::MC);
+	mainScreen->SetScale({ 1.5f, 1.5f });
+	AddGo(mainScreen);
+
 	backGround = new SpriteGo("BackGround");
 	backGround->SetTexture("graphics/FSADIGBOY19-466.jpg");
 	backGround->SetOrigin(Origins::MC);
@@ -71,6 +77,8 @@ void SceneDev1::Enter()
 	tileMapLeftEnd = tileMap->GetPosition().x;
 	tileMapRightEnd = tileMapLeftEnd + tileMap->GetCellCount().x * tileMap->GetCellSize().x;
 
+
+
 	Scene::Enter();
 }
 
@@ -81,6 +89,7 @@ void SceneDev1::Exit()
 
 void SceneDev1::Update(float dt)
 {
+
 	sf::Vector2f worldViewCenter = worldView.getCenter();
 
 	worldViewCenter.y = Utils::Lerp(worldViewCenter.y, player->GetPosition().y, dt * 2.5f);
@@ -90,6 +99,7 @@ void SceneDev1::Update(float dt)
 		worldViewCenter.x = Utils::Lerp(worldViewCenter.x, player->GetPosition().x, dt * 2.5f);
 	}
 	worldView.setCenter(worldViewCenter);
+
 	backGround->SetPosition(worldViewCenter);
 
 	if (InputMgr::GetMouseButtonDown(sf::Mouse::Left))
@@ -99,4 +109,77 @@ void SceneDev1::Update(float dt)
 
 	Scene::Update(dt);
 
+	switch (currStatus)
+	{
+	case Status::Awake:
+		UpdateAwake(dt);
+		break;
+	case Status::Game:
+		UpdateGame(dt);
+		break;
+	case Status::GameOver:
+		UpdateGameOver(dt);
+		break;
+	case Status::Pause:
+		UpdatePause(dt);
+		break;
+	}
+
+}
+
+void SceneDev1::UpdateAwake(float dt)
+{
+	if (InputMgr::GetKeyDown(sf::Keyboard::Enter))
+	{
+		SetStatus(Status::Game);
+	}
+}
+
+void SceneDev1::UpdateGame(float dt)
+{
+	if (InputMgr::GetKeyDown(sf::Keyboard::Escape))
+	{
+		SetStatus(Status::Pause);
+		return;
+	}
+}
+
+void SceneDev1::UpdateGameOver(float dt)
+{
+}
+
+void SceneDev1::UpdatePause(float dt)
+{
+	if (InputMgr::GetKeyDown(sf::Keyboard::Escape))
+	{
+		SetStatus(Status::Game);
+		return;
+	}
+}
+
+void SceneDev1::SetStatus(Status newStatus)
+{
+	Status prevStatus = currStatus;
+	currStatus = newStatus;
+
+	switch (currStatus)
+	{
+	case Status::Awake:
+		mainScreen->SetActive(true);
+		player->gravity = 0.f;
+		FRAMEWORK.SetTimeScale(0.f);
+		break;
+	case Status::Game:
+		player->gravity = 700.f;
+		SOUND_MGR.PlayBgm("sound/FSADIGBOY19-MainBGM.mp3", false);
+		FRAMEWORK.SetTimeScale(1.f);
+		break;
+	case Status::GameOver:
+		FRAMEWORK.SetTimeScale(0.f);
+		break;
+	case Status::Pause:
+		FRAMEWORK.SetTimeScale(0.f);
+		break;
+
+	}
 }

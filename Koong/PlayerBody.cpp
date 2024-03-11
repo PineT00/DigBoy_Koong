@@ -20,6 +20,8 @@ void PlayerBody::LocateDrill(float r, float x, float y)
 void PlayerBody::OnItem()
 {
 	std::cout << "±¤¼®È¹µæ" << std::endl;
+	coilNum += 1;
+	std::cout << "ÇöÀç±¤¼® ¼ö : " << coilNum << std::endl;
 }
 
 void PlayerBody::Init()
@@ -229,8 +231,13 @@ void PlayerBody::Update(float dt)
 								velocity.y = 0.f;
 								isGrounded = true;
 
+								if (isGrounded && InputMgr::GetKeyDown(sf::Keyboard::Down))
+								{
+									SOUND_MGR.PlaySfx("sound/FSADIGBOY19-Drill.mp3", false);
+								}
 								if (isGrounded && InputMgr::GetKey(sf::Keyboard::Down))
 								{
+									
 									isDrill = true;
 									drill.SetRotation(0.f);
 									drill.SetPosition(drillPosDown);
@@ -318,7 +325,7 @@ void PlayerBody::Draw(sf::RenderWindow& window)
 	window.draw(rightCheck);
 	window.draw(topCheck);
 	window.draw(buttomCheck);
-	coil->Draw(window);
+	//coil->Draw(window);
 
 	if (drill.GetActive())
 	{

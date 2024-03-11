@@ -8,7 +8,6 @@ class PlayerBody : public SpriteGo
 protected:
 	Animator animator;
 
-	float gravity = 700.f;
 	float speed = 300.f;
 	float booster = 500.f;
 	float hp = 100.f; //미구현
@@ -16,6 +15,10 @@ protected:
 	bool isDrill = false;
 	float digTime = 0.f;
 	float digTimer = 0.1f;
+
+
+	//인벤토리
+	int coilNum = 0;
 
 	TileMap* tileMap;
 
@@ -33,6 +36,8 @@ protected:
 	SpriteGo* coil = new SpriteGo;
 
 public:
+	float gravity = 700.f;
+
 	PlayerBody(const std::string& name = "");
 	~PlayerBody();
 
