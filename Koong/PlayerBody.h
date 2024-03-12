@@ -16,12 +16,17 @@ protected:
 	float hp = hpMax;
 	float air = airMax;
 
-
 	bool isDrill = false;
 	float digTime = 0.f;
 	float digTimer = 0.1f;
 
 	//인벤토리
+	int healKitNum = 0;
+	int airCapNum = 0;
+	int airCapMaxNum = 0;
+	int bombNum = 0;
+	int dynamite = 0;
+
 	int coilNum = 0;
 	int silverNum = 0;
 	int goldNum = 0;
@@ -53,7 +58,6 @@ public:
 	sf::Vector2f size;
 
 	bool GetIsDrill() { return isDrill; }
-	void LocateDrill(float r, float x, float y);
 
 	sf::FloatRect GetSpriteGlobalBound() { return sprite.getGlobalBounds(); }
 
@@ -67,6 +71,8 @@ public:
 
 	void OnItem();
 	void SellAll();
+
+	void UseItem(int num);
 
 	void Init() override;
 	void Reset() override;

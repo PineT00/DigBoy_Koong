@@ -12,11 +12,6 @@ PlayerBody::~PlayerBody()
 {
 }
 
-void PlayerBody::LocateDrill(float r, float x, float y)
-{
-	
-}
-
 
 void PlayerBody::OnItem()
 {
@@ -31,6 +26,35 @@ void PlayerBody::SellAll()
 	money += coilNum * 100;
 	coilNum = 0;
 	std::cout << "ÇöÀç º¸À¯±Ý : " << money << std::endl;
+}
+
+void PlayerBody::UseItem(int num)
+{
+	switch (num)
+	{
+	case 1:
+		healKitNum -= 1;
+		hp += 50;
+		if (hp >= hpMax)
+		{
+			hp = hpMax;
+		}
+		break;
+	case 2:
+		airCapNum -= 1;
+		air += 50;
+		if (air >= airMax)
+		{
+			air = airMax;
+		}
+		break;
+	case 3:
+		bombNum -= 1;
+		std::cout << "ÆøÅº»ç¿ë!" << std::endl;
+	default:
+		break;
+	}
+
 }
 
 void PlayerBody::Init()
@@ -251,7 +275,7 @@ void PlayerBody::Update(float dt)
 
 							if (buttomCheck.getGlobalBounds().intersects(tileBounds) && velocity.y >= 0)
 							{
-								if (velocity.y > 300.f)
+								if (velocity.y > 600.f)
 								{
 									hp -= 10.f;
 									std::cout << "À¸¾Ç!" << std::endl;

@@ -38,7 +38,6 @@ void SceneDev1::Init()
 	backGround = new SpriteGo("BackGround");
 	backGround->SetTexture("graphics/FSADIGBOY19-466.jpg");
 	backGround->SetOrigin(Origins::MC);
-	backGround->SetScale({ 1.5f, 1.5f });
 	AddGo(backGround);
 
 	tileMap = new TileMap("Ground");
@@ -53,6 +52,9 @@ void SceneDev1::Init()
 	playerHead = new PlayerHead("Player Head");
 	AddGo(playerHead);
 
+	player->sortLayer = 1;
+	playerHead->sortLayer = -1;
+
 	hud = new UiHud("Hud");
 	AddGo(hud, Ui);
 
@@ -60,7 +62,6 @@ void SceneDev1::Init()
 	mainScreen = new SpriteGo("MainScreen");
 	mainScreen->SetTexture("graphics/FSADIGBOY19-481.jpg");
 	mainScreen->SetOrigin(Origins::TL);
-	mainScreen->SetScale({ 2.f, 2.f });
 	mainScreen->SetPosition({ 0.f, 0.f });
 	AddGo(mainScreen, Ui);
 
@@ -100,6 +101,8 @@ void SceneDev1::Exit()
 
 void SceneDev1::Update(float dt)
 {
+
+
 
 	sf::Vector2f worldViewCenter = worldView.getCenter();
 

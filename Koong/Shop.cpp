@@ -46,6 +46,13 @@ void Shop::Init()
 	NPC.SetTexture("graphics/shop/FSADIGBOY19-220.png");
 	shop.SetTexture("graphics/shop/FSADIGBOY19-shop.png");
 
+
+}
+
+void Shop::Reset()
+{
+	SpriteGo::Reset();
+
 	propeller.setPosition({ 95.f, -235.f });
 	portal.setPosition({ 115.f, -80.f });
 
@@ -54,11 +61,6 @@ void Shop::Init()
 
 	NPC.SetOrigin(Origins::TC);
 	NPC.SetPosition({ 155.f, -70.f });
-}
-
-void Shop::Reset()
-{
-	SpriteGo::Reset();
 
 	animator1.Play("rotate");
 
