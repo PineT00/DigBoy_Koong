@@ -111,17 +111,6 @@ void PlayerBody::Init()
 
 	{
 		AnimationClip clip;
-		clip.id = "Drill";
-		clip.fps = 2;
-		clip.loopTypes = AnimationLoopTypes::Loop;
-
-		clip.frames.push_back({ "graphics/FSADIGBOY19-33.png", {0, 0, 33, 24} });
-
-		animator.AddClip(clip);
-	}
-
-	{
-		AnimationClip clip;
 		clip.id = "OnDamage";
 		clip.fps = 3;
 		clip.loopTypes = AnimationLoopTypes::Single;

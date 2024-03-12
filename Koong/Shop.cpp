@@ -7,6 +7,20 @@ Shop::Shop(const std::string& name)
 {
 }
 
+void Shop::ShopSetPosition(sf::Vector2f pos)
+{
+	shop.SetOrigin(Origins::BC);
+
+	shop.SetPosition(pos);
+
+	propeller.setPosition(shop.GetPosition());
+
+	NPC.SetPosition(shop.GetPosition());
+
+	portal.setPosition(shop.GetPosition());
+
+}
+
 void Shop::Init()
 {
 	SpriteGo::Init();
@@ -54,14 +68,17 @@ void Shop::Reset()
 {
 	SpriteGo::Reset();
 
-	propeller.setPosition({ 95.f, -235.f });
-	portal.setPosition({ 115.f, -80.f });
+	shop.SetOrigin(Origins::BC);
+	//shop.SetPosition({ 640.f, 45.f });
 
-	shop.SetOrigin(Origins::TC);
-	shop.SetPosition({ 160.f, -255.f });
+	propeller.setOrigin({ 65.f, 276.f });
+	propeller.setPosition(shop.GetPosition());
 
-	NPC.SetOrigin(Origins::TC);
-	NPC.SetPosition({ 155.f, -70.f });
+	NPC.SetOrigin({27.f, 116.f});
+	NPC.SetPosition(shop.GetPosition());
+
+	portal.setOrigin({ 45.f, 125.f }); //스프라이트 크기의 가운데
+	portal.setPosition(shop.GetPosition());
 
 	animator1.Play("rotate");
 
@@ -76,6 +93,8 @@ void Shop::Update(float dt)
 	SpriteGo::Update(dt);
 	animator1.Update(dt);
 	animator2.Update(dt);
+
+
 
 	sf::FloatRect bound = NPC.GetGlobalBounds();
 	sf::FloatRect playerBound = player->GetSpriteGlobalBound();

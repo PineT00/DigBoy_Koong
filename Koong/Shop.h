@@ -23,6 +23,7 @@ public:
 	Shop(const std::string& name = "");
 	~Shop() = default;
 
+	void ShopSetPosition(sf::Vector2f pos);
 	void Init() override;
 	void Reset() override;
 	void Update(float dt) override;

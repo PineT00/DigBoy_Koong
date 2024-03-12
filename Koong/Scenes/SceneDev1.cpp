@@ -50,15 +50,12 @@ void SceneDev1::Init()
 
 	tileMap = new TileMap("Ground");
 	AddGo(tileMap, World);
-
-	Shop* shop = new Shop("Shop");
+	
+	shop = new Shop("Shop");
 	AddGo(shop);
 
 	player = new PlayerBody("Player");
 	AddGo(player);
-
-	//Monster* mop = new Monster("Mop");
-	//AddGo(mop);
 
 	Scene::Init();
 }
@@ -80,9 +77,10 @@ void SceneDev1::Enter()
 	tileMap->SetPosition({ 0,0 });
 	player->SetPosition({ 0,0 });
 
-
 	tileMapLeftEnd = tileMap->GetPosition().x;
 	tileMapRightEnd = tileMapLeftEnd + tileMap->GetCellCount().x * tileMap->GetCellSize().x;
+
+	shop->ShopSetPosition({ 640.f, 45.f });
 
 	player->SetActive(false);
 
