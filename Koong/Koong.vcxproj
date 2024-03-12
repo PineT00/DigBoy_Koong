@@ -153,6 +153,7 @@
     <ClCompile Include="main.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Monster.cpp" />
     <ClCompile Include="OreGo.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -184,6 +185,7 @@
     <ClInclude Include="Framework\SoundMgr.h" />
     <ClInclude Include="Framework\Utils.h" />
     <ClInclude Include="GameObjects\GameObject.h" />
+    <ClInclude Include="Monster.h" />
     <ClInclude Include="OreGo.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="PlayerBody.h" />

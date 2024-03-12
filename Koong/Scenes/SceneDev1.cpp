@@ -6,6 +6,7 @@
 #include "SpriteGo.h"
 #include "Shop.h"
 #include "UiHud.h"
+#include "Monster.h"
 
 
 SceneDev1::SceneDev1(SceneIds id) : Scene(id)
@@ -34,6 +35,14 @@ sf::Vector2f SceneDev1::ClampByTileMap(const sf::Vector2f point)
 
 void SceneDev1::Init()
 {
+	hud = new UiHud("Hud");
+	AddGo(hud, Ui);
+
+	mainScreen = new SpriteGo("MainScreen");
+	mainScreen->SetTexture("graphics/FSADIGBOY19-481.jpg");
+	mainScreen->SetOrigin(Origins::TL);
+	mainScreen->SetPosition({ 0.f, 0.f });
+	AddGo(mainScreen, Ui);
 
 	backGround = new SpriteGo("BackGround");
 	backGround->SetTexture("graphics/FSADIGBOY19-466.jpg");
@@ -52,18 +61,8 @@ void SceneDev1::Init()
 	playerHead = new PlayerHead("Player Head");
 	AddGo(playerHead);
 
-	player->sortLayer = 1;
-	playerHead->sortLayer = -1;
-
-	hud = new UiHud("Hud");
-	AddGo(hud, Ui);
-
-
-	mainScreen = new SpriteGo("MainScreen");
-	mainScreen->SetTexture("graphics/FSADIGBOY19-481.jpg");
-	mainScreen->SetOrigin(Origins::TL);
-	mainScreen->SetPosition({ 0.f, 0.f });
-	AddGo(mainScreen, Ui);
+	Monster* mop = new Monster("Mop");
+	AddGo(mop);
 
 	Scene::Init();
 }

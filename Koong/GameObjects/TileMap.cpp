@@ -175,6 +175,8 @@ void TileMap::Set(sf::Vector2i& count, sf::Vector2f& size)
             int texIndexX = level[i * count.x + j];
             int texIndexY = 0;
 
+            //레벨값이 음수면 흙타일 배치하고 몬스터 배치함수에 신호주기
+
             if (texIndexX > 15)
             {
                 texIndexY = texIndexX / 16;
