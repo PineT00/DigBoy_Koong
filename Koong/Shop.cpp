@@ -12,6 +12,7 @@ void Shop::Init()
 	SpriteGo::Init();
 
 	animator1.SetTarget(&propeller);
+	
 	{
 		AnimationClip clip;
 		clip.id = "rotate";

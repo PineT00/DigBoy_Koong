@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "TileMap.h"
 #include "OreGo.h"
+#include "Monster.h"
 
 
 TileMap::TileMap(const std::string& name)
@@ -151,31 +152,27 @@ void TileMap::Set(sf::Vector2i& count, sf::Vector2f& size)
     texCoord0[3] = { 0, 42.f };
 
 
-    //level =
-    //{
-    //    70,70,1,1,1,5,5,1,1,1,5,1,1,1,2,2,1,1,70,70,
-    //    70,70,1,1,1,5,5,1,1,1,5,1,1,1,1,2,1,1,70,70,
-    //    70,70,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,70,70,
-    //    70,70,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,70,70,
-    //    70,70,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,70,70,
-    //    70,70,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,70,70,
-    //    70,70,1,1,1,5,5,1,1,1,5,1,1,1,2,2,1,1,70,70,
-    //    70,70,1,1,1,5,5,1,1,1,5,1,2,1,2,1,1,1,70,70,
-    //    70,70,1,1,1,5,5,1,1,1,5,2,2,2,2,1,1,1,70,70,
-    //    70,70,1,1,1,5,5,1,1,1,5,1,1,1,1,1,1,1,70,70,
-    //};
-
     SetLevel("tables/MapTable2010.csv");
 
     for (int i = 0; i < count.y; ++i)
     {
         for (int j = 0; j < count.x; ++j)
         {
+            int quadIndex = i * count.x + j;
+            sf::Vector2f quadPos(size.x * j, size.y * i);
 
             int texIndexX = level[i * count.x + j];
             int texIndexY = 0;
 
-            //레벨값이 음수면 흙타일 배치하고 몬스터 배치함수에 신호주기
+            //레벨값이 음수면 빈타일 배치하고 몬스터 배치함수에 신호주기
+            if (texIndexX == -1)
+            {
+                texIndexX = 32;
+                
+                Monster* monster = new Monster;
+                monster->SetMonster(quadPos);
+                SCENE_MGR.GetCurrentScene()->AddGo(monster);
+            }
 
             if (texIndexX > 15)
             {
@@ -183,8 +180,7 @@ void TileMap::Set(sf::Vector2i& count, sf::Vector2f& size)
                 texIndexX = texIndexX % 16;
             }
 
-            int quadIndex = i * count.x + j;
-            sf::Vector2f quadPos(size.x * j, size.y * i);
+
 
             for (int k = 0; k < 4; k++)
             {

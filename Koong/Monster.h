@@ -13,6 +13,7 @@ private:
 
 	Animator animator;
 
+	float gravity = 700.f;
 	float speed = 100.f;
 	float hp = 10.f;
 	float attack = 30.f;
@@ -30,6 +31,8 @@ private:
 	int dir = 1;
 	float timer = 3.f;
 	float time = 0.f;
+
+	sf::Vector2f monsterPos = { 0.f,0.f };
 
 public:
 	Monster(const std::string& name = "");

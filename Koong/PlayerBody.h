@@ -8,6 +8,9 @@ class PlayerBody : public SpriteGo
 protected:
 	Animator animator;
 
+	sf::Sprite head;
+	Animator animatorHead;
+
 	float speed = 300.f;
 	float booster = 500.f;
 
@@ -17,7 +20,7 @@ protected:
 	float air = airMax;
 
 	bool invincible = false;
-	float invincTimer = 2.f;
+	float invincTimer = 1.5f;
 	float invincTime = 0.f;
 
 	bool isDrill = false;

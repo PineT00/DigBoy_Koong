@@ -10,9 +10,8 @@ Monster::Monster(const std::string& name)
 
 void Monster::SetMonster(sf::Vector2f pos)
 {
-	animator.Play("walk");
 	SetOrigin(Origins::BC);
-	SetPosition(pos);
+	monsterPos = pos;
 }
 
 void Monster::Init()
@@ -59,7 +58,6 @@ void Monster::Init()
 	Utils::SetOrigin(rightButtomCheck, Origins::TR);
 	rightButtomCheck.setSize(CheckerSize);
 
-
 	SetPosition({ 0.f, 0.f });
 }
 
@@ -71,7 +69,7 @@ void Monster::Reset()
 	tileMap = dynamic_cast<TileMap*>(SCENE_MGR.GetCurrentScene()->FindGo("Ground"));
 	player = dynamic_cast<PlayerBody*>(SCENE_MGR.GetCurrentScene()->FindGo("Player"));
 
-	SetPosition({ 200.f, 0.f });
+	SetPosition({ monsterPos.x, monsterPos.y + 43.f });
 
 }
 
@@ -81,6 +79,8 @@ void Monster::Update(float dt)
 	animator.Update(dt);
 
 	velocity.x = dir * speed;
+	//velocity.y = gravity * dt;
+
 	sf::Vector2f pos = position + velocity * dt;
 	SetPosition(pos);
 
@@ -106,9 +106,7 @@ void Monster::Update(float dt)
 
 		// 몬스터가 속한 셀의 인덱스
 		int monsterCellX = static_cast<int>(GetPosition().x / tileMap->GetCellSize().x);
-		int monsterCellY = static_cast<int>(GetPosition().y / tileMap->GetCellSize().y) -1;
-
-		std::cout << monsterCellX << ", " << monsterCellY << std::endl;
+		int monsterCellY = static_cast<int>(GetPosition().y / tileMap->GetCellSize().y)-1;
 
 		// 주변 6개의 인접한 셀에 대해서만 충돌 체크
 		for (int i = monsterCellY; i <= monsterCellY + 1; ++i)
@@ -156,23 +154,6 @@ void Monster::Update(float dt)
 		}
 		
 	}
-
-	//time += dt;
-	//if (time > timer)
-	//{
-	//	if (isFlipX)
-	//	{
-	//		SetFlipX(false);
-	//	}
-	//	else 
-	//	{
-	//		SetFlipX(true);
-	//	}
-	//	time = 0.f;
-	//	dir *= -1.f;
-	//}
-
-
 }
 
 void Monster::Draw(sf::RenderWindow& window)

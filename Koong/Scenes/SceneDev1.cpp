@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "SceneDev1.h"
 #include "PlayerBody.h"
-#include "PlayerHead.h"
 #include "TileMap.h"
 #include "SpriteGo.h"
 #include "Shop.h"
@@ -58,11 +57,8 @@ void SceneDev1::Init()
 	player = new PlayerBody("Player");
 	AddGo(player);
 
-	playerHead = new PlayerHead("Player Head");
-	AddGo(playerHead);
-
-	Monster* mop = new Monster("Mop");
-	AddGo(mop);
+	//Monster* mop = new Monster("Mop");
+	//AddGo(mop);
 
 	Scene::Init();
 }

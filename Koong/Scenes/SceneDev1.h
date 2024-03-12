@@ -3,7 +3,6 @@
 class SpriteGo;
 class TileMap;
 class PlayerBody;
-class PlayerHead;
 class UiHud;
 
 class SceneDev1 : public Scene
@@ -28,7 +27,6 @@ public:
 	SpriteGo* backGround = nullptr;
 	TileMap* tileMap = nullptr;
 	PlayerBody* player = nullptr;
-	PlayerHead* playerHead = nullptr;
 	UiHud* hud = nullptr;
 
 

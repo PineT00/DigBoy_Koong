@@ -245,7 +245,7 @@ void UiHud::Draw(sf::RenderWindow& window)
 
 	inventory.Draw(window);
 
-	textMessage.Draw(window);
+	//textMessage.Draw(window);
 
 	quickMenu.Draw(window);
 	quickItem1.Draw(window);

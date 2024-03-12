@@ -63,7 +63,9 @@ void PlayerBody::OnDamage(float Dmg)
 	{
 		hp -= Dmg;
 		animator.Play("OnDamage");
-		velocity.y += 100.f;
+		animatorHead.Play("OnDamage");
+		velocity.y -= 400.f;
+		velocity.x = 0.f;
 
 		invincible = true;
 	}
@@ -124,10 +126,63 @@ void PlayerBody::Init()
 		clip.fps = 3;
 		clip.loopTypes = AnimationLoopTypes::Single;
 
-		clip.frames.push_back({ "graphics/OnDamage/FSADIGBOY19-202.png", {0, 0, 33, 24} });
+		clip.frames.push_back({ "graphics/OnDamage/FSADIGBOY19-Empty.png", {0, 0, 33, 24} });
 
 		animator.AddClip(clip);
 	}
+
+	animatorHead.SetTarget(&head);
+	{
+		AnimationClip clip;
+		clip.id = "Idle";
+		clip.fps = 4;
+		clip.loopTypes = AnimationLoopTypes::Loop;
+		clip.frames.push_back({ "graphics/spriteSheetHead.png", {0, 0, 40, 33} });
+		clip.frames.push_back({ "graphics/spriteSheetHead.png", {0, 32, 40, 33} });
+		animatorHead.AddClip(clip);
+	}
+
+	{
+		AnimationClip clip;
+		clip.id = "Run";
+		clip.fps = 2;
+		clip.loopTypes = AnimationLoopTypes::Loop;
+
+		clip.frames.push_back({ "graphics/spriteSheetHead.png", {0, 132, 40, 33} });
+		animatorHead.AddClip(clip);
+	}
+
+	{
+		AnimationClip clip; //상승하는 효과가 추가되야 함
+		clip.id = "Boost";
+		clip.fps = 2;
+		clip.loopTypes = AnimationLoopTypes::Loop;
+
+		clip.frames.push_back({ "graphics/spriteSheetHead.png", {0, 0, 40, 33} });
+		animatorHead.AddClip(clip);
+	}
+
+	{
+		AnimationClip clip;
+		clip.id = "Drill";
+		clip.fps = 2;
+		clip.loopTypes = AnimationLoopTypes::Loop;
+
+		clip.frames.push_back({ "graphics/spriteSheetHead.png", {0, 66, 40, 33} });
+		animatorHead.AddClip(clip);
+	}
+
+	{
+		AnimationClip clip;
+		clip.id = "OnDamage";
+		clip.fps = 3;
+		clip.loopTypes = AnimationLoopTypes::Single;
+
+		clip.frames.push_back({ "graphics/OnDamage/FSADIGBOY19-202.png", {0, 0, 47, 55} });
+
+		animatorHead.AddClip(clip);
+	}
+
 
 	leftCheck.setFillColor(sf::Color::Transparent);
 	Utils::SetOrigin(leftCheck, Origins::MC);
@@ -161,6 +216,10 @@ void PlayerBody::Reset()
 	SetOrigin(Origins::BC);
 	SetPosition({ 400.f, -100.f });
 
+	animatorHead.Play("Idle");
+
+	head.setOrigin({20, 50});
+	head.setPosition(position);
 
 	tileMap = dynamic_cast<TileMap*>(SCENE_MGR.GetCurrentScene()->FindGo("Ground"));
 
@@ -177,7 +236,6 @@ void PlayerBody::Update(float dt)
 	buttomCheck.setPosition(CheckPos);
 
 	CheckPos = sprite.getPosition();
-	CheckPos.x += -5.f;
 	CheckPos.y += -40.f;
 	topCheck.setPosition(CheckPos);
 
@@ -210,7 +268,6 @@ void PlayerBody::Update(float dt)
 		animator.Play("Boost");
 		velocity.y += -booster * dt;
 
-
 		if (velocity.y <= -500.f)
 		{
 			velocity.y = -500.f;
@@ -230,9 +287,11 @@ void PlayerBody::Update(float dt)
 
 	SetPosition(pos);
 
+
 	if (h != 0.f)
 	{
 		SetFlipX(h > 0);
+		head.setScale(-h, 1.f);
 	}
 
 	if (animator.GetCurrentClipId() == "Idle")
@@ -240,6 +299,7 @@ void PlayerBody::Update(float dt)
 		if (h != 0.f)
 		{
 			animator.Play("Run");
+			animatorHead.Play("Run");
 		}
 	}
 	else if (animator.GetCurrentClipId() == "Run")
@@ -247,11 +307,22 @@ void PlayerBody::Update(float dt)
 		if (h == 0.f)
 		{
 			animator.Play("Idle");
+			animatorHead.Play("Idle");
 		}
 	}
 	else if (animator.GetCurrentClipId() == "Boost" && isGrounded)
 	{
 		animator.Play("Idle");
+		animatorHead.Play("Idle");
+	}
+
+	if (animator.GetCurrentClipId() == "Idle" && isDrill)
+	{
+		animatorHead.Play("Drill");
+	}
+	if (animator.GetCurrentClipId() == "Idle" && !isDrill)
+	{
+		animatorHead.Play("Idle");
 	}
 
 	if (tileMap != nullptr)
@@ -267,12 +338,11 @@ void PlayerBody::Update(float dt)
 
 			if (playerCellY > 0)
 			{
-				air -= 5.f * dt;
-				std::cout << air << std::endl;
+				air -= 1.f * dt;
 				if (air <= 0.f)
 				{
 					air = 0.f;
-					hp -= 1.f * dt;
+					hp -= 1.5f * dt;
 				}
 			}
 			else
@@ -291,7 +361,7 @@ void PlayerBody::Update(float dt)
 					{
 						sf::FloatRect tileBounds = tileMap->GetTileBound(j, i);
 
-						if (tileMap->level[i * count.x + j] == 0 || tileMap->level[i * count.x + j] == 32)
+						if (tileMap->level[i * count.x + j] == 0 || tileMap->level[i * count.x + j] == 32 || tileMap->level[i * count.x + j] == -1)
 							continue; //통과처리할 타일 종류
 
 						if (tileBounds.intersects(playerBounds))
@@ -385,6 +455,9 @@ void PlayerBody::Update(float dt)
 		}
 	}
 
+	head.setPosition(position);
+
+
 	if (abs(velocity.y) < 0.1f)
 	{
 		isGrounded = true;
@@ -402,6 +475,7 @@ void PlayerBody::Update(float dt)
 			invincible = false;
 			invincTime = 0.f;
 			animator.Play("Idle");
+			animatorHead.Play("Idle");
 		}
 	}
 
@@ -410,6 +484,7 @@ void PlayerBody::Update(float dt)
 void PlayerBody::Draw(sf::RenderWindow& window)
 {
 	SpriteGo::Draw(window);
+	window.draw(head);
 	window.draw(leftCheck);
 	window.draw(rightCheck);
 	window.draw(topCheck);
