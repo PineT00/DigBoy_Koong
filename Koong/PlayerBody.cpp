@@ -57,6 +57,12 @@ void PlayerBody::UseItem(int num)
 
 }
 
+void PlayerBody::OnDamage(float Dmg)
+{
+
+
+}
+
 void PlayerBody::Init()
 {
 	SpriteGo::Init();
@@ -105,6 +111,17 @@ void PlayerBody::Init()
 		animator.AddClip(clip);
 	}
 
+	{
+		AnimationClip clip;
+		clip.id = "OnDamage";
+		clip.fps = 2;
+		clip.loopTypes = AnimationLoopTypes::Loop;
+
+		clip.frames.push_back({ "graphics/OnDamage/FSADIGBOY19-202.png", {0, 0, 33, 24} });
+
+		animator.AddClip(clip);
+	}
+
 	leftCheck.setFillColor(sf::Color::Transparent);
 	Utils::SetOrigin(leftCheck, Origins::MC);
 	leftCheck.setSize(hCheckerSize);
@@ -135,7 +152,7 @@ void PlayerBody::Reset()
 {
 	animator.Play("Idle");
 	SetOrigin(Origins::BC);
-	SetPosition({ 400.f, -200.f });
+	SetPosition({ 400.f, -100.f });
 
 
 	tileMap = dynamic_cast<TileMap*>(SCENE_MGR.GetCurrentScene()->FindGo("Ground"));

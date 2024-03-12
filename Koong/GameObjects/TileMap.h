@@ -8,10 +8,7 @@ class TileMap :
 {
 
 public:
-	std::vector<int> level;
-
-	//OreGo* ore;
-	//std::vector<OreGo> ores;
+	std::vector<int> level; //∏ ≈∏¿œ º”º∫
 
 protected:
 	std::string spriteSheetId;

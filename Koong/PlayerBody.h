@@ -74,6 +74,8 @@ public:
 
 	void UseItem(int num);
 
+	void OnDamage(float Dmg);
+
 	void Init() override;
 	void Reset() override;
 	void Update(float dt) override;
