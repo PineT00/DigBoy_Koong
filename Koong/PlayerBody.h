@@ -16,6 +16,10 @@ protected:
 	float hp = hpMax;
 	float air = airMax;
 
+	bool invincible = false;
+	float invincTimer = 2.f;
+	float invincTime = 0.f;
+
 	bool isDrill = false;
 	float digTime = 0.f;
 	float digTimer = 0.1f;

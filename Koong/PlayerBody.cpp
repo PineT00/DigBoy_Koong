@@ -59,7 +59,14 @@ void PlayerBody::UseItem(int num)
 
 void PlayerBody::OnDamage(float Dmg)
 {
+	if (!invincible)
+	{
+		hp -= Dmg;
+		animator.Play("OnDamage");
+		velocity.y += 100.f;
 
+		invincible = true;
+	}
 
 }
 
@@ -114,8 +121,8 @@ void PlayerBody::Init()
 	{
 		AnimationClip clip;
 		clip.id = "OnDamage";
-		clip.fps = 2;
-		clip.loopTypes = AnimationLoopTypes::Loop;
+		clip.fps = 3;
+		clip.loopTypes = AnimationLoopTypes::Single;
 
 		clip.frames.push_back({ "graphics/OnDamage/FSADIGBOY19-202.png", {0, 0, 33, 24} });
 
@@ -385,6 +392,17 @@ void PlayerBody::Update(float dt)
 	else
 	{
 		isGrounded = false;
+	}
+
+	if (invincible)
+	{
+		invincTime += dt;
+		if (invincTime > invincTimer)
+		{
+			invincible = false;
+			invincTime = 0.f;
+			animator.Play("Idle");
+		}
 	}
 
 }

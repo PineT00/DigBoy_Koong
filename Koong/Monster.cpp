@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Monster.h"
 #include "TileMap.h"
+#include "PlayerBody.h"
 
 Monster::Monster(const std::string& name)
 	:SpriteGo(name)
@@ -68,6 +69,7 @@ void Monster::Reset()
 	animator.Play("walk");
 	SetOrigin(Origins::BC);
 	tileMap = dynamic_cast<TileMap*>(SCENE_MGR.GetCurrentScene()->FindGo("Ground"));
+	player = dynamic_cast<PlayerBody*>(SCENE_MGR.GetCurrentScene()->FindGo("Player"));
 
 	SetPosition({ 200.f, 0.f });
 
@@ -95,6 +97,11 @@ void Monster::Update(float dt)
 		const sf::FloatRect& monsterBounds = sprite.getGlobalBounds();
 
 		const sf::FloatRect& groundBounds = tileMap->GetGlobalBounds();
+
+		if (monsterBounds.intersects(player->GetSpriteGlobalBound()))
+		{
+			player->OnDamage(attack);
+		}
 
 
 		// 몬스터가 속한 셀의 인덱스

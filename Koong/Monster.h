@@ -2,17 +2,20 @@
 #include "SpriteGo.h"
 
 class TileMap;
+class PlayerBody;
 
 class Monster :
     public SpriteGo
 {
 private:
 	TileMap* tileMap;
+	PlayerBody* player;
 
 	Animator animator;
 
 	float speed = 100.f;
 	float hp = 10.f;
+	float attack = 30.f;
 
 	sf::Vector2f velocity = { 0.f,0.f };
 
