@@ -5,6 +5,7 @@
 #include "SpriteGo.h"
 #include "Shop.h"
 #include "UiHud.h"
+#include "Inventory.h"
 
 
 SceneDev1::SceneDev1(SceneIds id) : Scene(id)
@@ -35,6 +36,9 @@ void SceneDev1::Init()
 {
 	hud = new UiHud("Hud");
 	AddGo(hud, Ui);
+
+	inventory = new Inventory("Inventory");
+	AddGo(inventory, Ui);
 
 	mainScreen = new SpriteGo("MainScreen");
 	mainScreen->SetTexture("graphics/FSADIGBOY19-481.jpg");

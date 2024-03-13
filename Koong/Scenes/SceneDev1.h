@@ -5,6 +5,7 @@ class TileMap;
 class PlayerBody;
 class Shop;
 class UiHud;
+class Inventory;
 
 class SceneDev1 : public Scene
 {
@@ -30,6 +31,7 @@ public:
 	PlayerBody* player = nullptr;
 	Shop* shop = nullptr;
 	UiHud* hud = nullptr;
+	Inventory* inventory = nullptr;
 
 
 	SceneDev1(SceneIds id);

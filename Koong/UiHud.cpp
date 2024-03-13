@@ -105,22 +105,16 @@ void UiHud::Init()
 	quickItem2.SetTexture("graphics/shop/FSADIGBOY19-47.png");
 	quickItem3.SetTexture("graphics/shop/FSADIGBOY19-51.png");
 
-	inventory.SetTexture("graphics/ui/FSADIGBOY19-319.png");
+	//inventory.SetTexture("graphics/ui/FSADIGBOY19-319.png");
 
+	//invenName.SetTexture("graphics/ui/FSADIGBOY19-320.png");
+	//moneyMenu.SetTexture("graphics/ui/FSADIGBOY19-324.png");
+	//invenKoong.SetTexture("graphics/ui/FSADIGBOY19-322.png");
 
+	//invenEquipHead.SetTexture("graphics/ui/FSADIGBOY19-307.png");
+	//invenEquipDrill.SetTexture("graphics/ui/FSADIGBOY19-307.png");
+	//invenEquipFeet.SetTexture("graphics/ui/FSADIGBOY19-307.png");
 
-	invenName.SetTexture("graphics/ui/FSADIGBOY19-320.png");
-	moneyMenu.SetTexture("graphics/ui/FSADIGBOY19-324.png");
-	invenKoong.SetTexture("graphics/ui/FSADIGBOY19-322.png");
-
-	invenEquipHead.SetTexture("graphics/ui/FSADIGBOY19-307.png");
-	invenEquipDrill.SetTexture("graphics/ui/FSADIGBOY19-307.png");
-	invenEquipFeet.SetTexture("graphics/ui/FSADIGBOY19-307.png");
-
-	//for (int i = 0; i < 24; i++)
-	//{
-	//	invenLists[i].push_back({ "graphics/ui/FSADIGBOY19-305.png", { 0, 0, 40, 40 } });
-	//}
 
 }
 
@@ -162,30 +156,28 @@ void UiHud::Reset()
 	textMessage.SetW(fontK, L"ÇÑ±ÛÃâ·ÂÅ×½ºÆ®", 40, sf::Color::White);
 	textMessage.SetPosition({ 0.f, 0.f });
 
-	//ÀÎº¥Åä¸®
-	inventory.SetOrigin(Origins::TL);
-	inventory.SetPosition(invenClose);
+	////ÀÎº¥Åä¸®
+	//inventory.SetOrigin(Origins::TL);
+	//inventory.SetPosition(invenClose);
 
-	invenName.SetOrigin({ -90.f, -18.f });
-	invenName.SetPosition(inventory.GetPosition());
+	//invenName.SetOrigin({ -90.f, -18.f });
+	//invenName.SetPosition(inventory.GetPosition());
 
-	moneyMenu.SetOrigin({ -60.f, -160.f });
-	moneyMenu.SetPosition(inventory.GetPosition());
+	//moneyMenu.SetOrigin({ -60.f, -160.f });
+	//moneyMenu.SetPosition(inventory.GetPosition());
 
-	invenKoong.SetOrigin({ -150.f, -65.f });
-	invenKoong.SetPosition(inventory.GetPosition());
+	//invenKoong.SetOrigin({ -150.f, -65.f });
+	//invenKoong.SetPosition(inventory.GetPosition());
 
-	//ÀÎº¥Åä¸® ÀåÂø½½·Ô
-	invenEquipHead.SetOrigin({ -225.f, -50.f });
-	invenEquipHead.SetPosition(inventory.GetPosition());
-	invenEquipDrill.SetOrigin({ -225.f, -85.f });
-	invenEquipDrill.SetPosition(inventory.GetPosition());
-	invenEquipFeet.SetOrigin({ -225.f, -120.f });
-	invenEquipFeet.SetPosition(inventory.GetPosition());
+	////ÀÎº¥Åä¸® ÀåÂø½½·Ô
+	//invenEquipHead.SetOrigin({ -225.f, -50.f });
+	//invenEquipHead.SetPosition(inventory.GetPosition());
+	//invenEquipDrill.SetOrigin({ -225.f, -85.f });
+	//invenEquipDrill.SetPosition(inventory.GetPosition());
+	//invenEquipFeet.SetOrigin({ -225.f, -120.f });
+	//invenEquipFeet.SetPosition(inventory.GetPosition());
 
-	//inven1.SetOrigin({ -50.f, -180.f });
-	//inven1.SetPosition(inventory.GetPosition());
-	SetInventory(invenCount, invenSize);
+	//SetInventory(invenCount, invenSize);
 
 	quickMenu.SetOrigin(Origins::TC);
 	quickMenu.SetPosition({ windowSize.x * 0.5f, 0.f });
@@ -200,39 +192,39 @@ void UiHud::Update(float dt)
 	SetHpBar(player->GetHP(), player->GetMaxHP());
 	SetAirBar(player->GetAir(), player->GetMaxAir());
 
-	if (InputMgr::GetKeyDown(sf::Keyboard::I))
-	{
-		if (inventory.GetPosition() == invenClose)
-		{
-			inventory.SetPosition(invenOpen);
-			for (int i = 0; i < invenCount.y; i++) // 4ÁÙ
-			{
-				for (int j = 0; j < invenCount.x; j++) //6Ä­
-				{
-					sf::Vector2f quadPos(invenSize.x * j + 45.f, invenSize.y * i + 185.f);
-					invenLists[i * invenCount.x + j].SetPosition(invenOpen + quadPos);
-				}
-			}
-		}
-		else if (inventory.GetPosition() == invenOpen)
-		{
-			inventory.SetPosition(invenClose);
-			for (int i = 0; i < invenCount.y; i++) // 4ÁÙ
-			{
-				for (int j = 0; j < invenCount.x; j++) //6Ä­
-				{
-					sf::Vector2f quadPos(invenSize.x * j + 45.f, invenSize.y * i + 185.f);
-					invenLists[i * invenCount.x + j].SetPosition(invenClose + quadPos);
-				}
-			}
-		}
-		invenName.SetPosition(inventory.GetPosition());
-		invenKoong.SetPosition(inventory.GetPosition());
-		moneyMenu.SetPosition(inventory.GetPosition());
-		invenEquipHead.SetPosition(inventory.GetPosition());
-		invenEquipDrill.SetPosition(inventory.GetPosition());
-		invenEquipFeet.SetPosition(inventory.GetPosition());
-	}
+	//if (InputMgr::GetKeyDown(sf::Keyboard::I))
+	//{
+	//	if (inventory.GetPosition() == invenClose)
+	//	{
+	//		inventory.SetPosition(invenOpen);
+	//		for (int i = 0; i < invenCount.y; i++) // 4ÁÙ
+	//		{
+	//			for (int j = 0; j < invenCount.x; j++) //6Ä­
+	//			{
+	//				sf::Vector2f quadPos(invenSize.x * j + 45.f, invenSize.y * i + 185.f);
+	//				invenLists[i * invenCount.x + j].SetPosition(invenOpen + quadPos);
+	//			}
+	//		}
+	//	}
+	//	else if (inventory.GetPosition() == invenOpen)
+	//	{
+	//		inventory.SetPosition(invenClose);
+	//		for (int i = 0; i < invenCount.y; i++) // 4ÁÙ
+	//		{
+	//			for (int j = 0; j < invenCount.x; j++) //6Ä­
+	//			{
+	//				sf::Vector2f quadPos(invenSize.x * j + 45.f, invenSize.y * i + 185.f);
+	//				invenLists[i * invenCount.x + j].SetPosition(invenClose + quadPos);
+	//			}
+	//		}
+	//	}
+	//	invenName.SetPosition(inventory.GetPosition());
+	//	invenKoong.SetPosition(inventory.GetPosition());
+	//	moneyMenu.SetPosition(inventory.GetPosition());
+	//	invenEquipHead.SetPosition(inventory.GetPosition());
+	//	invenEquipDrill.SetPosition(inventory.GetPosition());
+	//	invenEquipFeet.SetPosition(inventory.GetPosition());
+	//}
 
 	if (InputMgr::GetKeyDown(sf::Keyboard::Num1))
 	{
@@ -263,7 +255,7 @@ void UiHud::Draw(sf::RenderWindow& window)
 	hpBar.Draw(window);
 	energy.Draw(window);
 
-	inventory.Draw(window);
+	/*inventory.Draw(window);
 	invenName.Draw(window);
 	moneyMenu.Draw(window);
 
@@ -275,7 +267,7 @@ void UiHud::Draw(sf::RenderWindow& window)
 	for (int a = 0; a < invenLists.size(); ++a)
 	{
 		invenLists[a].Draw(window);
-	}
+	}*/
 
 	//inven1.Draw(window);
 
