@@ -4,6 +4,7 @@
 
 class PlayerBody;
 class TileMap;
+class Inventory;
 
 class UiHud : public GameObject
 {
@@ -11,6 +12,7 @@ protected:
 	sf::Vector2f referenceResolution = { 1280, 960 };
 	sf::Vector2f resolution = referenceResolution;
 
+	Inventory* inventory = nullptr;
 
 	TextGo textMessage;
 
@@ -24,45 +26,11 @@ protected:
 	SpriteGo airBarFrame1;
 	SpriteGo airBarFrame2;
 
-
-	std::vector<int> invenMap;
-	TileMap* tileMap;
-	sf::VertexArray invenVa;
-	sf::Vector2i cellCount = { 6, 6 };
-	sf::Vector2f cellSize = { 42.f, 42.f };
-	sf::Vector2f posOffset[4];
-	sf::Vector2f texCoord0[4];
-
 	//퀵메뉴
 	SpriteGo quickMenu;
 	SpriteGo quickItem1;
 	SpriteGo quickItem2;
 	SpriteGo quickItem3;
-
-
-	//인벤토리
-	SpriteGo inventory;
-	float invenPosX = 0.f;
-	sf::Vector2f invenClose = { -300.f, 40.f };
-	sf::Vector2f invenOpen = { -10.f, 40.f };
-
-	//SpriteGo invenSprite;
-	//SpriteGo invenEmpty;
-	//SpriteGo invenBlocked;
-
-	SpriteGo invenName;
-	SpriteGo moneyMenu;
-
-	SpriteGo invenKoong;
-	SpriteGo invenEquipHead;
-	SpriteGo invenEquipDrill;
-	SpriteGo invenEquipFeet;
-
-
-	sf::Vector2i invenCount = { 6, 6 };
-	sf::Vector2f invenSize = { 34, 34 };
-	std::vector<SpriteGo> invenLists;
-
 
 	float fadeTime = 0.5f;
 
@@ -88,11 +56,6 @@ public:
 
 	void SetHpBar(int hp, int max);
 	void SetAirBar(int air, int maxair);
-	void SetInventory(sf::Vector2i& count, sf::Vector2f& size);
-
-	void SetInventoryActive();
-
-
 
 	void Init() override;
 	void Release() override;
