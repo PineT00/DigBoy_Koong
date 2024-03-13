@@ -36,6 +36,7 @@ protected:
 	int dynamite = 0;
 
 	int coilNum = 0;
+	int bronzeNum = 0;
 	int silverNum = 0;
 	int goldNum = 0;
 	int money = 0;
@@ -59,7 +60,7 @@ protected:
 
 
 public:
-	float gravity = 700.f;
+	float gravity = 900.f;
 
 	sf::Vector2f velocity;
 
@@ -84,7 +85,7 @@ public:
 	PlayerBody(const std::string& name = "");
 	~PlayerBody();
 
-	void OnItem();
+	void OnItem(int type);
 	void SellAll();
 
 	void UseItem(int num);

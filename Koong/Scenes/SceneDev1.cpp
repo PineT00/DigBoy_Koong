@@ -79,7 +79,9 @@ void SceneDev1::Enter()
 	tileMapLeftEnd = tileMap->GetPosition().x;
 	tileMapRightEnd = tileMapLeftEnd + tileMap->GetCellCount().x * tileMap->GetCellSize().x;
 
-	shop->ShopSetPosition({ 640.f, 45.f });
+	shop->ShopSetPosition({ 1200.f, 45.f });
+
+	player->SetPosition({ 1400.f, -50.f });
 
 	player->SetActive(false);
 
@@ -93,9 +95,6 @@ void SceneDev1::Exit()
 
 void SceneDev1::Update(float dt)
 {
-
-
-
 	sf::Vector2f worldViewCenter = worldView.getCenter();
 
 	worldViewCenter.y = Utils::Lerp(worldViewCenter.y, player->GetPosition().y, dt * 2.5f);

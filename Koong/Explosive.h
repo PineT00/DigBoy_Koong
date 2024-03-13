@@ -1,7 +1,7 @@
 #pragma once
 #include "SpriteGo.h"
 
-class Monster;
+//class Monster;
 
 class Explosive : public SpriteGo
 {
@@ -14,10 +14,16 @@ protected:
     Animator animatorDynamite;
 
     float bombTime = 0.f;
-    float bombTimer = 2.f;
+    float bombTimer = 2.5f;
 
+    float damage = 30.f;
+    float nukeDamage = 100.f;
+
+    bool explode = false;
+
+    std::list<GameObject*> monsterList;
 public:
-    Monster* monster;
+    //Monster* monster;
 
     Explosive(const std::string& name = "");
     ~Explosive() = default;

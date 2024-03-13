@@ -3,8 +3,10 @@
 #include "PlayerBody.h"
 #include "TileMap.h"
 #include "Monster.h"
+#include "SceneDev1.h"
 
 Explosive::Explosive(const std::string& name)
+	:SpriteGo(name)
 {
 }
 
@@ -28,6 +30,10 @@ void Explosive::SetDynamite(sf::Vector2i pos)
 void Explosive::Init()
 {
 	SpriteGo::Init();
+
+
+	bomb.setTexture(RES_MGR_TEXTURE.Get("graphics/monster/FSADIGBOY19-160.png"));
+
 
 	animatorBomb.SetTarget(&bomb);
 	{
@@ -87,6 +93,10 @@ void Explosive::Reset()
 	SpriteGo::Reset();
 	animatorBomb.Play("Waiting");
 	bomb.setOrigin({ -5.f, -5.f });
+
+	SceneDev1* scene = dynamic_cast<SceneDev1*>(SCENE_MGR.GetCurrentScene());
+
+	scene->FindGoAll("Monster", monsterList, Scene::Layers::World);
 }
 
 void Explosive::Update(float dt)
@@ -95,12 +105,40 @@ void Explosive::Update(float dt)
 	animatorBomb.Update(dt);
 
 	bombTime += dt;
-	if (bombTime > bombTimer)
+
+	if (bombTime > bombTimer && !explode)
 	{
+		bomb.setOrigin({ 10.f, 10.f });
 		animatorBomb.Play("Boom");
 		bombTime = 0.f;
-		animatorBomb.PlayQueue("Waiting");
+		explode = true;
+
+
 	}
+	if (bombTime > bombTimer && explode)
+	{
+		SetActive(false);
+	}
+	if (explode && bombTime < 0.3f)
+	{
+		for (auto go : monsterList)
+		{
+			if (!go->GetActive())
+				continue;
+
+			if (bomb.getGlobalBounds().intersects(go->GetGlobalBounds()))
+			{
+				Monster* monster = dynamic_cast<Monster*>(go);
+				if (monster != nullptr)
+					monster->OnDamage(damage);
+
+				break;
+			}
+		}
+	}
+
+
+	
 }
 
 void Explosive::Draw(sf::RenderWindow& window)

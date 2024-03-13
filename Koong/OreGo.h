@@ -7,10 +7,19 @@ class OreGo :
     public SpriteGo
 {
 
-protected:
-    std::string coilTexture = "graphics/FSADIGBOY19-24.png";
+public:
+    enum class Types
+    {
+        Coil,
+        Bronze,
+        Silver,
+        Gold,
+    };
 
-    std::vector<int> oreLevel;
+protected:
+    Types type;
+
+    std::string coilTexture = "graphics/FSADIGBOY19-24.png";
 
 public:
     PlayerBody* player;
@@ -18,7 +27,7 @@ public:
     OreGo(const std::string& name = "");
     ~OreGo() = default;
 
-    void SetOre(sf::Vector2f pos);
+    void SetOre(sf::Vector2f pos, int ore);
 
     void Init() override;
     void Reset() override;

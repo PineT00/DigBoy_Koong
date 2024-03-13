@@ -33,21 +33,35 @@ protected:
 	sf::Vector2f posOffset[4];
 	sf::Vector2f texCoord0[4];
 
-
-	SpriteGo inventory;
-	float invenPosX = 0.f;
-	sf::Vector2f invenClose = {-300.f, 40.f};
-	sf::Vector2f invenOpen = {-10.f, 40.f};
-	SpriteGo invenSprite;
-	SpriteGo invenEmpty;
-	SpriteGo invenBlocked;
-	SpriteGo moneyMenu;
-
-
+	//퀵메뉴
 	SpriteGo quickMenu;
 	SpriteGo quickItem1;
 	SpriteGo quickItem2;
 	SpriteGo quickItem3;
+
+
+	//인벤토리
+	SpriteGo inventory;
+	float invenPosX = 0.f;
+	sf::Vector2f invenClose = { -300.f, 40.f };
+	sf::Vector2f invenOpen = { -10.f, 40.f };
+
+	//SpriteGo invenSprite;
+	//SpriteGo invenEmpty;
+	//SpriteGo invenBlocked;
+
+	SpriteGo invenName;
+	SpriteGo moneyMenu;
+
+	SpriteGo invenKoong;
+	SpriteGo invenEquipHead;
+	SpriteGo invenEquipDrill;
+	SpriteGo invenEquipFeet;
+
+
+	sf::Vector2i invenCount = { 6, 6 };
+	sf::Vector2f invenSize = { 34, 34 };
+	std::vector<SpriteGo> invenLists;
 
 
 	float fadeTime = 0.5f;

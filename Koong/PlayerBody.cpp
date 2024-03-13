@@ -14,11 +14,28 @@ PlayerBody::~PlayerBody()
 }
 
 
-void PlayerBody::OnItem()
+void PlayerBody::OnItem(int type)
 {
+	switch (type)
+	{
+	case 0:
+		coilNum += 1;
+		break;
+	case 1:
+		bronzeNum += 1;
+		break;
+	case 2:
+		silverNum += 1;
+		break;
+	case 3:
+		goldNum += 1;
+		break;
+	default:
+		break;
+	}
+
 	std::cout << "±¤¼®È¹µæ" << std::endl;
-	coilNum += 1;
-	std::cout << "ÇöÀç±¤¼® ¼ö : " << coilNum << std::endl;
+	std::cout << "ÇöÀç±¤¼® ¼ö : " << coilNum << ", " << bronzeNum << ", " << silverNum << ", " << goldNum << std::endl;
 }
 
 void PlayerBody::SellAll()
@@ -76,6 +93,9 @@ void PlayerBody::OnDamage(float Dmg)
 void PlayerBody::Init()
 {
 	SpriteGo::Init();
+
+
+	//head.setTexture(RES_MGR_TEXTURE.Get("graphics/spriteSheetBody.png"));
 
 	animator.SetTarget(&sprite);
 
@@ -204,7 +224,6 @@ void PlayerBody::Reset()
 {
 	animator.Play("Idle");
 	SetOrigin(Origins::BC);
-	SetPosition({ 400.f, -100.f });
 
 	animatorHead.Play("Idle");
 

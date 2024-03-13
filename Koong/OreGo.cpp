@@ -8,9 +8,33 @@ OreGo::OreGo(const std::string& name)
 
 }
 
-void OreGo::SetOre(sf::Vector2f pos)
+void OreGo::SetOre(sf::Vector2f pos, int ore)
 {
-	SetTexture("graphics/FSADIGBOY19-24.png");
+	switch (ore)
+	{
+	case 80:
+		type = Types::Coil;
+		SetTexture("graphics/ore/FSADIGBOY19-24.png");
+		break;
+
+	case 81:
+		type = Types::Bronze;
+		SetTexture("graphics/ore/FSADIGBOY19-23.png");
+		break;
+
+	case 82:
+		type = Types::Silver;
+		SetTexture("graphics/ore/FSADIGBOY19-22.png");
+		break;
+
+	case 83:
+		type = Types::Gold;
+		SetTexture("graphics/ore/FSADIGBOY19-21.png");
+		break;
+
+	default:
+		break;
+	}
 	SetOrigin({ -4.2f, -4.2f });
 	SetPosition(pos);
 }
@@ -33,9 +57,10 @@ void OreGo::Update(float dt)
 
 	if (bound.intersects(playerBound))
 	{
-		player->OnItem();
+		int typeNum = static_cast<int>(type);
+		player->OnItem(typeNum);
 		SetActive(false);
-		//SCENE_MGR.GetCurrentScene()->RemoveGo(this);
+		SCENE_MGR.GetCurrentScene()->RemoveGo(this);
 	}
 
 	SpriteGo::Update(dt);

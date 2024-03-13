@@ -15,6 +15,7 @@ protected:
 	sf::Sprite portal;
 
 	PlayerBody* player;
+
 	SpriteGo shop;
 	SpriteGo NPC;
 

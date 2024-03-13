@@ -31,6 +31,7 @@ public:
 
 	int blockedTile[14] = {16, 56, 60, 72, 73, 74, 75, 76, 77, 78, 80, 81, 82, 83};
 	int openTile[3] = {-1, 0, 32};
+	int oreTile[4] = { 80, 81, 82, 83 };
 
 
 	sf::FloatRect GetTileBound(int x, int y);

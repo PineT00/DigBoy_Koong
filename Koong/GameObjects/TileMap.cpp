@@ -42,56 +42,53 @@ void TileMap::TextureChange(int x, int y, int rowX, int columnY)
 void TileMap::changeTile(int x, int y)
 {
     sf::Vector2f quadPos(cellSize.x * y, cellSize.y * x);
+   
     //광물타일의 경우
-    if (level[x * cellCount.x + y] == 80)
+    for (int a = 0; a < 4; a++)
     {
-        level[x * cellCount.x + y] = 72;
-        TextureChange(x, y, 8, 4);
+        if (level[x * cellCount.x + y] == oreTile[a])
+        {
+            level[x * cellCount.x + y] = 72;
+            TextureChange(x, y, 8, 4);
+        }
     }
 
     //일반타일의 경우(흙)
-    else if (level[x * cellCount.x + y] == 56 || level[x * cellCount.x + y] == 60)
+    if (level[x * cellCount.x + y] == 56 || level[x * cellCount.x + y] == 60)
     {
         level[x * cellCount.x + y] = 72;
         TextureChange(x, y, 8, 4);
     }
-
     else if (level[x * cellCount.x + y] == 72)
     {
         level[x * cellCount.x + y] += 1;
         TextureChange(x, y, 9, 4);
     }
-
     else if (level[x * cellCount.x + y] == 73)
     {
         level[x * cellCount.x + y] += 1;
         TextureChange(x, y, 10, 4);
     }
-
     else if (level[x * cellCount.x + y] == 74)
     {
         level[x * cellCount.x + y] += 1;
         TextureChange(x, y, 11, 4);
     }
-
     else if (level[x * cellCount.x + y] == 75)
     {
         level[x * cellCount.x + y] += 1;
         TextureChange(x, y, 12, 4);
     }
-
     else if (level[x * cellCount.x + y] == 76)
     {
         level[x * cellCount.x + y] += 1;
         TextureChange(x, y, 13, 4);
     }
-
     else if (level[x * cellCount.x + y] == 77)
     {
         level[x * cellCount.x + y] += 1;
         TextureChange(x, y, 14, 4);
     }
-
     else if (level[x * cellCount.x + y] == 78)
     {
         level[x * cellCount.x + y] = 32;
@@ -169,7 +166,7 @@ void TileMap::Set(sf::Vector2i& count, sf::Vector2f& size)
             {
                 texIndexX = 32;
                 
-                Monster* monster = new Monster;
+                Monster* monster = new Monster("Monster");
                 monster->SetMonster(quadPos);
                 SCENE_MGR.GetCurrentScene()->AddGo(monster);
             }
@@ -192,14 +189,17 @@ void TileMap::Set(sf::Vector2i& count, sf::Vector2f& size)
                 va[vertexIndex].texCoords.y += texIndexY * 42.f;
             }
 
-            if (level[i * count.x + j] == 80)
+            for (int a = 0; a < 4; a++)
             {
-                OreGo* ore = new OreGo;
-                ore->SetOre(quadPos);
-                // ore를 vector에 추가
-                //ores.push_back(*ore);
-                SCENE_MGR.GetCurrentScene()->AddGo(ore);
+                if (level[i * count.x + j] == oreTile[a])
+                {
+                    OreGo* ore = new OreGo;
+                    ore->SetOre(quadPos, level[i * count.x + j]);
+                    SCENE_MGR.GetCurrentScene()->AddGo(ore);
+                    break;
+                }
             }
+
         }
     }
 

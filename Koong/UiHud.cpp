@@ -59,57 +59,27 @@ void UiHud::SetAirBar(int air, int maxair)
 
 void UiHud::SetInventory(sf::Vector2i& count, sf::Vector2f& size)
 {
-	cellCount = count;
-	cellSize = size;
+	invenLists.resize(count.x * count.y);
 
-	invenVa.clear();
-	invenVa.setPrimitiveType(sf::Quads);
-	invenVa.resize(count.x * count.y * 4);
-
-	posOffset[0] = { 0, 0 };
-	posOffset[1] = { size.x, 0 };
-	posOffset[2] = { size.x, size.y };
-	posOffset[3] = { 0, size.y };
-
-	texCoord0[0] = { 0, 0 };
-	texCoord0[1] = { 42.f, 0 };
-	texCoord0[2] = { 42.f, 42.f };
-	texCoord0[3] = { 0, 42.f };
-
-
-	invenMap =
+	for (int i = 0; i < count.y; i++) // 6ÁÙ
 	{
-	    1,1,1,1,1,1,
-		1,1,1,1,1,1,
-		1,1,1,1,1,1,
-		1,1,1,1,1,1,
-		1,1,1,1,1,1,
-		1,1,1,1,1,1,
-	};
-
-	for (int i = 0; i < count.y; ++i)
-	{
-		for (int j = 0; j < count.x; ++j)
+		for (int j = 0; j < count.x; j++) // 6Ä­
 		{
-
-			int texIndexX = invenMap[i * count.x + j];
-			int texIndexY = 0;
-
-			int quadIndex = i * count.x + j;
-			sf::Vector2f quadPos(size.x * j, size.y * i);
-
-			for (int k = 0; k < 4; k++)
+			if (i >= 3)
 			{
-				int vertexIndex = ((quadIndex * 4) + k);
-				invenVa[vertexIndex].position = quadPos + posOffset[k];
-				invenVa[vertexIndex].texCoords = texCoord0[k];
-
-				invenVa[vertexIndex].texCoords.x += texIndexX * 42.f;
-				invenVa[vertexIndex].texCoords.y += texIndexY * 42.f;
+				invenLists[i * count.x + j].SetTexture("graphics/ui/FSADIGBOY19-321.png");
 			}
-
+			else
+			{
+				invenLists[i * count.x + j].SetTexture("graphics/ui/FSADIGBOY19-305.png");
+			}
+			invenLists[i * count.x + j].Init();
+			invenLists[i * count.x + j].Reset();
+			sf::Vector2f quadPos(invenSize.x * j + 45.f, invenSize.y * i + 185.f);
+			invenLists[i * invenCount.x + j].SetPosition(invenClose + quadPos);
 		}
 	}
+
 }
 
 void UiHud::SetInventoryActive()
@@ -130,15 +100,28 @@ void UiHud::Init()
 	airBarFrame1.SetTexture("graphics/ui/FSADIGBOY19-372.png"); //°ËÀº ¹è°æ
 	airBarFrame2.SetTexture("graphics/ui/FSADIGBOY19-377.png"); //´«±Ý
 
-	inventory.SetTexture("graphics/ui/FSADIGBOY19-319.png");
-	invenSprite.SetTexture("graphics/ui/FSADIGBOY19-322.png");
-	invenEmpty.SetTexture("graphics/ui/FSADIGBOY19-305.png");
-	invenBlocked.SetTexture("graphics/ui/FSADIGBOY19-321.png");
-
 	quickMenu.SetTexture("graphics/ui/FSADIGBOY19-470.png");
 	quickItem1.SetTexture("graphics/shop/FSADIGBOY19-48.png");
 	quickItem2.SetTexture("graphics/shop/FSADIGBOY19-47.png");
 	quickItem3.SetTexture("graphics/shop/FSADIGBOY19-51.png");
+
+	inventory.SetTexture("graphics/ui/FSADIGBOY19-319.png");
+
+
+
+	invenName.SetTexture("graphics/ui/FSADIGBOY19-320.png");
+	moneyMenu.SetTexture("graphics/ui/FSADIGBOY19-324.png");
+	invenKoong.SetTexture("graphics/ui/FSADIGBOY19-322.png");
+
+	invenEquipHead.SetTexture("graphics/ui/FSADIGBOY19-307.png");
+	invenEquipDrill.SetTexture("graphics/ui/FSADIGBOY19-307.png");
+	invenEquipFeet.SetTexture("graphics/ui/FSADIGBOY19-307.png");
+
+	//for (int i = 0; i < 24; i++)
+	//{
+	//	invenLists[i].push_back({ "graphics/ui/FSADIGBOY19-305.png", { 0, 0, 40, 40 } });
+	//}
+
 }
 
 void UiHud::Release()
@@ -157,28 +140,23 @@ void UiHud::Reset()
 
 	hud.SetOrigin(Origins::TR);
 	hud.SetPosition({ windowSize.x + 10.f, -10.f });
-	//hud.SetPosition({ 1280.f, 0.f });
 
 	energy.SetOrigin(Origins::TR);
 	energy.SetPosition({ windowSize.x * 0.945f, windowSize.y * 0.28f });
 
 	hpBar.SetOrigin(Origins::TR);
-	hpBar.SetPosition({ 1242.f, 160.f });
 	hpBar.SetPosition({ windowSize.x * 0.955f, windowSize.y * 0.315f });
 
 	airText.SetOrigin(Origins::TR);
-	airText.SetPosition({ 1223.f, 170.f });
 	airText.SetPosition({ windowSize.x * 0.926f, windowSize.y * 0.34f });
 
 	airBarFrame1.SetOrigin(Origins::TR);
 	airBarFrame1.SetPosition({ windowSize.x * 0.975f, windowSize.y * 0.34f });
 
 	airBarColor.SetOrigin(Origins::TC);
-	airBarColor.SetPosition({ 1198.f, 184.f });
 	airBarColor.SetPosition({ windowSize.x * 0.887f, windowSize.y * 0.36f });
 
 	airBarFrame2.SetOrigin(Origins::TR);
-	airBarFrame2.SetPosition({ 1253.f, 173.f });
 	airBarFrame2.SetPosition({ windowSize.x * 0.975f, windowSize.y * 0.34f });
 
 	textMessage.SetW(fontK, L"ÇÑ±ÛÃâ·ÂÅ×½ºÆ®", 40, sf::Color::White);
@@ -187,6 +165,27 @@ void UiHud::Reset()
 	//ÀÎº¥Åä¸®
 	inventory.SetOrigin(Origins::TL);
 	inventory.SetPosition(invenClose);
+
+	invenName.SetOrigin({ -90.f, -18.f });
+	invenName.SetPosition(inventory.GetPosition());
+
+	moneyMenu.SetOrigin({ -60.f, -160.f });
+	moneyMenu.SetPosition(inventory.GetPosition());
+
+	invenKoong.SetOrigin({ -150.f, -65.f });
+	invenKoong.SetPosition(inventory.GetPosition());
+
+	//ÀÎº¥Åä¸® ÀåÂø½½·Ô
+	invenEquipHead.SetOrigin({ -225.f, -50.f });
+	invenEquipHead.SetPosition(inventory.GetPosition());
+	invenEquipDrill.SetOrigin({ -225.f, -85.f });
+	invenEquipDrill.SetPosition(inventory.GetPosition());
+	invenEquipFeet.SetOrigin({ -225.f, -120.f });
+	invenEquipFeet.SetPosition(inventory.GetPosition());
+
+	//inven1.SetOrigin({ -50.f, -180.f });
+	//inven1.SetPosition(inventory.GetPosition());
+	SetInventory(invenCount, invenSize);
 
 	quickMenu.SetOrigin(Origins::TC);
 	quickMenu.SetPosition({ windowSize.x * 0.5f, 0.f });
@@ -206,13 +205,33 @@ void UiHud::Update(float dt)
 		if (inventory.GetPosition() == invenClose)
 		{
 			inventory.SetPosition(invenOpen);
-
+			for (int i = 0; i < invenCount.y; i++) // 4ÁÙ
+			{
+				for (int j = 0; j < invenCount.x; j++) //6Ä­
+				{
+					sf::Vector2f quadPos(invenSize.x * j + 45.f, invenSize.y * i + 185.f);
+					invenLists[i * invenCount.x + j].SetPosition(invenOpen + quadPos);
+				}
+			}
 		}
 		else if (inventory.GetPosition() == invenOpen)
 		{
 			inventory.SetPosition(invenClose);
+			for (int i = 0; i < invenCount.y; i++) // 4ÁÙ
+			{
+				for (int j = 0; j < invenCount.x; j++) //6Ä­
+				{
+					sf::Vector2f quadPos(invenSize.x * j + 45.f, invenSize.y * i + 185.f);
+					invenLists[i * invenCount.x + j].SetPosition(invenClose + quadPos);
+				}
+			}
 		}
-		
+		invenName.SetPosition(inventory.GetPosition());
+		invenKoong.SetPosition(inventory.GetPosition());
+		moneyMenu.SetPosition(inventory.GetPosition());
+		invenEquipHead.SetPosition(inventory.GetPosition());
+		invenEquipDrill.SetPosition(inventory.GetPosition());
+		invenEquipFeet.SetPosition(inventory.GetPosition());
 	}
 
 	if (InputMgr::GetKeyDown(sf::Keyboard::Num1))
@@ -231,6 +250,7 @@ void UiHud::Update(float dt)
 
 void UiHud::Draw(sf::RenderWindow& window)
 {
+	
 	airBarFrame1.Draw(window);
 	airBarColor.Draw(window);
 
@@ -244,6 +264,20 @@ void UiHud::Draw(sf::RenderWindow& window)
 	energy.Draw(window);
 
 	inventory.Draw(window);
+	invenName.Draw(window);
+	moneyMenu.Draw(window);
+
+	invenKoong.Draw(window);
+	invenEquipHead.Draw(window);
+	invenEquipDrill.Draw(window);
+	invenEquipFeet.Draw(window);
+
+	for (int a = 0; a < invenLists.size(); ++a)
+	{
+		invenLists[a].Draw(window);
+	}
+
+	//inven1.Draw(window);
 
 	//textMessage.Draw(window);
 

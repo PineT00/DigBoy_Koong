@@ -14,6 +14,22 @@ void Monster::SetMonster(sf::Vector2f pos)
 	monsterPos = pos;
 }
 
+void Monster::OnDamage(float damage)
+{
+	hp -= damage;
+	if (hp <= 0.f)
+	{
+		OnDie();
+	}
+}
+
+void Monster::OnDie()
+{
+	animator.Play("dead");
+	speed = 0.f;
+	isDead = true;
+}
+
 void Monster::Init()
 {
 	SpriteGo::Init();
@@ -79,7 +95,6 @@ void Monster::Update(float dt)
 	animator.Update(dt);
 
 	velocity.x = dir * speed;
-	//velocity.y = gravity * dt;
 
 	sf::Vector2f pos = position + velocity * dt;
 	SetPosition(pos);
@@ -98,7 +113,7 @@ void Monster::Update(float dt)
 
 		const sf::FloatRect& groundBounds = tileMap->GetGlobalBounds();
 
-		if (monsterBounds.intersects(player->GetSpriteGlobalBound()))
+		if (!isDead && monsterBounds.intersects(player->GetSpriteGlobalBound()))
 		{
 			player->OnDamage(attack);
 		}
@@ -168,6 +183,16 @@ void Monster::Update(float dt)
 			}
 		}
 		
+	}
+
+	if (isDead)
+	{
+		time += dt;
+		if (time >= timer)
+		{
+			SetActive(false);
+			SCENE_MGR.GetCurrentScene()->RemoveGo(this);
+		}
 	}
 }
 
