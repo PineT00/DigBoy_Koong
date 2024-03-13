@@ -57,7 +57,7 @@ protected:
 	SpriteGo drill;
 	float drillDown = 0;
 
-
+	SpriteGo flame;
 
 public:
 	float gravity = 900.f;

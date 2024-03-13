@@ -103,10 +103,28 @@ void SceneDev1::Update(float dt)
 
 	worldViewCenter.y = Utils::Lerp(worldViewCenter.y, player->GetPosition().y, dt * 2.5f);
 
-	if (player->GetPosition().x > tileMapLeftEnd && player->GetPosition().x < tileMapRightEnd)
+
+	if (player->GetPosition().x >= (tileMapLeftEnd + 300.f) && player->GetPosition().x <= (tileMapRightEnd - 300.f))
 	{
+
 		worldViewCenter.x = Utils::Lerp(worldViewCenter.x, player->GetPosition().x, dt * 2.5f);
+
 	}
+	else
+	{
+		if (player->GetPosition().x < 1000.f)
+		{
+			worldViewCenter.x = Utils::Lerp(worldViewCenter.x, tileMapLeftEnd + 330.f, dt * 2.5f);
+		}
+		else if (player->GetPosition().x > 1000.f)
+		{
+			worldViewCenter.x = Utils::Lerp(worldViewCenter.x, tileMapRightEnd - 330.f, dt * 2.5f);
+		}
+	}
+
+		
+
+
 	worldView.setCenter(worldViewCenter);
 
 	backGround->SetPosition(worldViewCenter);

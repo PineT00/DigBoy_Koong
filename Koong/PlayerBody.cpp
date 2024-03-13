@@ -218,6 +218,10 @@ void PlayerBody::Init()
 	drill.SetOrigin(Origins::MC);
 	drill.SetPosition({ 0.f, 0.f });
 
+	flame.SetTexture("graphics/FSADIGBOY19-fire.png");
+	flame.SetOrigin(Origins::TC);
+	flame.SetPosition({ 0.f, 0.f });
+	flame.SetActive(false);
 }
 
 void PlayerBody::Reset()
@@ -238,6 +242,8 @@ void PlayerBody::Reset()
 
 	tileMapLeftEnd = tileMap->GetPosition().x;
 	tileMapRightEnd = tileMapLeftEnd + count.x * size.x;
+
+	flame.SetPosition(GetPosition());
 }
 
 void PlayerBody::Update(float dt)
@@ -269,6 +275,7 @@ void PlayerBody::Update(float dt)
 
 	if (InputMgr::GetKey(sf::Keyboard::Up))
 	{
+		flame.SetActive(true);
 		animator.Play("Boost");
 		velocity.y += -booster * dt;
 
@@ -279,6 +286,7 @@ void PlayerBody::Update(float dt)
 	}
 	else
 	{
+		flame.SetActive(false);
 		velocity.y += gravity * dt;
 
 		if (velocity.y >= 800.f)
@@ -299,7 +307,7 @@ void PlayerBody::Update(float dt)
 	}
 
 	SetPosition(pos);
-
+	flame.SetPosition({ pos.x, pos.y - 2.f });
 
 	if (h != 0.f)
 	{
@@ -461,6 +469,7 @@ void PlayerBody::Update(float dt)
 
 							SetPosition(pos);
 							
+							
 						}
 					}
 				}
@@ -503,6 +512,11 @@ void PlayerBody::Update(float dt)
 
 void PlayerBody::Draw(sf::RenderWindow& window)
 {
+	if (flame.GetActive())
+	{
+		flame.Draw(window);
+	}
+
 	SpriteGo::Draw(window);
 	window.draw(head);
 	window.draw(leftCheck);
@@ -510,6 +524,7 @@ void PlayerBody::Draw(sf::RenderWindow& window)
 	window.draw(topCheck);
 	window.draw(buttomCheck);
 	//coil->Draw(window);
+
 
 	if (drill.GetActive())
 	{
