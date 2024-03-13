@@ -18,6 +18,7 @@ protected:
 	int rows = 10;
 	int cols = 10;
 
+	//sf::Vector2i cellCount = { 20,10 };
 	sf::Vector2i cellCount = { 60, 412 };
 	sf::Vector2f cellSize = { 42.f, 42.f }; //¿‚æ∆¥√∏Æ±‚
 
@@ -25,9 +26,11 @@ protected:
 
 public:
 	sf::VertexArray va;
-
 	sf::Vector2f posOffset[4];
 	sf::Vector2f texCoord0[4];
+
+	int blockedTile[14] = {16, 56, 60, 72, 73, 74, 75, 76, 77, 78, 80, 81, 82, 83};
+	int openTile[3] = {-1, 0, 32};
 
 
 	sf::FloatRect GetTileBound(int x, int y);

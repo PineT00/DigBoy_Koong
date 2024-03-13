@@ -6,6 +6,7 @@ class TileMap;
 class PlayerBody : public SpriteGo
 {
 protected:
+
 	Animator animator;
 
 	sf::Sprite head;
@@ -49,10 +50,13 @@ protected:
 	sf::Vector2f vCheckerSize = { 10.f, 5.f };
 	sf::Vector2f hCheckerSize = { 5.f, 5.f };
 
+	int playerCellX;
+	int playerCellY;
+
 	SpriteGo drill;
 	float drillDown = 0;
 
-	SpriteGo* coil = new SpriteGo;
+
 
 public:
 	float gravity = 700.f;
@@ -61,12 +65,16 @@ public:
 
 	bool isGrounded = true;
 
+
+	float tileMapLeftEnd = 0.f;
+	float tileMapRightEnd = 0.f;
 	sf::Vector2i count;
 	sf::Vector2f size;
 
 	bool GetIsDrill() { return isDrill; }
 
 	sf::FloatRect GetSpriteGlobalBound() { return sprite.getGlobalBounds(); }
+	sf::Vector2i GetPlayerCellCount() { return sf::Vector2i{ playerCellX, playerCellY }; }
 
 	float GetMaxHP() { return hpMax; }
 	float GetMaxAir() { return airMax; }

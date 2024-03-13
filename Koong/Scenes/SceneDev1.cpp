@@ -5,7 +5,6 @@
 #include "SpriteGo.h"
 #include "Shop.h"
 #include "UiHud.h"
-#include "Monster.h"
 
 
 SceneDev1::SceneDev1(SceneIds id) : Scene(id)

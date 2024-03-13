@@ -119,7 +119,22 @@ void Monster::Update(float dt)
 				{
 					if ((dir == 1 && tileBounds.intersects(rightCheck.getGlobalBounds())) || (dir == -1 && tileBounds.intersects(leftCheck.getGlobalBounds())))
 					{
-						if (tileMap->level[i * tileMap->GetCellCount().x + j] == 16 || tileMap->level[i * tileMap->GetCellCount().x + j] == 56)
+						for (int a = 0; a < 3; a++)
+						{
+							if (tileMap->level[i * tileMap->GetCellCount().x + j] != tileMap->openTile[a])
+							{
+								if (isFlipX)
+								{
+									SetFlipX(false);
+								}
+								else
+								{
+									SetFlipX(true);
+								}
+								dir *= -1;
+							}
+						}
+						/*if (tileMap->level[i * tileMap->GetCellCount().x + j] == 16 || tileMap->level[i * tileMap->GetCellCount().x + j] == 56)
 						{
 							if (isFlipX)
 							{
@@ -130,7 +145,7 @@ void Monster::Update(float dt)
 								SetFlipX(true);
 							}
 							dir *= -1;
-						}
+						}*/
 					}
 
 					if ((dir == 1 && tileBounds.intersects(rightButtomCheck.getGlobalBounds())) || (dir == -1 && tileBounds.intersects(leftButtomCheck.getGlobalBounds())))

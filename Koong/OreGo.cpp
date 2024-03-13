@@ -11,8 +11,8 @@ OreGo::OreGo(const std::string& name)
 void OreGo::SetOre(sf::Vector2f pos)
 {
 	SetTexture("graphics/FSADIGBOY19-24.png");
-	SetOrigin(Origins::MC);
-	SetPosition({ pos.x + 20.f, pos.y + 20.f });
+	SetOrigin({ -4.2f, -4.2f });
+	SetPosition(pos);
 }
 
 void OreGo::Init()

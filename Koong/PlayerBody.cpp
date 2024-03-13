@@ -2,6 +2,7 @@
 #include "PlayerBody.h"
 #include "SceneDev1.h"
 #include "TileMap.h"
+#include "Explosive.h"
 
 PlayerBody::PlayerBody(const std::string& name)
 	: SpriteGo(name), tileMap(tileMap)
@@ -174,22 +175,22 @@ void PlayerBody::Init()
 
 
 	leftCheck.setFillColor(sf::Color::Transparent);
-	Utils::SetOrigin(leftCheck, Origins::MC);
+	leftCheck.setOrigin({ 17.f, 2.5f });
 	leftCheck.setSize(hCheckerSize);
 	leftCheck.setPosition({ 0.f, 0.f });
 
 	rightCheck.setFillColor(sf::Color::Transparent);
-	Utils::SetOrigin(rightCheck, Origins::MC);
+	rightCheck.setOrigin({ -12.f, 2.5f });
 	rightCheck.setSize(hCheckerSize);
 	rightCheck.setPosition({ 0.f, 0.f });
 
 	topCheck.setFillColor(sf::Color::Transparent);
-	Utils::SetOrigin(topCheck, Origins::MC);
+	topCheck.setOrigin({ 5.f, 35.f });
 	topCheck.setSize(vCheckerSize);
 	topCheck.setPosition({ 0.f, 0.f });
 
 	buttomCheck.setFillColor(sf::Color::Transparent);
-	Utils::SetOrigin(buttomCheck, Origins::MC);
+	buttomCheck.setOrigin({ 5.f, 2.5f });
 	buttomCheck.setSize(vCheckerSize);
 	buttomCheck.setPosition({ 0.f, 0.f });
 
@@ -215,26 +216,21 @@ void PlayerBody::Reset()
 	//타일맵 숫자, 사이즈 가져오기
 	count = tileMap->GetCellCount();
 	size = tileMap->GetCellSize();
+
+	tileMapLeftEnd = tileMap->GetPosition().x;
+	tileMapRightEnd = tileMapLeftEnd + count.x * size.x;
 }
 
 void PlayerBody::Update(float dt)
 {
 	sf::Vector2f CheckPos = sprite.getPosition();
-	CheckPos.x += -5.f;
-	CheckPos.y += -2.f;
+
 	buttomCheck.setPosition(CheckPos);
-
-	CheckPos = sprite.getPosition();
-	CheckPos.y += -40.f;
 	topCheck.setPosition(CheckPos);
-
-	CheckPos = sprite.getPosition();
-	CheckPos.x += -20.f;
 	CheckPos.y += -15.f;
 	leftCheck.setPosition(CheckPos);
 
 	CheckPos = sprite.getPosition();
-	CheckPos.x += 15.f;
 	CheckPos.y += -15.f;
 	rightCheck.setPosition(CheckPos);
 
@@ -273,6 +269,15 @@ void PlayerBody::Update(float dt)
 	}
 
 	sf::Vector2f pos = position + velocity * dt;
+
+	if (pos.x <= tileMapLeftEnd)
+	{
+		pos.x = tileMapLeftEnd;
+	}
+	if (pos.x >= tileMapRightEnd)
+	{
+		pos.x = tileMapRightEnd;
+	}
 
 	SetPosition(pos);
 
@@ -322,8 +327,8 @@ void PlayerBody::Update(float dt)
 		if (playerBounds.intersects(groundBounds))
 		{
 			// 플레이어가 속한 셀의 인덱스
-			int playerCellX = static_cast<int>(GetPosition().x / tileMap->GetCellSize().x);
-			int playerCellY = static_cast<int>(GetPosition().y / tileMap->GetCellSize().y) - 1;
+			playerCellX = static_cast<int>(GetPosition().x / tileMap->GetCellSize().x);
+			playerCellY = static_cast<int>(GetPosition().y / tileMap->GetCellSize().y) - 1;
 
 			if (playerCellY > 0)
 			{
@@ -468,6 +473,13 @@ void PlayerBody::Update(float dt)
 		}
 	}
 
+	if (InputMgr::GetKeyDown(sf::Keyboard::Num3))
+	{
+		Explosive* explosive = new Explosive;
+		explosive->SetBomb({ playerCellX, playerCellY });
+		SCENE_MGR.GetCurrentScene()->AddGo(explosive);
+	}
+
 }
 
 void PlayerBody::Draw(sf::RenderWindow& window)
@@ -500,4 +512,6 @@ void PlayerBody::Draw(sf::RenderWindow& window)
 		topCheck.setFillColor(sf::Color::Transparent);
 		buttomCheck.setFillColor(sf::Color::Transparent);
 	}
+
+	//말풍선으로 플레이어 좌표 띄우기
 }

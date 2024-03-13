@@ -46,7 +46,7 @@ void SceneMgr::ChangeScene(SceneIds id)
 
 void SceneMgr::Update(float dt)
 {
-	if (InputMgr::GetKey(sf::Keyboard::O)&&InputMgr::GetKey(sf::Keyboard::P))
+	if (InputMgr::GetKeyDown(sf::Keyboard::P))
 	{
 		isDeveloperMode = !isDeveloperMode;
 	}
