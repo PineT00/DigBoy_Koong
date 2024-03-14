@@ -49,6 +49,7 @@ public:
 	void TextureChange(int x, int y, int rowX, int columnY);
 	void changeTile(int x, int y);
 
+	void destroyTile(int x, int y);
 
 	void Set(sf::Vector2i& count, sf::Vector2f& size);
 

@@ -17,7 +17,7 @@ protected:
     float bombTimer = 2.5f;
 
     float damage = 30.f;
-    float nukeDamage = 100.f;
+    float nuclearDamage = 100.f;
 
     bool explode = false;
 

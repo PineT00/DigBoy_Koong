@@ -58,7 +58,7 @@ void OreGo::Update(float dt)
 	if (bound.intersects(playerBound))
 	{
 		int typeNum = static_cast<int>(type);
-		player->OnItem(typeNum);
+		player->OnItem(typeNum, 1);
 		SetActive(false);
 		SCENE_MGR.GetCurrentScene()->RemoveGo(this);
 	}

@@ -23,6 +23,8 @@ sf::FloatRect TileMap::GetGlobalBounds()
     return transform.transformRect(bounds);
 }
 
+
+
 void TileMap::TextureChange(int x, int y, int rowX, int columnY)
 {
     int quadIndex = x * cellCount.x + y;
@@ -39,22 +41,23 @@ void TileMap::TextureChange(int x, int y, int rowX, int columnY)
     }
 }
 
+void TileMap::destroyTile(int x, int y)
+{
+    sf::Vector2f quadPos(cellSize.x * y, cellSize.y * x);
+
+    level[x * cellCount.x + y] = 32;
+    TextureChange(x, y, 0, 2);
+    
+}
+
+
 void TileMap::changeTile(int x, int y)
 {
     sf::Vector2f quadPos(cellSize.x * y, cellSize.y * x);
-   
-    //광물타일의 경우
-    for (int a = 0; a < 4; a++)
-    {
-        if (level[x * cellCount.x + y] == oreTile[a])
-        {
-            level[x * cellCount.x + y] = 72;
-            TextureChange(x, y, 8, 4);
-        }
-    }
 
     //일반타일의 경우(흙)
-    if (level[x * cellCount.x + y] == 56 || level[x * cellCount.x + y] == 60)
+    if (level[x * cellCount.x + y] == 56 || level[x * cellCount.x + y] == 60 || level[x * cellCount.x + y] == 80 
+        || level[x * cellCount.x + y] == 81 || level[x * cellCount.x + y] == 82 || level[x * cellCount.x + y] == 83)
     {
         level[x * cellCount.x + y] = 72;
         TextureChange(x, y, 8, 4);
@@ -233,6 +236,8 @@ void TileMap::UpdateTransform()
     transform.rotate(rotation, position.x, position.y);
     transform.translate(position - origin);
 }
+
+
 
 void TileMap::SetOrigin(Origins preset)
 {

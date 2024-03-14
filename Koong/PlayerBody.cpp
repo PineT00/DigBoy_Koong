@@ -3,6 +3,7 @@
 #include "SceneDev1.h"
 #include "TileMap.h"
 #include "Explosive.h"
+#include "Dynamite.h"
 #include "Inventory.h"
 
 PlayerBody::PlayerBody(const std::string& name)
@@ -15,22 +16,51 @@ PlayerBody::~PlayerBody()
 }
 
 
-void PlayerBody::OnItem(int type)
+void PlayerBody::OnItem(int type, bool get)
 {
 	switch (type)
 	{
 	case 0:
 		inventory->coilNum += 1;
+		inventory->SetInvenOre(Inventory::InvenState::Coil);
 		break;
 	case 1:
 		inventory->bronzeNum += 1;
+		inventory->SetInvenOre(Inventory::InvenState::Bronze);
 		break;
 	case 2:
 		inventory->silverNum += 1;
+		inventory->SetInvenOre(Inventory::InvenState::Silver);
 		break;
 	case 3:
 		inventory->goldNum += 1;
+		inventory->SetInvenOre(Inventory::InvenState::Gold);
 		break;
+	case 4:
+		inventory->healKitNum += 1;
+		inventory->SetInvenItem(Inventory::InvenState::HealKit, get);
+		break;
+	case 5:
+		inventory->airCapNum += 1;
+		inventory->SetInvenItem(Inventory::InvenState::AirCap, get);
+		break;
+	case 6:
+		inventory->airCapSuperNum += 1;
+		inventory->SetInvenItem(Inventory::InvenState::AirCapSuper, get);
+		break;
+	case 7:
+		inventory->bombNum += 1;
+		inventory->SetInvenItem(Inventory::InvenState::Bomb, get);
+		break;
+	case 8:
+		inventory->nuclearNum += 1;
+		inventory->SetInvenItem(Inventory::InvenState::Nuclear, get);
+		break;
+	case 9:
+		inventory->dynamiteNum += 1;
+		inventory->SetInvenItem(Inventory::InvenState::Dynamite, get);
+		break;
+
 	default:
 		break;
 	}
@@ -38,7 +68,7 @@ void PlayerBody::OnItem(int type)
 	std::cout << "±¤¼®È¹µæ" << std::endl;
 	std::cout << "ÇöÀç±¤¼® ¼ö : " << inventory->coilNum << ", " << inventory->bronzeNum << ", " << inventory->silverNum << ", " << inventory->goldNum << std::endl;
 
-	inventory->SetInventory();
+
 }
 
 void PlayerBody::SellAll()
@@ -57,7 +87,8 @@ void PlayerBody::SellAll()
 	inventory->goldNum = 0;
 
 	std::cout << "ÇöÀç º¸À¯±Ý : " << inventory->money << std::endl;
-	inventory->SetInventory();
+	inventory->SetInvenMoney();
+	inventory->SetInvenOre(inventory->Empty);
 }
 
 void PlayerBody::UseItem(int num)
@@ -85,7 +116,7 @@ void PlayerBody::UseItem(int num)
 	default:
 		break;
 	}
-	inventory->SetInventory();
+
 }
 
 void PlayerBody::OnDamage(float Dmg)
@@ -437,6 +468,13 @@ void PlayerBody::Update(float dt)
 								{
 									isDrill = false;
 								}
+
+								if (InputMgr::GetKeyDown(sf::Keyboard::Num4))
+								{
+									Dynamite* dynamite = new Dynamite;
+									dynamite->SetDynamite({ i, j });
+									SCENE_MGR.GetCurrentScene()->AddGo(dynamite);
+								}
 							}
 						
 
@@ -520,6 +558,17 @@ void PlayerBody::Update(float dt)
 		Explosive* explosive = new Explosive;
 		explosive->SetBomb({ playerCellX, playerCellY });
 		SCENE_MGR.GetCurrentScene()->AddGo(explosive);
+	}
+
+
+	//¾ÆÀÌÅÛ È¹µæ Å×½ºÆ®¿ë
+	if (InputMgr::GetKeyDown(sf::Keyboard::Num6))
+	{
+		OnItem(5, 1);
+	}
+	if (InputMgr::GetKeyDown(sf::Keyboard::Num7))
+	{
+		OnItem(5, 0);
 	}
 
 }

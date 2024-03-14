@@ -74,6 +74,7 @@ void UiHud::Init()
 	quickItem1.SetTexture("graphics/shop/FSADIGBOY19-48.png");
 	quickItem2.SetTexture("graphics/shop/FSADIGBOY19-47.png");
 	quickItem3.SetTexture("graphics/shop/FSADIGBOY19-51.png");
+	quickItem4.SetTexture("graphics/shop/FSADIGBOY19-49.png");
 
 }
 
@@ -122,6 +123,7 @@ void UiHud::Reset()
 	quickItem1.SetPosition({ windowSize.x * 0.336f, 3.f});
 	quickItem2.SetPosition({ windowSize.x * 0.394f, 3.f });
 	quickItem3.SetPosition({ windowSize.x * 0.446f, 3.f });
+	quickItem4.SetPosition({ windowSize.x * 0.500f, 3.f });
 }
 
 void UiHud::Update(float dt)
@@ -165,4 +167,5 @@ void UiHud::Draw(sf::RenderWindow& window)
 	quickItem1.Draw(window);
 	quickItem2.Draw(window);
 	quickItem3.Draw(window);
+	quickItem4.Draw(window);
 }

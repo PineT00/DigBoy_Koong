@@ -76,7 +76,7 @@ public:
 	PlayerBody(const std::string& name = "");
 	~PlayerBody();
 
-	void OnItem(int type);
+	void OnItem(int type, bool get);
 	void SellAll();
 
 	void UseItem(int num);

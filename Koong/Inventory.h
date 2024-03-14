@@ -9,10 +9,14 @@ public:
 	{
 		Blocked = -1,
 		Empty,
+		Full,
 
 		HealKit,
+		AirCap,
+		AirCapSuper,
 		Bomb,
-		Dynamate,
+		Nuclear,
+		Dynamite,
 
 		Coil,
 		Bronze,
@@ -23,26 +27,28 @@ public:
 	InvenState state;
 
 	std::vector<InvenState> stateList;
+	std::vector<SpriteGo> invenIconList;
+	std::vector<SpriteGo> invenNumList;
 
 	//인벤토리
 	int healKitNum = 0;
 	int airCapNum = 0;
 	int airCapSuperNum = 0;
 	int bombNum = 0;
-	int dynamite = 0;
+	int nuclearNum = 0;
+	int dynamiteNum = 0;
 
 	int coilNum = 0;
 	int bronzeNum = 0;
 	int silverNum = 0;
 	int goldNum = 0;
 
-	int money = 0;
+	int invenCoilNum = 0;
+	int invenBronzeNum = 0;
+	int invenSilverNum = 0;
+	int invenGoldNum = 0;
 
-	//int unitNumM = money % 10;
-	//int tensNumM = (money / 10) % 10;
-	//int hundredsNumM = (money / 100) % 10;
-	//int thousandsNumM = (money / 1000) % 10;
-	//int tenThousandsNumM = (money / 10000) % 10;
+	int money = 0;
 
 protected:
 
@@ -54,10 +60,6 @@ protected:
 	sf::Vector2f invenOpen = { -10.f, 40.f };
 
 	int invenlimit = 3;
-
-	//SpriteGo invenSprite;
-	//SpriteGo invenEmpty;
-	//SpriteGo invenBlocked;
 
 	SpriteGo invenName;
 	SpriteGo moneyMenu;
@@ -72,15 +74,9 @@ protected:
 
 	std::vector<SpriteGo> invenLists;
 
+
 	std::vector<sf::Texture*> moneyTexture;
 
-
-	//어차피 매번 new 해줘야 할텐데 미리 정의하는 의미가 있나
-	//SpriteGo itemNum1;
-	//SpriteGo itemNum2;
-	//SpriteGo itemNum3;
-	//SpriteGo itemNum4;
-	//SpriteGo itemNum5;
 
 	sf::Sprite moneyUnit;
 	sf::Sprite moneyTens;
@@ -89,20 +85,16 @@ protected:
 	sf::Sprite moneyTenThousands;
 	sf::Sprite moneyHunThousands;
 
-	SpriteGo invenCoil;
-	SpriteGo invenBronze;
-	SpriteGo invenSilver;
-	SpriteGo invenGold;
-
 
 public:
 	Inventory(const std::string& name = "");
 	~Inventory() = default;
 
-	void SetInvenItem();
-	void SetInvenOre();
+	void SetInvenItem(InvenState state, bool Get);
+	void SetInvenOre(InvenState state);
 	void SetInvenMoney();
-	void SetInventory();
+
+	//void SetInventory(); //아이템 획득시마다 호출
 
 	void Init() override;
 	void Release() override;

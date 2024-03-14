@@ -1,50 +1,37 @@
 #include "pch.h"
-#include "Explosive.h"
-#include "PlayerBody.h"
+#include "Dynamite.h"
 #include "TileMap.h"
-#include "Monster.h"
-#include "SceneDev1.h"
 
-Explosive::Explosive(const std::string& name)
-	:SpriteGo(name)
+
+Dynamite::Dynamite(const std::string& name)
 {
 }
 
-void Explosive::SetBomb(sf::Vector2i pos)
+void Dynamite::SetDynamite(sf::Vector2i pos)
 {
-	sf::Vector2f quadPos(42.f * pos.x, 42.f * pos.y);
-	bomb.setOrigin({ -5.f, -5.f }); 
-	bomb.setPosition(quadPos);
 	Init();
 	Reset();
-	animatorBomb.Play("Waiting");
+	aim = pos;
+	sf::Vector2f quadPos(42.f * pos.y, 42.f * pos.x);
+	SetOrigin({ -5.f, -5.f });
+	SetPosition(quadPos);
+
 
 }
 
-void Explosive::SetNuke(sf::Vector2i pos)
-{
-}
-
-void Explosive::SetDynamite(sf::Vector2i pos)
-{
-}
-
-void Explosive::Init()
+void Dynamite::Init()
 {
 	SpriteGo::Init();
+	SetTexture("graphics/monster/FSADIGBOY19-125.png");
 
-	bomb.setTexture(RES_MGR_TEXTURE.Get("graphics/monster/FSADIGBOY19-160.png"));
-	Dynamite.setTexture(RES_MGR_TEXTURE.Get("graphics/monster/FSADIGBOY19-125.png"));
-
-	animatorBomb.SetTarget(&bomb);
+	animator.SetTarget(&sprite);
 	{
 		AnimationClip clip;
 		clip.id = "Waiting";
 		clip.fps = 2;
 		clip.loopTypes = AnimationLoopTypes::Loop;
-		clip.frames.push_back({ "graphics/monster/FSADIGBOY19-160.png", {0, 0, 34, 34} });
-		clip.frames.push_back({ "graphics/monster/FSADIGBOY19-161.png", {0, 0, 34, 34} });
-		animatorBomb.AddClip(clip);
+		clip.frames.push_back({ "graphics/monster/FSADIGBOY19-125.png", {0, 0, 29, 19} });
+		animator.AddClip(clip);
 	}
 
 	{
@@ -84,68 +71,46 @@ void Explosive::Init()
 		clip.frames.push_back({ "graphics/monster/FSADIGBOY19-156.png", {0, 0, 60, 60} });
 		clip.frames.push_back({ "graphics/monster/FSADIGBOY19-157.png", {0, 0, 60, 60} });
 		clip.frames.push_back({ "graphics/monster/FSADIGBOY19-158.png", {0, 0, 60, 60} });
-		animatorBomb.AddClip(clip);
+		animator.AddClip(clip);
 	}
-
-
 }
 
-void Explosive::Reset()
+void Dynamite::Reset()
 {
 	SpriteGo::Reset();
-	//animatorBomb.Play("Waiting");
-	bomb.setOrigin({ -5.f, -5.f });
+	tileMap = dynamic_cast<TileMap*>(SCENE_MGR.GetCurrentScene()->FindGo("Ground"));
 
-	SceneDev1* scene = dynamic_cast<SceneDev1*>(SCENE_MGR.GetCurrentScene());
-
-	scene->FindGoAll("Monster", monsterList, Scene::Layers::World);
+	animator.Play("Waiting");
 }
 
-void Explosive::Update(float dt)
+void Dynamite::Update(float dt)
 {
 	SpriteGo::Update(dt);
-	animatorBomb.Update(dt);
+	animator.Update(dt);
 
 	bombTime += dt;
 
 	if (bombTime > bombTimer && !explode)
 	{
-		bomb.setOrigin({ 10.f, 10.f });
-		animatorBomb.Play("Boom");
+		SetOrigin({ 10.f, 10.f });
+		animator.Play("Boom");
 		bombTime = 0.f;
 		explode = true;
-
 
 	}
 	if (bombTime > bombTimer && explode)
 	{
 		SetActive(false);
 	}
-	if (explode && bombTime < 0.3f)
+
+	if (explode)
 	{
-		for (auto go : monsterList)
-		{
-			if (!go->GetActive())
-				continue;
-
-			if (bomb.getGlobalBounds().intersects(go->GetGlobalBounds()))
-			{
-				Monster* monster = dynamic_cast<Monster*>(go);
-				if (monster != nullptr)
-					monster->OnDamage(damage);
-
-				break;
-			}
-		}
+		tileMap->destroyTile(aim.x, aim.y);
+		//std::cout << aim.x << "," << aim.y << std::endl;
 	}
-
-
-	
 }
 
-void Explosive::Draw(sf::RenderWindow& window)
+void Dynamite::Draw(sf::RenderWindow& window)
 {
 	SpriteGo::Draw(window);
-
-	window.draw(bomb);
 }

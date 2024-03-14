@@ -31,6 +31,7 @@ protected:
 	SpriteGo quickItem1;
 	SpriteGo quickItem2;
 	SpriteGo quickItem3;
+	SpriteGo quickItem4;
 
 	float fadeTime = 0.5f;
 
