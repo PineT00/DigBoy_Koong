@@ -2,15 +2,17 @@
 #include "Animator.h"
 
 class TileMap;
+class Inventory;
 
 class PlayerBody : public SpriteGo
 {
 protected:
-
 	Animator animator;
 
 	sf::Sprite head;
 	Animator animatorHead;
+
+	Inventory* inventory;
 
 	float speed = 300.f;
 	float booster = 500.f;
@@ -28,18 +30,7 @@ protected:
 	float digTime = 0.f;
 	float digTimer = 0.1f;
 
-	//인벤토리
-	int healKitNum = 0;
-	int airCapNum = 0;
-	int airCapMaxNum = 0;
-	int bombNum = 0;
-	int dynamite = 0;
 
-	int coilNum = 0;
-	int bronzeNum = 0;
-	int silverNum = 0;
-	int goldNum = 0;
-	int money = 0;
 
 	TileMap* tileMap;
 

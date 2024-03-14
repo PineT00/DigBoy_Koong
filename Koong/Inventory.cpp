@@ -6,28 +6,70 @@ Inventory::Inventory(const std::string& name)
 {
 }
 
-void Inventory::SetInventory(sf::Vector2i& count, sf::Vector2f& size)
+void Inventory::SetInvenItem()
 {
-	invenLists.resize(count.x * count.y);
+}
 
-	for (int i = 0; i < count.y; i++) // 6줄
+void Inventory::SetInvenOre()
+{
+	for (int i = 0; i < invenCount.y; i++) // 6줄
 	{
-		for (int j = 0; j < count.x; j++) // 6칸
+		for (int j = 0; j < invenCount.x; j++) // 6칸
 		{
-			if (i >= 3)
+			if (coilNum > 0 && stateList[i * invenCount.x + j] == Empty)
 			{
-				invenLists[i * count.x + j].SetTexture("graphics/ui/FSADIGBOY19-321.png");
+				//광물스프라이트 생성
+
+			}
+		}
+	}
+}
+
+void Inventory::SetInvenMoney()
+{
+	int unitNumM = money % 10;
+	int tensNumM = (money / 10) % 10;
+	int hundredsNumM = (money / 100) % 10;
+	int thousandsNumM = (money / 1000) % 10;
+	int tenThousandsNumM = (money / 10000) % 10;
+	int hunThousandsNumM = (money / 100000) % 10;
+
+	moneyUnit.setTexture(*moneyTexture[unitNumM]);
+	moneyTens.setTexture(*moneyTexture[tensNumM]);
+	moneyHundreds.setTexture(*moneyTexture[hundredsNumM]);
+	moneyThousands.setTexture(*moneyTexture[thousandsNumM]);
+	moneyTenThousands.setTexture(*moneyTexture[tenThousandsNumM]);
+	moneyHunThousands.setTexture(*moneyTexture[hunThousandsNumM]);
+
+}
+
+void Inventory::SetInventory()
+{
+	invenLists.resize(invenCount.x * invenCount.y);
+
+	for (int i = 0; i < invenCount.y; i++) // 6줄
+	{
+		for (int j = 0; j < invenCount.x; j++) // 6칸
+		{
+			if (i >= invenlimit)
+			{
+				invenLists[i * invenCount.x + j].SetTexture("graphics/ui/FSADIGBOY19-321.png");
 			}
 			else
 			{
-				invenLists[i * count.x + j].SetTexture("graphics/ui/FSADIGBOY19-305.png");
+				invenLists[i * invenCount.x + j].SetTexture("graphics/ui/FSADIGBOY19-305.png");
 			}
-			invenLists[i * count.x + j].Init();
-			invenLists[i * count.x + j].Reset();
+			invenLists[i * invenCount.x + j].Init();
+			invenLists[i * invenCount.x + j].Reset();
 			sf::Vector2f quadPos(invenSize.x * j + 45.f, invenSize.y * i + 185.f);
 			invenLists[i * invenCount.x + j].SetPosition(invenClose + quadPos);
 		}
 	}
+
+	SetInvenMoney();
+	SetInvenItem();
+	SetInvenOre();
+
 }
 
 void Inventory::Init()
@@ -43,6 +85,28 @@ void Inventory::Init()
 	invenEquipHead.SetTexture("graphics/ui/FSADIGBOY19-307.png");
 	invenEquipDrill.SetTexture("graphics/ui/FSADIGBOY19-307.png");
 	invenEquipFeet.SetTexture("graphics/ui/FSADIGBOY19-307.png");
+
+
+	//숫자변수 텍스쳐 할당
+	{
+		moneyTexture.push_back(&RES_MGR_TEXTURE.Get("graphics/ui/uiNum/FSADIGBOY19-309.png"));
+		moneyTexture.push_back(&RES_MGR_TEXTURE.Get("graphics/ui/uiNum/FSADIGBOY19-310.png"));
+		moneyTexture.push_back(&RES_MGR_TEXTURE.Get("graphics/ui/uiNum/FSADIGBOY19-311.png"));
+		moneyTexture.push_back(&RES_MGR_TEXTURE.Get("graphics/ui/uiNum/FSADIGBOY19-312.png"));
+		moneyTexture.push_back(&RES_MGR_TEXTURE.Get("graphics/ui/uiNum/FSADIGBOY19-313.png"));
+		moneyTexture.push_back(&RES_MGR_TEXTURE.Get("graphics/ui/uiNum/FSADIGBOY19-314.png"));
+		moneyTexture.push_back(&RES_MGR_TEXTURE.Get("graphics/ui/uiNum/FSADIGBOY19-315.png"));
+		moneyTexture.push_back(&RES_MGR_TEXTURE.Get("graphics/ui/uiNum/FSADIGBOY19-316.png"));
+		moneyTexture.push_back(&RES_MGR_TEXTURE.Get("graphics/ui/uiNum/FSADIGBOY19-317.png"));
+		moneyTexture.push_back(&RES_MGR_TEXTURE.Get("graphics/ui/uiNum/FSADIGBOY19-318.png"));
+	}
+
+	for (int i = 0; i <= 24; ++i)
+	{
+		stateList.push_back(Empty);
+	}
+
+	invenCoil.SetTexture("graphics/ore/FSADIGBOY19-24.png");
 
 }
 
@@ -76,7 +140,21 @@ void Inventory::Reset()
 	invenEquipFeet.SetOrigin({ -225.f, -120.f });
 	invenEquipFeet.SetPosition(inventory.GetPosition());
 
-	SetInventory(invenCount, invenSize);
+
+	moneyUnit.setOrigin({ -245.f, -158.f });
+	moneyUnit.setPosition(inventory.GetPosition());
+	moneyTens.setOrigin({ -235.f, -158.f });
+	moneyTens.setPosition(inventory.GetPosition());
+	moneyHundreds.setOrigin({ -225.f, -158.f });
+	moneyHundreds.setPosition(inventory.GetPosition());
+	moneyThousands.setOrigin({ -215.f, -158.f });
+	moneyThousands.setPosition(inventory.GetPosition());
+	moneyTenThousands.setOrigin({ -205.f, -158.f });
+	moneyTenThousands.setPosition(inventory.GetPosition());
+	moneyHunThousands.setOrigin({ -195.f, -158.f });
+	moneyHunThousands.setPosition(inventory.GetPosition());
+
+	SetInventory();
 }
 
 void Inventory::Update(float dt)
@@ -115,6 +193,14 @@ void Inventory::Update(float dt)
 		invenEquipHead.SetPosition(inventory.GetPosition());
 		invenEquipDrill.SetPosition(inventory.GetPosition());
 		invenEquipFeet.SetPosition(inventory.GetPosition());
+
+		//돈 숫자 스프라이트
+		moneyUnit.setPosition(inventory.GetPosition());
+		moneyTens.setPosition(inventory.GetPosition());
+		moneyHundreds.setPosition(inventory.GetPosition());
+		moneyThousands.setPosition(inventory.GetPosition());
+		moneyTenThousands.setPosition(inventory.GetPosition());
+		moneyHunThousands.setPosition(inventory.GetPosition());
 	}
 }
 
@@ -130,6 +216,14 @@ void Inventory::Draw(sf::RenderWindow& window)
 	invenEquipHead.Draw(window);
 	invenEquipDrill.Draw(window);
 	invenEquipFeet.Draw(window);
+
+	window.draw(moneyUnit);
+	window.draw(moneyTens);
+	window.draw(moneyHundreds);
+	window.draw(moneyThousands);
+	window.draw(moneyTenThousands);
+	window.draw(moneyHunThousands);
+
 
 	for (int a = 0; a < invenLists.size(); ++a)
 	{

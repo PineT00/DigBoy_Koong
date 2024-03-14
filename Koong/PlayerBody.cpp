@@ -3,6 +3,7 @@
 #include "SceneDev1.h"
 #include "TileMap.h"
 #include "Explosive.h"
+#include "Inventory.h"
 
 PlayerBody::PlayerBody(const std::string& name)
 	: SpriteGo(name), tileMap(tileMap)
@@ -19,31 +20,44 @@ void PlayerBody::OnItem(int type)
 	switch (type)
 	{
 	case 0:
-		coilNum += 1;
+		inventory->coilNum += 1;
 		break;
 	case 1:
-		bronzeNum += 1;
+		inventory->bronzeNum += 1;
 		break;
 	case 2:
-		silverNum += 1;
+		inventory->silverNum += 1;
 		break;
 	case 3:
-		goldNum += 1;
+		inventory->goldNum += 1;
 		break;
 	default:
 		break;
 	}
 
 	std::cout << "±¤¼®È¹µæ" << std::endl;
-	std::cout << "ÇöÀç±¤¼® ¼ö : " << coilNum << ", " << bronzeNum << ", " << silverNum << ", " << goldNum << std::endl;
+	std::cout << "ÇöÀç±¤¼® ¼ö : " << inventory->coilNum << ", " << inventory->bronzeNum << ", " << inventory->silverNum << ", " << inventory->goldNum << std::endl;
+
+	inventory->SetInventory();
 }
 
 void PlayerBody::SellAll()
 {
 	std::cout << "±¤¼®Á¤»ê" << std::endl;
-	money += coilNum * 100;
-	coilNum = 0;
-	std::cout << "ÇöÀç º¸À¯±Ý : " << money << std::endl;
+	inventory->money += inventory->coilNum * 50;
+	inventory->coilNum = 0;
+
+	inventory->money += inventory->bronzeNum * 100;
+	inventory->bronzeNum = 0;
+
+	inventory->money += inventory->silverNum * 150;
+	inventory->silverNum = 0;
+
+	inventory->money += inventory->goldNum * 200;
+	inventory->goldNum = 0;
+
+	std::cout << "ÇöÀç º¸À¯±Ý : " << inventory->money << std::endl;
+	inventory->SetInventory();
 }
 
 void PlayerBody::UseItem(int num)
@@ -51,7 +65,7 @@ void PlayerBody::UseItem(int num)
 	switch (num)
 	{
 	case 1:
-		healKitNum -= 1;
+		inventory->healKitNum -= 1;
 		hp += 50;
 		if (hp >= hpMax)
 		{
@@ -59,7 +73,7 @@ void PlayerBody::UseItem(int num)
 		}
 		break;
 	case 2:
-		airCapNum -= 1;
+		inventory->airCapNum -= 1;
 		air += 50;
 		if (air >= airMax)
 		{
@@ -67,12 +81,11 @@ void PlayerBody::UseItem(int num)
 		}
 		break;
 	case 3:
-		bombNum -= 1;
-		std::cout << "ÆøÅº»ç¿ë!" << std::endl;
+		inventory->bombNum -= 1;
 	default:
 		break;
 	}
-
+	inventory->SetInventory();
 }
 
 void PlayerBody::OnDamage(float Dmg)
@@ -235,6 +248,7 @@ void PlayerBody::Reset()
 	head.setPosition(position);
 
 	tileMap = dynamic_cast<TileMap*>(SCENE_MGR.GetCurrentScene()->FindGo("Ground"));
+	inventory = dynamic_cast<Inventory*>(SCENE_MGR.GetCurrentScene()->FindGo("Inventory"));
 
 	//Å¸ÀÏ¸Ê ¼ýÀÚ, »çÀÌÁî °¡Á®¿À±â
 	count = tileMap->GetCellCount();
