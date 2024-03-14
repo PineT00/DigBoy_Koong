@@ -7,6 +7,17 @@ Shop::Shop(const std::string& name)
 {
 }
 
+void Shop::ShowMessage(sf::Vector2f pos)
+{
+	message.SetOrigin(Origins::MC);
+
+	messageBubble.SetTexture("graphics/bubble/FSADIGBOY19-bubble.png");
+	messageBubble.SetOrigin({ 90,52 });
+	message.SetPosition(pos);
+	messageBubble.SetPosition(pos);
+
+}
+
 void Shop::ShopSetPosition(sf::Vector2f pos)
 {
 	shop.SetOrigin(Origins::BC);
@@ -95,13 +106,26 @@ void Shop::Update(float dt)
 	animator2.Update(dt);
 
 
-
 	sf::FloatRect bound = NPC.GetGlobalBounds();
 	sf::FloatRect playerBound = player->GetSpriteGlobalBound();
 
 	if (bound.intersects(playerBound) && InputMgr::GetKeyDown(sf::Keyboard::Space))
 	{
 		player->SellAll();
+	}
+
+	messageTime += dt;
+
+	if (messageTime > messageTimer1 && messageTime < messageTimer2)
+	{
+		message.SetW(fontK, L"ƒÙ! »˚≥ª∑≈!", 20, sf::Color::Black);
+		ShowMessage({shop.GetPosition().x, shop.GetPosition().y - 180.f});
+	}
+	if (messageTime > messageTimer2)
+	{
+		message.SetW(fontK, L"Ω»¿Ω∏ª∞Ì!", 20, sf::Color::Black);
+		ShowMessage({ shop.GetPosition().x, shop.GetPosition().y - 180.f });
+		messageTime = 0.f;
 	}
 
 }
@@ -114,5 +138,8 @@ void Shop::Draw(sf::RenderWindow& window)
 	NPC.Draw(window);
 	window.draw(propeller);
 	window.draw(portal);
+
+	messageBubble.Draw(window);
+	message.Draw(window);
 
 }
