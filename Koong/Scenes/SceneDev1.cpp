@@ -260,6 +260,8 @@ void SceneDev1::UpdateSelect(float dt)
 	if (InputMgr::GetKeyDown(sf::Keyboard::Enter))
 	{
 		SetStatus(Status::Game);
+
+		inventory->LoadInventory("tables/save/Inventory.csv");
 	}
 }
 
