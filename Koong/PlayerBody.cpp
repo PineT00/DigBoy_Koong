@@ -74,16 +74,16 @@ void PlayerBody::OnItem(int type, bool get)
 void PlayerBody::SellAll()
 {
 	std::cout << "광석정산" << std::endl;
-	inventory->money += inventory->coilNum * 50;
+	inventory->money += inventory->coilNum * inventory->coilPrice;
 	inventory->coilNum = 0;
 
-	inventory->money += inventory->bronzeNum * 100;
+	inventory->money += inventory->bronzeNum * inventory->bronzePrice;
 	inventory->bronzeNum = 0;
 
-	inventory->money += inventory->silverNum * 150;
+	inventory->money += inventory->silverNum * inventory->silverPrice;
 	inventory->silverNum = 0;
 
-	inventory->money += inventory->goldNum * 200;
+	inventory->money += inventory->goldNum * inventory->goldPrice;
 	inventory->goldNum = 0;
 
 	std::cout << "현재 보유금 : " << inventory->money << std::endl;

@@ -13,6 +13,7 @@ public:
 	enum class Status
 	{
 		Awake,
+		Select,
 		Game,
 		GameOver,
 		Pause
@@ -41,6 +42,9 @@ public:
 
 	sf::Vector2f ClampByTileMap(const sf::Vector2f point);
 
+	void SaveMap(const std::vector<int>& level, const std::string& filename);
+	void SaveInventory(const std::string& filename);
+
 	void Init() override;
 	void Release() override;
 
@@ -50,6 +54,7 @@ public:
 	void Update(float dt) override;
 
 	void UpdateAwake(float dt);
+	void UpdateSelect(float dt);
 	void UpdateGame(float dt);
 	void UpdateGameOver(float dt);
 	void UpdatePause(float dt);

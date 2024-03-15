@@ -32,13 +32,103 @@ sf::Vector2f SceneDev1::ClampByTileMap(const sf::Vector2f point)
 	return Utils::Clamp(point, rect);
 }
 
+void SceneDev1::SaveMap(const std::vector<int>& level, const std::string& filename)
+{
+	std::ofstream file(filename);
+
+	if (file.is_open()) 
+	{
+		for (size_t i = 0; i < level.size(); ++i) 
+		{
+			file << level[i];
+
+			// 마지막 열이 아니라면 쉼표를 추가
+			if ((i + 1) % 60 == 0) {
+				file << "\n";
+			}
+			else {
+				file << ",";
+			}
+		}
+
+		file.close();
+		std::cout << "Level saved to " << filename << std::endl;
+	}
+	else 
+	{
+		std::cout << "Failed to open file for writing: " << filename << std::endl;
+	}
+	
+}
+
+void SceneDev1::SaveInventory(const std::string& filename)
+{
+	std::ofstream file(filename);
+
+	if (file.is_open())
+	{
+		//file << "\n";
+		file << "healKitNum";
+		file << ",";
+		file << "airCapNum";
+		file << ",";
+		file << "airCapSuperNum";
+		file << ",";
+		file << "bombNum";
+		file << ",";
+		file << "nuclearNum";
+		file << ",";
+		file << "dynamiteNum";
+		file << ",";
+		file << "coilNum";
+		file << ",";
+		file << "bronzeNum";
+		file << ",";
+		file << "silverNum";
+		file << ",";
+		file << "goldNum";
+		file << ",";
+		file << "money";
+		file << "\n";
+		file << inventory->healKitNum;
+		file << ",";
+		file << inventory->airCapNum;
+		file << ",";
+		file << inventory->airCapSuperNum;
+		file << ",";
+		file << inventory->bombNum;
+		file << ",";
+		file << inventory->nuclearNum;
+		file << ",";
+		file << inventory->dynamiteNum;
+		file << ",";
+		file << inventory->coilNum;
+		file << ",";
+		file << inventory->bronzeNum;
+		file << ",";
+		file << inventory->silverNum;
+		file << ",";
+		file << inventory->goldNum;
+		file << ",";
+		file << inventory->money;
+
+
+		file.close();
+		std::cout << "Inventory saved to " << filename << std::endl;
+	}
+	else
+	{
+		std::cout << "Failed to open file for writing: " << filename << std::endl;
+	}
+}
+
 void SceneDev1::Init()
 {
-	hud = new UiHud("Hud");
-	AddGo(hud, Ui);
-
 	inventory = new Inventory("Inventory");
 	AddGo(inventory, Ui);
+
+	hud = new UiHud("Hud");
+	AddGo(hud, Ui);
 
 	mainScreen = new SpriteGo("MainScreen");
 	mainScreen->SetTexture("graphics/FSADIGBOY19-481.jpg");
@@ -141,6 +231,9 @@ void SceneDev1::Update(float dt)
 	case Status::Awake:
 		UpdateAwake(dt);
 		break;
+	case Status::Select:
+		UpdateSelect(dt);
+		break;
 	case Status::Game:
 		UpdateGame(dt);
 		break;
@@ -155,6 +248,14 @@ void SceneDev1::Update(float dt)
 }
 
 void SceneDev1::UpdateAwake(float dt)
+{
+	if (InputMgr::GetKeyDown(sf::Keyboard::Enter))
+	{
+		SetStatus(Status::Select);
+	}
+}
+
+void SceneDev1::UpdateSelect(float dt)
 {
 	if (InputMgr::GetKeyDown(sf::Keyboard::Enter))
 	{
@@ -182,6 +283,11 @@ void SceneDev1::UpdatePause(float dt)
 		SetStatus(Status::Game);
 		return;
 	}
+	else if (InputMgr::GetKeyDown(sf::Keyboard::Enter))
+	{
+		SaveMap(tileMap->level, "tables/save/MapTableSave.csv");
+		SaveInventory("tables/save/Inventory.csv");
+	}
 }
 
 void SceneDev1::SetStatus(Status newStatus)
@@ -193,6 +299,10 @@ void SceneDev1::SetStatus(Status newStatus)
 	{
 	case Status::Awake:
 		mainScreen->SetActive(true);
+		FRAMEWORK.SetTimeScale(0.f);
+		break;
+	case Status::Select:
+		mainScreen->SetActive(false);
 		FRAMEWORK.SetTimeScale(0.f);
 		break;
 	case Status::Game:
