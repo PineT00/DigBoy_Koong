@@ -18,7 +18,7 @@ protected:
 	PlayerBody* player;
 
 	SpriteGo shop;
-	SpriteGo NPC;
+
 
 	TextGo message;
 	SpriteGo messageBubble;
@@ -30,6 +30,8 @@ protected:
 	float messageTimer2 = 3.0f;
 
 public:
+	SpriteGo NPC;
+
 	Shop(const std::string& name = "");
 	~Shop() = default;
 

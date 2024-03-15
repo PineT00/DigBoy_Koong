@@ -5,6 +5,7 @@
 class PlayerBody;
 class TileMap;
 class Inventory;
+class Shop;
 
 class UiHud : public GameObject
 {
@@ -13,6 +14,7 @@ protected:
 	sf::Vector2f resolution = referenceResolution;
 
 	Inventory* inventory = nullptr;
+	Shop* shop = nullptr;
 
 	TextGo textMessage;
 
@@ -45,6 +47,10 @@ protected:
 
 	sf::Font fontK = RES_MGR_FONT.Get("fonts/NanumSquareRoundEB.ttf");
 
+	//상점메뉴
+	SpriteGo shopHud;
+
+
 public:
 	UiHud(const std::string& name = "");
 	~UiHud() override = default;
@@ -57,6 +63,8 @@ public:
 
 	void SetHpBar(int hp, int max);
 	void SetAirBar(int air, int maxair);
+
+	void OpenShop();
 
 	void Init() override;
 	void Release() override;

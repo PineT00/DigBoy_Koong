@@ -123,7 +123,14 @@ void PlayerBody::OnDamage(float Dmg)
 {
 	if (!invincible)
 	{
-		hp -= Dmg;
+		if (Dmg <= armorRate)
+		{
+			hp -= 0.f;
+		}
+		else
+		{
+			hp -= (Dmg - armorRate);
+		}
 		animator.Play("OnDamage");
 		animatorHead.Play("OnDamage");
 		velocity.y -= 400.f;
@@ -437,7 +444,14 @@ void PlayerBody::Update(float dt)
 							{
 								if (velocity.y > 600.f)
 								{
-									hp -= 10.f;
+									if (fallDmg <= armorRate)
+									{
+										hp -= 0.f;
+									}
+									else
+									{
+										hp -= (fallDmg - armorRate);
+									}
 									std::cout << "À¸¾Ç!" << std::endl;
 								}
 
@@ -456,7 +470,7 @@ void PlayerBody::Update(float dt)
 									drill.SetRotation(0.f);
 									drill.SetPosition(drillPosDown);
 									drill.SetActive(true);
-									digTime += dt;
+									digTime += dt * drillPower;
 									if (digTime >= digTimer)
 									{
 										tileMap->changeTile(i, j);
@@ -492,7 +506,7 @@ void PlayerBody::Update(float dt)
 									drill.SetRotation(90);
 									drill.SetPosition(drillPosLeft);
 									drill.SetActive(true);
-									digTime += dt;
+									digTime += dt * drillPower;
 									if (digTime >= digTimer)
 									{
 										tileMap->changeTile(i, j);
@@ -509,7 +523,7 @@ void PlayerBody::Update(float dt)
 									drill.SetRotation(270);
 									drill.SetPosition(drillPosRight);
 									drill.SetActive(true);
-									digTime += dt;
+									digTime += dt * drillPower;
 									if (digTime >= digTimer)
 									{
 										tileMap->changeTile(i, j);

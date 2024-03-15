@@ -1,5 +1,8 @@
 #pragma once
 #include "SpriteGo.h"
+#include "TextGo.h"
+
+class PlayerBody;
 
 class Inventory :
     public SpriteGo
@@ -52,6 +55,8 @@ public:
 
 protected:
 
+	PlayerBody* player;
+
 	//인벤토리
 	SpriteGo inventory;
 
@@ -63,6 +68,9 @@ protected:
 
 	SpriteGo invenName;
 	SpriteGo moneyMenu;
+
+	SpriteGo getOut;
+	SpriteGo getOutLight;
 
 	SpriteGo invenKoong;
 	SpriteGo invenEquipHead;
@@ -85,16 +93,38 @@ protected:
 	sf::Sprite moneyTenThousands;
 	sf::Sprite moneyHunThousands;
 
+	SpriteGo textBack;
+	TextGo energyText;
+	TextGo airText;
+	TextGo digPowerText;
+	TextGo boosterText;
+	TextGo armorText;
+
+	sf::Font fontK = RES_MGR_FONT.Get("fonts/NanumSquareRoundEB.ttf");
+
+	std::wstring hpWstring;
+	std::wstring hpMaxWstring;
+	std::wstring airWstring;
+	std::wstring airMaxWstring;
+	std::wstring drillWstring;
+	std::wstring boosterWstring;
+	std::wstring armorWstring;
+
+	size_t decimalPos;
 
 public:
 	Inventory(const std::string& name = "");
 	~Inventory() = default;
+
+	void SetPlayerInfo();
 
 	void SetInvenItem(InvenState state, bool Get);
 	void SetInvenOre(InvenState state);
 	void SetInvenMoney();
 
 	//void SetInventory(); //아이템 획득시마다 호출
+
+	void OpenInven();
 
 	void Init() override;
 	void Release() override;

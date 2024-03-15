@@ -15,22 +15,26 @@ protected:
 	Inventory* inventory;
 
 	float speed = 300.f;
-	float booster = 500.f;
 
-	float hpMax = 100.f;
-	float airMax = 100.f;
+
+	float hpMax = 100.f; 
+	float airMax = 100.f; //에어 최대용량
 	float hp = hpMax;
 	float air = airMax;
+
+	float booster = 500.f; //부스터파워
+
+	float fallDmg = 30.f;
+	float armorRate = 0.f; //방어력
+
+	bool isDrill = false;
+	float digTime = 0.f;
+	float digTimer = 0.5f; 
+	float drillPower = 10.f;  //드릴파워
 
 	bool invincible = false;
 	float invincTimer = 1.5f;
 	float invincTime = 0.f;
-
-	bool isDrill = false;
-	float digTime = 0.f;
-	float digTimer = 0.1f;
-
-
 
 	TileMap* tileMap;
 
@@ -72,6 +76,11 @@ public:
 	float GetMaxAir() { return airMax; }
 	float GetHP() { return hp; }
 	float GetAir() { return air; }
+
+
+	float GetDrillPower() const { return drillPower; }
+	float GetBooster() { return booster; }
+	float GetArmor() { return armorRate; }
 
 	PlayerBody(const std::string& name = "");
 	~PlayerBody();

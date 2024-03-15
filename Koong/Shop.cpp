@@ -104,15 +104,15 @@ void Shop::Update(float dt)
 	SpriteGo::Update(dt);
 	animator1.Update(dt);
 	animator2.Update(dt);
+	
 
+	//sf::FloatRect bound = NPC.GetGlobalBounds();
+	//sf::FloatRect playerBound = player->GetSpriteGlobalBound();
 
-	sf::FloatRect bound = NPC.GetGlobalBounds();
-	sf::FloatRect playerBound = player->GetSpriteGlobalBound();
-
-	if (bound.intersects(playerBound) && InputMgr::GetKeyDown(sf::Keyboard::Space))
-	{
-		player->SellAll();
-	}
+	//if (bound.intersects(playerBound) && InputMgr::GetKeyDown(sf::Keyboard::Space))
+	//{
+	//	player->SellAll();
+	//}
 
 	messageTime += dt;
 

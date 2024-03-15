@@ -2,6 +2,7 @@
 #include "UiHud.h"
 #include "PlayerBody.h"
 #include "Inventory.h"
+#include "Shop.h"
 
 UiHud::UiHud(const std::string& name)
 {
@@ -58,6 +59,43 @@ void UiHud::SetAirBar(int air, int maxair)
 	}
 }
 
+void UiHud::OpenShop()
+{
+	//if (shopHud.GetPosition() == invenClose)
+	//{
+	//	inventory.SetPosition(invenOpen);
+	//	for (int i = 0; i < invenCount.y; i++) // 6줄
+	//	{
+	//		for (int j = 0; j < invenCount.x; j++) //6칸
+	//		{
+	//			sf::Vector2f quadPos(invenSize.x * j + 45.f, invenSize.y * i + 185.f);
+	//			invenLists[i * invenCount.x + j].SetPosition(invenOpen + quadPos);
+	//			invenIconList[i * invenCount.x + j].SetPosition(invenOpen + quadPos);
+	//			invenNumList[i * invenCount.x + j].SetPosition(invenOpen + quadPos);
+	//		}
+	//	}
+	//	SetPlayerInfo();
+	//}
+	//else if (inventory.GetPosition() == invenOpen)
+	//{
+	//	inventory.SetPosition(invenClose);
+	//	for (int i = 0; i < invenCount.y; i++) // 6줄
+	//	{
+	//		for (int j = 0; j < invenCount.x; j++) //6칸
+	//		{
+	//			sf::Vector2f quadPos(invenSize.x * j + 45.f, invenSize.y * i + 185.f);
+	//			invenLists[i * invenCount.x + j].SetPosition(invenClose + quadPos);
+	//			invenIconList[i * invenCount.x + j].SetPosition(invenClose + quadPos);
+	//			invenNumList[i * invenCount.x + j].SetPosition(invenClose + quadPos);
+	//		}
+	//	}
+	//}
+	//invenName.SetPosition(inventory.GetPosition());
+	//invenKoong.SetPosition(inventory.GetPosition());
+	//moneyMenu.SetPosition(inventory.GetPosition());
+
+}
+
 void UiHud::Init()
 {
 	hud.SetTexture("graphics/ui/FSADIGBOY19-412.png");
@@ -88,6 +126,7 @@ void UiHud::Reset()
 
 	player = dynamic_cast<PlayerBody*>(SCENE_MGR.GetCurrentScene()->FindGo("Player"));
 	inventory = dynamic_cast<Inventory*>(SCENE_MGR.GetCurrentScene()->FindGo("Inventory"));
+	shop = dynamic_cast<Shop*>(SCENE_MGR.GetCurrentScene()->FindGo("Shop"));
 
 	//체력과 산소게이지
 	SetHpBar(player->GetHP(), player->GetMaxHP());
@@ -144,6 +183,15 @@ void UiHud::Update(float dt)
 		player->UseItem(3);
 	}
 	
+	
+	sf::FloatRect bound = shop->NPC.GetGlobalBounds();
+	sf::FloatRect playerBound = player->GetSpriteGlobalBound();
+
+	if (bound.intersects(playerBound) && InputMgr::GetKeyDown(sf::Keyboard::Space))
+	{
+		inventory->OpenInven();
+		//player->SellAll();
+	}
 
 }
 

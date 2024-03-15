@@ -141,8 +141,8 @@
     <ClCompile Include="DataTables\DataTable.cpp" />
     <ClCompile Include="DataTables\DataTableMgr.cpp" />
     <ClCompile Include="DataTables\StringTable.cpp" />
-    <ClCompile Include="Dynamite.cpp" />
-    <ClCompile Include="Explosive.cpp" />
+    <ClCompile Include="GameObjects\Dynamite.cpp" />
+    <ClCompile Include="GameObjects\Explosive.cpp" />
     <ClCompile Include="Framework\Framework.cpp" />
     <ClCompile Include="Framework\InputMgr.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
@@ -156,8 +156,8 @@
     <ClCompile Include="main.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Monster.cpp" />
-    <ClCompile Include="OreGo.cpp" />
+    <ClCompile Include="GameObjects\Monster.cpp" />
+    <ClCompile Include="GameObjects\OreGo.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
@@ -179,8 +179,8 @@
     <ClInclude Include="DataTables\DataTableMgr.h" />
     <ClInclude Include="DataTables\rapidcsv.h" />
     <ClInclude Include="DataTables\StringTable.h" />
-    <ClInclude Include="Dynamite.h" />
-    <ClInclude Include="Explosive.h" />
+    <ClInclude Include="GameObjects\Dynamite.h" />
+    <ClInclude Include="GameObjects\Explosive.h" />
     <ClInclude Include="Framework\Framework.h" />
     <ClInclude Include="Framework\Defines.h" />
     <ClInclude Include="Framework\InputMgr.h" />
@@ -190,8 +190,8 @@
     <ClInclude Include="Framework\Utils.h" />
     <ClInclude Include="GameObjects\GameObject.h" />
     <ClInclude Include="Inventory.h" />
-    <ClInclude Include="Monster.h" />
-    <ClInclude Include="OreGo.h" />
+    <ClInclude Include="GameObjects\Monster.h" />
+    <ClInclude Include="GameObjects\OreGo.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="PlayerBody.h" />
     <ClInclude Include="Scenes\SceneGame.h" />

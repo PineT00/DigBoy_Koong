@@ -1,10 +1,104 @@
 #include "pch.h"
 #include "Inventory.h"
+#include "PlayerBody.h"
 
 Inventory::Inventory(const std::string& name)
 	:SpriteGo(name)
 {
 }
+
+void Inventory::SetPlayerInfo()
+{
+	hpWstring = std::to_wstring(player->GetHP());
+	decimalPos = hpWstring.find(L".");
+	hpWstring = hpWstring.substr(0, decimalPos); // 소수점 직전까지만 출력
+
+	hpMaxWstring = std::to_wstring(player->GetMaxHP());
+	decimalPos = hpMaxWstring.find(L".");
+	hpMaxWstring = hpMaxWstring.substr(0, decimalPos);
+
+	airWstring = std::to_wstring(player->GetAir());
+	decimalPos = airWstring.find(L".");
+	airWstring = airWstring.substr(0, decimalPos);
+
+	airMaxWstring = std::to_wstring(player->GetMaxAir());
+	decimalPos = airMaxWstring.find(L".");
+	airMaxWstring = airMaxWstring.substr(0, decimalPos);
+
+	drillWstring = std::to_wstring(player->GetDrillPower());
+	decimalPos = drillWstring.find(L".");
+	drillWstring = drillWstring.substr(0, decimalPos);
+
+	boosterWstring = std::to_wstring(player->GetBooster());
+	decimalPos = boosterWstring.find(L".");
+	boosterWstring = boosterWstring.substr(0, decimalPos);
+
+	armorWstring = std::to_wstring(player->GetArmor());
+	decimalPos = armorWstring.find(L".");
+	armorWstring = armorWstring.substr(0, decimalPos);
+
+	energyText.SetW(fontK, L"ENERGY  " + hpWstring + L"/" + hpMaxWstring, 11, sf::Color::Red);
+	airText.SetW(fontK, L"AIR  " + airWstring + L"/" + airMaxWstring, 11, sf::Color::Cyan);
+	digPowerText.SetW(fontK, L"굴착력 :   " + drillWstring, 15, sf::Color::White);
+	boosterText.SetW(fontK, L"부스터 :   " + boosterWstring, 15, sf::Color::White);
+	armorText.SetW(fontK, L"방어력 :   " + armorWstring, 15, sf::Color::White);
+}
+
+void Inventory::OpenInven()
+{
+	if (inventory.GetPosition() == invenClose)
+	{
+		inventory.SetPosition(invenOpen);
+		for (int i = 0; i < invenCount.y; i++) // 6줄
+		{
+			for (int j = 0; j < invenCount.x; j++) //6칸
+			{
+				sf::Vector2f quadPos(invenSize.x * j + 45.f, invenSize.y * i + 185.f);
+				invenLists[i * invenCount.x + j].SetPosition(invenOpen + quadPos);
+				invenIconList[i * invenCount.x + j].SetPosition(invenOpen + quadPos);
+				invenNumList[i * invenCount.x + j].SetPosition(invenOpen + quadPos);
+			}
+		}
+		SetPlayerInfo();
+	}
+	else if (inventory.GetPosition() == invenOpen)
+	{
+		inventory.SetPosition(invenClose);
+		for (int i = 0; i < invenCount.y; i++) // 6줄
+		{
+			for (int j = 0; j < invenCount.x; j++) //6칸
+			{
+				sf::Vector2f quadPos(invenSize.x * j + 45.f, invenSize.y * i + 185.f);
+				invenLists[i * invenCount.x + j].SetPosition(invenClose + quadPos);
+				invenIconList[i * invenCount.x + j].SetPosition(invenClose + quadPos);
+				invenNumList[i * invenCount.x + j].SetPosition(invenClose + quadPos);
+			}
+		}
+	}
+	invenName.SetPosition(inventory.GetPosition());
+	invenKoong.SetPosition(inventory.GetPosition());
+	moneyMenu.SetPosition(inventory.GetPosition());
+	invenEquipHead.SetPosition(inventory.GetPosition());
+	invenEquipDrill.SetPosition(inventory.GetPosition());
+	invenEquipFeet.SetPosition(inventory.GetPosition());
+
+	//돈 숫자 스프라이트
+	moneyUnit.setPosition(inventory.GetPosition());
+	moneyTens.setPosition(inventory.GetPosition());
+	moneyHundreds.setPosition(inventory.GetPosition());
+	moneyThousands.setPosition(inventory.GetPosition());
+	moneyTenThousands.setPosition(inventory.GetPosition());
+	moneyHunThousands.setPosition(inventory.GetPosition());
+
+	//플레이어 정보
+	textBack.SetPosition(inventory.GetPosition());
+	energyText.SetPosition(inventory.GetPosition());
+	airText.SetPosition(inventory.GetPosition());
+	digPowerText.SetPosition(inventory.GetPosition());
+	boosterText.SetPosition(inventory.GetPosition());
+	armorText.SetPosition(inventory.GetPosition());
+}
+
 
 void Inventory::SetInvenItem(InvenState state, bool Get)
 {
@@ -350,6 +444,9 @@ void Inventory::Init()
 	invenEquipDrill.SetTexture("graphics/ui/FSADIGBOY19-307.png");
 	invenEquipFeet.SetTexture("graphics/ui/FSADIGBOY19-307.png");
 
+	textBack.SetTexture("graphics/ui/FSADIGBOY19-323.png");
+	getOut.SetTexture("graphics/ui/FSADIGBOY19-getout.png");
+	getOutLight.SetTexture("graphics/ui/FSADIGBOY19-getoutLight.png");
 
 	//숫자변수 텍스쳐 할당
 	{
@@ -377,6 +474,8 @@ void Inventory::Release()
 void Inventory::Reset()
 {
 	SpriteGo::Reset();
+
+	player = dynamic_cast<PlayerBody*>(SCENE_MGR.GetCurrentScene()->FindGo("Player"));
 
 	//인벤토리
 	inventory.SetOrigin(Origins::TL);
@@ -414,7 +513,6 @@ void Inventory::Reset()
 	moneyHunThousands.setPosition(inventory.GetPosition());
 
 
-
 	invenLists.resize(invenCount.x * invenCount.y);
 	invenIconList.resize(invenCount.x * invenCount.y);
 	invenNumList.resize(invenCount.x * invenCount.y);
@@ -442,6 +540,54 @@ void Inventory::Reset()
 
 	SetInvenMoney();
 
+	//hpWstring = std::to_wstring(player->GetHP());
+	//decimalPos = hpWstring.find(L".");
+	//hpWstring = hpWstring.substr(0, decimalPos); // 소수점 직전까지만 출력
+
+	//hpMaxWstring = std::to_wstring(player->GetMaxHP());
+	//decimalPos = hpMaxWstring.find(L".");
+	//hpMaxWstring = hpMaxWstring.substr(0, decimalPos);
+
+	//airWstring = std::to_wstring(player->GetAir());
+	//decimalPos = airWstring.find(L".");
+	//airWstring = airWstring.substr(0, decimalPos);
+
+	//airMaxWstring = std::to_wstring(player->GetMaxAir());
+	//decimalPos = airMaxWstring.find(L".");
+	//airMaxWstring = airMaxWstring.substr(0, decimalPos); 
+
+	//drillWstring = std::to_wstring(player->GetDrillPower());
+	//decimalPos = drillWstring.find(L".");
+	//drillWstring = drillWstring.substr(0, decimalPos);
+
+	//boosterWstring = std::to_wstring(player->GetBooster());
+	//decimalPos = boosterWstring.find(L".");
+	//boosterWstring = boosterWstring.substr(0, decimalPos);
+
+	//armorWstring = std::to_wstring(player->GetArmor());
+	//decimalPos = armorWstring.find(L".");
+	//armorWstring = armorWstring.substr(0, decimalPos);
+	//
+	//energyText.SetW(fontK, L"ENERGY  " + hpWstring + L"/" + hpMaxWstring, 11, sf::Color::Red);
+	//airText.SetW(fontK, L"AIR  " + airWstring + L"/" + airMaxWstring, 11, sf::Color::Cyan);
+	//digPowerText.SetW(fontK, L"굴착력 :   " + drillWstring, 15, sf::Color::White);
+	//boosterText.SetW(fontK, L"부스터 :   " + boosterWstring, 15, sf::Color::White);
+	//armorText.SetW(fontK, L"방어력 :   " + armorWstring, 15, sf::Color::White);
+
+	textBack.SetOrigin({ -48.f, -49.f });
+	energyText.SetOrigin({ -50.f, -48.f });
+	airText.SetOrigin({ -50.f, -65.f });;
+	digPowerText.SetOrigin({ -50.f, -90.f });;
+	boosterText.SetOrigin({ -50.f, -110.f });;
+	armorText.SetOrigin({ -50.f, -130.f });;
+
+	textBack.SetPosition(inventory.GetPosition());
+	energyText.SetPosition(inventory.GetPosition());
+	airText.SetPosition(inventory.GetPosition());
+	digPowerText.SetPosition(inventory.GetPosition());
+	boosterText.SetPosition(inventory.GetPosition());
+	armorText.SetPosition(inventory.GetPosition());
+
 }
 
 void Inventory::Update(float dt)
@@ -450,48 +596,7 @@ void Inventory::Update(float dt)
 
 	if (InputMgr::GetKeyDown(sf::Keyboard::I))
 	{
-		if (inventory.GetPosition() == invenClose)
-		{
-			inventory.SetPosition(invenOpen);
-			for (int i = 0; i < invenCount.y; i++) // 6줄
-			{
-				for (int j = 0; j < invenCount.x; j++) //6칸
-				{
-					sf::Vector2f quadPos(invenSize.x * j + 45.f, invenSize.y * i + 185.f);
-					invenLists[i * invenCount.x + j].SetPosition(invenOpen + quadPos);
-					invenIconList[i * invenCount.x + j].SetPosition(invenOpen + quadPos);
-					invenNumList[i * invenCount.x + j].SetPosition(invenOpen + quadPos);
-				}
-			}
-		}
-		else if (inventory.GetPosition() == invenOpen)
-		{
-			inventory.SetPosition(invenClose);
-			for (int i = 0; i < invenCount.y; i++) // 6줄
-			{
-				for (int j = 0; j < invenCount.x; j++) //6칸
-				{
-					sf::Vector2f quadPos(invenSize.x * j + 45.f, invenSize.y * i + 185.f);
-					invenLists[i * invenCount.x + j].SetPosition(invenClose + quadPos);
-					invenIconList[i * invenCount.x + j].SetPosition(invenClose + quadPos);
-					invenNumList[i * invenCount.x + j].SetPosition(invenClose + quadPos);
-				}
-			}
-		}
-		invenName.SetPosition(inventory.GetPosition());
-		invenKoong.SetPosition(inventory.GetPosition());
-		moneyMenu.SetPosition(inventory.GetPosition());
-		invenEquipHead.SetPosition(inventory.GetPosition());
-		invenEquipDrill.SetPosition(inventory.GetPosition());
-		invenEquipFeet.SetPosition(inventory.GetPosition());
-
-		//돈 숫자 스프라이트
-		moneyUnit.setPosition(inventory.GetPosition());
-		moneyTens.setPosition(inventory.GetPosition());
-		moneyHundreds.setPosition(inventory.GetPosition());
-		moneyThousands.setPosition(inventory.GetPosition());
-		moneyTenThousands.setPosition(inventory.GetPosition());
-		moneyHunThousands.setPosition(inventory.GetPosition());
+		OpenInven();
 	}
 }
 
@@ -515,6 +620,12 @@ void Inventory::Draw(sf::RenderWindow& window)
 	window.draw(moneyTenThousands);
 	window.draw(moneyHunThousands);
 
+	textBack.Draw(window);
+	energyText.Draw(window);
+	airText.Draw(window);
+	digPowerText.Draw(window);
+	boosterText.Draw(window);
+	armorText.Draw(window);
 
 	for (int a = 0; a < invenLists.size(); ++a)
 	{
@@ -532,3 +643,4 @@ void Inventory::Draw(sf::RenderWindow& window)
 	}
 
 }
+
