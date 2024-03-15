@@ -437,19 +437,6 @@ void Inventory::LoadInventory(const std::string& filename)
 		}
 
 		file.close();
-
-		std::cout << invenSaveList[0] << std::endl;
-		std::cout << invenSaveList[1] << std::endl;
-		std::cout << invenSaveList[2] << std::endl;
-		std::cout << invenSaveList[3] << std::endl;
-		std::cout << invenSaveList[4] << std::endl;
-		std::cout << invenSaveList[5] << std::endl;
-		std::cout << invenSaveList[6] << std::endl;
-		std::cout << invenSaveList[7] << std::endl;
-		std::cout << invenSaveList[8] << std::endl;
-		std::cout << invenSaveList[10] << std::endl;
-
-
 	}
 	else
 	{
@@ -457,9 +444,29 @@ void Inventory::LoadInventory(const std::string& filename)
 	}
 
 	money = invenSaveList[10];
+	coilNum = invenSaveList[6];
+	bronzeNum = invenSaveList[7];
+	silverNum = invenSaveList[8];
+	goldNum = invenSaveList[9];
 
 	SetInvenMoney();
-	SetInvenOre(Inventory::InvenState::Coil);
+
+	for (int i = 0; i < coilNum; ++i)
+	{
+		SetInvenOre(Inventory::InvenState::Coil);
+	}
+	for (int i = 0; i < bronzeNum; ++i)
+	{
+		SetInvenOre(Inventory::InvenState::Bronze);
+	}
+	for (int i = 0; i < silverNum; ++i)
+	{
+		SetInvenOre(Inventory::InvenState::Silver);
+	}
+	for (int i = 0; i < goldNum; ++i)
+	{
+		SetInvenOre(Inventory::InvenState::Gold);
+	}
 
 }
 
@@ -598,7 +605,6 @@ void Inventory::Update(float dt)
 	if (InputMgr::GetKeyDown(sf::Keyboard::I))
 	{
 		OpenInven();
-		LoadInventory("tables/save/Inventory.csv");
 	}
 }
 

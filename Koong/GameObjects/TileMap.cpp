@@ -152,7 +152,7 @@ void TileMap::Set(sf::Vector2i& count, sf::Vector2f& size)
     texCoord0[3] = { 0, 42.f };
 
 
-    SetLevel("tables/save/MapTableSave.csv");
+    SetLevel("tables/MapTable60200.csv");
 
     for (int i = 0; i < count.y; ++i)
     {
