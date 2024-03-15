@@ -33,6 +33,8 @@ public:
 	std::vector<SpriteGo> invenIconList;
 	std::vector<SpriteGo> invenNumList;
 
+	std::vector<int> invenSaveList;
+
 	//인벤토리
 	int healKitNum = 0;
 	int airCapNum = 0;
@@ -50,6 +52,11 @@ public:
 	int invenBronzeNum = 0;
 	int invenSilverNum = 0;
 	int invenGoldNum = 0;
+
+	int coilPrice = 100;
+	int bronzePrice = 300;
+	int silverPrice = 500;
+	int goldPrice = 1000;
 
 	int money = 0;
 
@@ -81,7 +88,6 @@ protected:
 	sf::Vector2f invenSize = { 34, 34 };
 
 	std::vector<SpriteGo> invenLists;
-
 
 	std::vector<sf::Texture*> moneyTexture;
 
@@ -122,7 +128,7 @@ public:
 	void SetInvenOre(InvenState state);
 	void SetInvenMoney();
 
-	//void SetInventory(); //아이템 획득시마다 호출
+	void LoadInventory(const std::string& filename); //세이브파일 로드
 
 	void OpenInven();
 

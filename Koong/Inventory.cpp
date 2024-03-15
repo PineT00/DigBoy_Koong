@@ -115,34 +115,34 @@ void Inventory::SetInvenItem(InvenState state, bool Get)
 					switch (state)
 					{
 					case HealKit:
-						invenIconList[i * invenCount.x + j].SetTexture("graphics/shop/FSADIGBOY19-48.png");
+						invenIconList[i * invenCount.x + j].SetTexture("graphics/shop/item/FSADIGBOY19-item1.png");
 						stateList[i * invenCount.x + j] = HealKit;
 						set = true;
 						break;
 					case AirCap:
-						invenIconList[i * invenCount.x + j].SetTexture("graphics/shop/FSADIGBOY19-47.png");
+						invenIconList[i * invenCount.x + j].SetTexture("graphics/shop/item/FSADIGBOY19-item2.png");
 						stateList[i * invenCount.x + j] = AirCap;
 						set = true;
 						break;
 					case AirCapSuper:
-						invenIconList[i * invenCount.x + j].SetTexture("graphics/shop/FSADIGBOY19-46.png");
+						invenIconList[i * invenCount.x + j].SetTexture("graphics/shop/item/FSADIGBOY19-item3.png");
 						stateList[i * invenCount.x + j] = AirCapSuper;
 						set = true;
 						break;
 					case Bomb:
-						invenIconList[i * invenCount.x + j].SetTexture("graphics/shop/FSADIGBOY19-51.png");
+						invenIconList[i * invenCount.x + j].SetTexture("graphics/shop/item/FSADIGBOY19-item4.png");
 						stateList[i * invenCount.x + j] = Bomb;
 						set = true;
 						break;
 
 					case Nuclear:
-						invenIconList[i * invenCount.x + j].SetTexture("graphics/shop/FSADIGBOY19-50.png");
+						invenIconList[i * invenCount.x + j].SetTexture("graphics/shop/item/FSADIGBOY19-item5.png");
 						stateList[i * invenCount.x + j] = Nuclear;
 						set = true;
 						break;
 
 					case Dynamite:
-						invenIconList[i * invenCount.x + j].SetTexture("graphics/shop/FSADIGBOY19-49.png");
+						invenIconList[i * invenCount.x + j].SetTexture("graphics/shop/item/FSADIGBOY19-item6.png");
 						stateList[i * invenCount.x + j] = Dynamite;
 						set = true;
 						break;
@@ -414,21 +414,54 @@ void Inventory::SetInvenMoney()
 
 }
 
-//void Inventory::SetInventory()
-//{
-//	for (int i = 0; i < invenCount.y; i++) // 6줄
-//	{
-//		for (int j = 0; j < invenCount.x; j++) // 6칸
-//		{
-//			sf::Vector2f quadPos(invenSize.x * j + 45.f, invenSize.y * i + 185.f);
-//			invenIconList[i * invenCount.x + j].SetPosition(invenClose + quadPos);
-//
-//		}
-//	}
-//
-//	SetInvenMoney();
-//
-//}
+void Inventory::LoadInventory(const std::string& filename)
+{
+	std::ifstream file(filename);
+	std::string line;
+
+
+	if (file.is_open())
+	{
+		std::getline(file, line);
+
+		if (std::getline(file, line))
+		{
+			std::istringstream iss(line);
+			std::string token;
+
+			while (std::getline(iss, token, ','))
+			{
+				int value = std::stoi(token);
+				invenSaveList.push_back(value);
+			}
+		}
+
+		file.close();
+
+		std::cout << invenSaveList[0] << std::endl;
+		std::cout << invenSaveList[1] << std::endl;
+		std::cout << invenSaveList[2] << std::endl;
+		std::cout << invenSaveList[3] << std::endl;
+		std::cout << invenSaveList[4] << std::endl;
+		std::cout << invenSaveList[5] << std::endl;
+		std::cout << invenSaveList[6] << std::endl;
+		std::cout << invenSaveList[7] << std::endl;
+		std::cout << invenSaveList[8] << std::endl;
+		std::cout << invenSaveList[10] << std::endl;
+
+
+	}
+	else
+	{
+		std::cout << "파일을 열 수 없습니다." << std::endl;
+	}
+
+	money = invenSaveList[10];
+
+	SetInvenMoney();
+	SetInvenOre(Inventory::InvenState::Coil);
+
+}
 
 void Inventory::Init()
 {
@@ -517,6 +550,8 @@ void Inventory::Reset()
 	invenIconList.resize(invenCount.x * invenCount.y);
 	invenNumList.resize(invenCount.x * invenCount.y);
 
+	//invenSaveList.resize(11);
+
 
 	for (int i = 0; i < invenCount.y; i++) // 6줄
 	{
@@ -539,40 +574,6 @@ void Inventory::Reset()
 	}
 
 	SetInvenMoney();
-
-	//hpWstring = std::to_wstring(player->GetHP());
-	//decimalPos = hpWstring.find(L".");
-	//hpWstring = hpWstring.substr(0, decimalPos); // 소수점 직전까지만 출력
-
-	//hpMaxWstring = std::to_wstring(player->GetMaxHP());
-	//decimalPos = hpMaxWstring.find(L".");
-	//hpMaxWstring = hpMaxWstring.substr(0, decimalPos);
-
-	//airWstring = std::to_wstring(player->GetAir());
-	//decimalPos = airWstring.find(L".");
-	//airWstring = airWstring.substr(0, decimalPos);
-
-	//airMaxWstring = std::to_wstring(player->GetMaxAir());
-	//decimalPos = airMaxWstring.find(L".");
-	//airMaxWstring = airMaxWstring.substr(0, decimalPos); 
-
-	//drillWstring = std::to_wstring(player->GetDrillPower());
-	//decimalPos = drillWstring.find(L".");
-	//drillWstring = drillWstring.substr(0, decimalPos);
-
-	//boosterWstring = std::to_wstring(player->GetBooster());
-	//decimalPos = boosterWstring.find(L".");
-	//boosterWstring = boosterWstring.substr(0, decimalPos);
-
-	//armorWstring = std::to_wstring(player->GetArmor());
-	//decimalPos = armorWstring.find(L".");
-	//armorWstring = armorWstring.substr(0, decimalPos);
-	//
-	//energyText.SetW(fontK, L"ENERGY  " + hpWstring + L"/" + hpMaxWstring, 11, sf::Color::Red);
-	//airText.SetW(fontK, L"AIR  " + airWstring + L"/" + airMaxWstring, 11, sf::Color::Cyan);
-	//digPowerText.SetW(fontK, L"굴착력 :   " + drillWstring, 15, sf::Color::White);
-	//boosterText.SetW(fontK, L"부스터 :   " + boosterWstring, 15, sf::Color::White);
-	//armorText.SetW(fontK, L"방어력 :   " + armorWstring, 15, sf::Color::White);
 
 	textBack.SetOrigin({ -48.f, -49.f });
 	energyText.SetOrigin({ -50.f, -48.f });
@@ -597,6 +598,7 @@ void Inventory::Update(float dt)
 	if (InputMgr::GetKeyDown(sf::Keyboard::I))
 	{
 		OpenInven();
+		LoadInventory("tables/save/Inventory.csv");
 	}
 }
 

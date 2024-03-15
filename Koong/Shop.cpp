@@ -97,6 +97,7 @@ void Shop::Reset()
 
 	player = dynamic_cast<PlayerBody*>(SCENE_MGR.GetCurrentScene()->FindGo("Player"));
 
+
 }
 
 void Shop::Update(float dt)

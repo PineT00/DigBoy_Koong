@@ -2,6 +2,7 @@
 #include "SpriteGo.h"
 #include "TextGo.h"
 
+class Animator;
 class PlayerBody;
 class TileMap;
 class Inventory;
@@ -10,6 +11,12 @@ class Shop;
 class UiHud : public GameObject
 {
 protected:
+
+	Animator animator;
+	sf::Sprite bill;
+
+	bool billOn = false;
+
 	sf::Vector2f referenceResolution = { 1280, 960 };
 	sf::Vector2f resolution = referenceResolution;
 
@@ -47,9 +54,28 @@ protected:
 
 	sf::Font fontK = RES_MGR_FONT.Get("fonts/NanumSquareRoundEB.ttf");
 
-	//상점메뉴
-	SpriteGo shopHud;
+	sf::RectangleShape pointer;
 
+	//상점메뉴
+	std::vector<SpriteGo> shopList;
+	std::vector<SpriteGo> shopIconList;
+	std::vector<TextGo> shopNameList;
+	std::vector<TextGo> shopPriceList;
+
+	SpriteGo phd;
+	SpriteGo phdGlass;
+
+	SpriteGo shopHud;
+	SpriteGo shopBack;
+	SpriteGo buttonSell;
+
+	sf::Vector2f shopOpen = { 260.f, 42.f };
+	sf::Vector2f shopClose = { 640.f, 42.f };
+
+	sf::Vector2i shopCount = { 3, 7 };
+	sf::Vector2f shopSize = { 98, 37 };
+
+	int menuStringSize = 11;
 
 public:
 	UiHud(const std::string& name = "");
