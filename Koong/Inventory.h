@@ -61,6 +61,24 @@ public:
 
 	int money = 0;
 
+	bool cap1 = 0;
+	bool cap2 = 0;
+	bool cap3 = 0;
+	bool cap4 = 0;
+	bool cap5 = 0;
+
+	bool drill1 = 0;
+	bool drill2 = 0;
+	bool drill3 = 0;
+	bool drill4 = 0;
+	bool drill5 = 0;
+
+	bool shoe1 = 0;
+	bool shoe2 = 0;
+	bool shoe3 = 0;
+	bool shoe4 = 0;
+	bool shoe5 = 0;
+
 protected:
 
 	PlayerBody* player;
@@ -81,9 +99,15 @@ protected:
 	SpriteGo getOutLight;
 
 	SpriteGo invenKoong;
+
+	SpriteGo invenHead;
+	SpriteGo invenDrill;
+	SpriteGo invenFeet;
+
 	SpriteGo invenEquipHead;
 	SpriteGo invenEquipDrill;
 	SpriteGo invenEquipFeet;
+
 
 	sf::Vector2i invenCount = { 6, 6 };
 	sf::Vector2f invenSize = { 34, 34 };

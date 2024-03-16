@@ -13,30 +13,7 @@ class UiHud : public GameObject
 
 public:
 
-	int healKitPrice = 1000;
-	int airCapPrice = 500;
-	int airCapSuperPrice = 2000;
-	int bombPrice = 100;
-	int nuclearPrice = 300;
-	int dynamitePrice = 1000;
-
-	int cap1Price = 5000;
-	int cap2Price = 10000;
-	int cap3Price = 20000;
-	int cap4Price = 50000;
-	int cap5Price = 100000;
-
-	int drill1Price = 5000;
-	int drill2Price = 10000;
-	int drill3Price = 20000;
-	int drill4Price = 50000;
-	int drill5Price = 100000;
-
-	int shoe1Price = 5000;
-	int shoe2Price = 10000;
-	int shoe3Price = 20000;
-	int shoe4Price = 50000;
-	int shoe5Price = 100000;
+	std::vector<int> priceList;
 
 protected:
 
@@ -100,10 +77,21 @@ protected:
 	sf::Vector2f shopOpen = { 260.f, 42.f };
 	sf::Vector2f shopClose = { 640.f, 42.f };
 
+	sf::Vector2f shopOpenUp = { 260.f, 42.f };
+	sf::Vector2f shopOpenDown = { 260.f, -15.f };
+
 	sf::Vector2i shopCount = { 3, 7 };
 	sf::Vector2f shopSize = { 98, 37 };
 
 	int menuStringSize = 11;
+
+	SpriteGo upScroll;
+	SpriteGo downScroll;
+
+	SpriteGo bubble;
+
+	float textTime = 0.f;
+	float textTimer = 1.5f;
 
 public:
 	UiHud(const std::string& name = "");
@@ -112,13 +100,15 @@ public:
 	void SetResolution(const sf::Vector2f resolution);
 	void SetScore(int s);
 
-	void SetMessage(const std::string& msg);
+	void SetMessage(const std::wstring& msg);
 	void SetMessageActive(bool active);
 
 	void SetHpBar(int hp, int max);
 	void SetAirBar(int air, int maxair);
 
 	void OpenShop();
+	void ShopScrollUp();
+	void ShopScrollDown();
 	void BuyItem(int num);
 
 

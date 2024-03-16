@@ -78,6 +78,10 @@ void Inventory::OpenInven()
 	invenName.SetPosition(inventory.GetPosition());
 	invenKoong.SetPosition(inventory.GetPosition());
 	moneyMenu.SetPosition(inventory.GetPosition());
+	invenHead.SetPosition(inventory.GetPosition());
+	invenDrill.SetPosition(inventory.GetPosition());
+	invenFeet.SetPosition(inventory.GetPosition());
+
 	invenEquipHead.SetPosition(inventory.GetPosition());
 	invenEquipDrill.SetPosition(inventory.GetPosition());
 	invenEquipFeet.SetPosition(inventory.GetPosition());
@@ -136,33 +140,39 @@ void Inventory::SetInvenItem(InvenState state, bool Get)
 					case HealKit:
 						invenIconList[i * invenCount.x + j].SetTexture("graphics/shop/item/FSADIGBOY19-item1.png");
 						stateList[i * invenCount.x + j] = HealKit;
+						healKitNum += 1;
 						set = true;
 						break;
 					case AirCap:
 						invenIconList[i * invenCount.x + j].SetTexture("graphics/shop/item/FSADIGBOY19-item2.png");
 						stateList[i * invenCount.x + j] = AirCap;
+						airCapNum += 1;
 						set = true;
 						break;
 					case AirCapSuper:
 						invenIconList[i * invenCount.x + j].SetTexture("graphics/shop/item/FSADIGBOY19-item3.png");
 						stateList[i * invenCount.x + j] = AirCapSuper;
+						airCapSuperNum += 1;
 						set = true;
 						break;
 					case Bomb:
 						invenIconList[i * invenCount.x + j].SetTexture("graphics/shop/item/FSADIGBOY19-item4.png");
 						stateList[i * invenCount.x + j] = Bomb;
+						bombNum += 1;
 						set = true;
 						break;
 
 					case Nuclear:
 						invenIconList[i * invenCount.x + j].SetTexture("graphics/shop/item/FSADIGBOY19-item5.png");
 						stateList[i * invenCount.x + j] = Nuclear;
+						nuclearNum += 1;
 						set = true;
 						break;
 
 					case Dynamite:
 						invenIconList[i * invenCount.x + j].SetTexture("graphics/shop/item/FSADIGBOY19-item6.png");
 						stateList[i * invenCount.x + j] = Dynamite;
+						dynamiteNum += 1;
 						set = true;
 						break;
 					default:
@@ -196,33 +206,39 @@ void Inventory::SetInvenItem(InvenState state, bool Get)
 					case HealKit:
 						invenIconList[i * invenCount.x + j].SetTexture("graphics/ore/FSADIGBOY19-empty.png");
 						stateList[i * invenCount.x + j] = Empty;
+						healKitNum -= 1;
 						set = true;
 						break;
 					case AirCap:
 						invenIconList[i * invenCount.x + j].SetTexture("graphics/ore/FSADIGBOY19-empty.png");
 						stateList[i * invenCount.x + j] = Empty;
+						airCapNum -= 1;
 						set = true;
 						break;
 					case AirCapSuper:
 						invenIconList[i * invenCount.x + j].SetTexture("graphics/ore/FSADIGBOY19-empty.png");
 						stateList[i * invenCount.x + j] = Empty;
+						airCapSuperNum -= 1;
 						set = true;
 						break;
 					case Bomb:
 						invenIconList[i * invenCount.x + j].SetTexture("graphics/ore/FSADIGBOY19-empty.png");
 						stateList[i * invenCount.x + j] = Empty;
+						bombNum -= 1;
 						set = true;
 						break;
 
 					case Nuclear:
 						invenIconList[i * invenCount.x + j].SetTexture("graphics/ore/FSADIGBOY19-empty.png");
 						stateList[i * invenCount.x + j] = Empty;
+						nuclearNum -= 1;
 						set = true;
 						break;
 
 					case Dynamite:
 						invenIconList[i * invenCount.x + j].SetTexture("graphics/ore/FSADIGBOY19-empty.png");
 						stateList[i * invenCount.x + j] = Empty;
+						dynamiteNum -= 1;
 						set = true;
 						break;
 					default:
@@ -417,8 +433,6 @@ void Inventory::SetInvenOre(InvenState state)
 
 void Inventory::SetInvenMoney(int coin, int state)
 {
-
-
 	if (state == 1)
 	{
 		money += coin;
@@ -426,6 +440,10 @@ void Inventory::SetInvenMoney(int coin, int state)
 	else if (state == -1)
 	{
 		money -= coin;
+		if (money < coin)
+		{
+			//refsdfdsfdf
+		}
 	}
 	int unitNumM = money % 10;
 	int tensNumM = (money / 10) % 10;
@@ -472,7 +490,43 @@ void Inventory::LoadInventory(const std::string& filename)
 		std::cout << "파일을 열 수 없습니다." << std::endl;
 	}
 
-	money = invenSaveList[10];
+	for (int i = 0; i < invenSaveList[0]; ++i)
+	{
+		SetInvenItem(HealKit, 1);
+	}
+	for (int i = 0; i < invenSaveList[1]; ++i)
+	{
+		SetInvenItem(AirCap, 1);
+	}
+	for (int i = 0; i < invenSaveList[2]; ++i)
+	{
+		SetInvenItem(AirCapSuper, 1);
+	}
+	for (int i = 0; i < invenSaveList[3]; ++i)
+	{
+		SetInvenItem(Bomb, 1);
+	}
+	for (int i = 0; i < invenSaveList[4]; ++i)
+	{
+		SetInvenItem(Nuclear, 1);
+	}
+	for (int i = 0; i < invenSaveList[5]; ++i)
+	{
+		SetInvenItem(Dynamite, 1);
+	}
+
+
+	for (int i = 0; i < coilNum; ++i)
+	{
+		SetInvenOre(Inventory::InvenState::Coil);
+	}
+
+
+
+
+
+
+	money = invenSaveList[25];
 	coilNum = invenSaveList[6];
 	bronzeNum = invenSaveList[7];
 	silverNum = invenSaveList[8];
@@ -509,9 +563,13 @@ void Inventory::Init()
 	moneyMenu.SetTexture("graphics/ui/FSADIGBOY19-324.png");
 	invenKoong.SetTexture("graphics/ui/FSADIGBOY19-322.png");
 
-	invenEquipHead.SetTexture("graphics/ui/FSADIGBOY19-307.png");
-	invenEquipDrill.SetTexture("graphics/ui/FSADIGBOY19-307.png");
-	invenEquipFeet.SetTexture("graphics/ui/FSADIGBOY19-307.png");
+	invenHead.SetTexture("graphics/ui/FSADIGBOY19-307.png");
+	invenDrill.SetTexture("graphics/ui/FSADIGBOY19-307.png");
+	invenFeet.SetTexture("graphics/ui/FSADIGBOY19-307.png");
+
+	invenEquipHead.SetTexture("graphics/ore/FSADIGBOY19-empty.png");
+	invenEquipDrill.SetTexture("graphics/FSADIGBOY19-33.png");
+	invenEquipFeet.SetTexture("graphics/ore/FSADIGBOY19-empty.png");
 
 	textBack.SetTexture("graphics/ui/FSADIGBOY19-323.png");
 	getOut.SetTexture("graphics/ui/FSADIGBOY19-getout.png");
@@ -560,11 +618,18 @@ void Inventory::Reset()
 	invenKoong.SetPosition(inventory.GetPosition());
 
 	//인벤토리 장착슬롯
-	invenEquipHead.SetOrigin({ -225.f, -50.f });
+	invenHead.SetOrigin({ -225.f, -50.f });
+	invenHead.SetPosition(inventory.GetPosition());
+	invenDrill.SetOrigin({ -225.f, -85.f });
+	invenDrill.SetPosition(inventory.GetPosition());
+	invenFeet.SetOrigin({ -225.f, -120.f });
+	invenFeet.SetPosition(inventory.GetPosition());
+
+	invenEquipHead.SetOrigin({ -228.f, -50.f });
 	invenEquipHead.SetPosition(inventory.GetPosition());
-	invenEquipDrill.SetOrigin({ -225.f, -85.f });
+	invenEquipDrill.SetOrigin({ -228.f, -85.f });
 	invenEquipDrill.SetPosition(inventory.GetPosition());
-	invenEquipFeet.SetOrigin({ -225.f, -120.f });
+	invenEquipFeet.SetOrigin({ -228.f, -120.f });
 	invenEquipFeet.SetPosition(inventory.GetPosition());
 
 
@@ -646,6 +711,9 @@ void Inventory::Draw(sf::RenderWindow& window)
 	moneyMenu.Draw(window);
 
 	invenKoong.Draw(window);
+	invenHead.Draw(window);
+	invenDrill.Draw(window);
+	invenFeet.Draw(window);
 	invenEquipHead.Draw(window);
 	invenEquipDrill.Draw(window);
 	invenEquipFeet.Draw(window);

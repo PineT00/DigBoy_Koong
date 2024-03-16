@@ -22,7 +22,7 @@ protected:
 	float hp = hpMax;
 	float air = airMax;
 
-	float booster = 500.f; //부스터파워
+	float booster = 300.f; //부스터파워
 
 	float fallDmg = 30.f;
 	float armorRate = 0.f; //방어력
@@ -30,7 +30,7 @@ protected:
 	bool isDrill = false;
 	float digTime = 0.f;
 	float digTimer = 0.5f; 
-	float drillPower = 10.f;  //드릴파워
+	float drillPower = 5.f;  //드릴파워
 
 	bool invincible = false;
 	float invincTimer = 1.5f;
@@ -77,6 +77,10 @@ public:
 	float GetHP() { return hp; }
 	float GetAir() { return air; }
 
+
+	void SetCap();
+	void SetDrillPower();
+	void SetShoes();
 
 	float GetDrillPower() const { return drillPower; }
 	float GetBooster() { return booster; }

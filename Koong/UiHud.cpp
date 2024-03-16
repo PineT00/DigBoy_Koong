@@ -16,18 +16,23 @@ void UiHud::SetScore(int s)
 {
 }
 
-void UiHud::SetMessage(const std::string& msg)
+void UiHud::SetMessage(const std::wstring& msg)
 {
-	textMessage.SetString(msg);
-	textMessage.SetOrigin(Origins::MC);
+	textMessage.SetW(fontK, msg, 20, sf::Color::Black);
 }
 
 void UiHud::SetMessageActive(bool active)
 {
 	if (active)
+	{
+		bubble.SetActive(true);
 		textMessage.SetActive(true);
+	}
 	else
+	{
+		bubble.SetActive(false);
 		textMessage.SetActive(false);
+	}
 }
 
 void UiHud::SetHpBar(int hp, int max)
@@ -82,9 +87,11 @@ void UiHud::OpenShop()
 				shopPriceList[i * shopCount.x + j].SetPosition(shopOpen + quadPos);
 			}
 		}
+
 	}
 	else if (shopHud.GetPosition() == shopOpen)
 	{
+		SetMessageActive(false);
 		shopHud.SetPosition(shopClose);
 		shopBack.SetPosition(shopClose);
 		for (int i = 0; i < shopCount.y; i++) // 7줄
@@ -110,85 +117,155 @@ void UiHud::OpenShop()
 	phd.SetPosition(shopHud.GetPosition());
 	phdGlass.SetPosition(shopHud.GetPosition());
 
+	upScroll.SetPosition(shopHud.GetPosition());
+	downScroll.SetPosition(shopHud.GetPosition());
 
+
+
+}
+
+
+void UiHud::ShopScrollUp()
+{
+	for (int i = 0; i < shopCount.y; i++) // 7줄
+	{
+		for (int j = 0; j < shopCount.x; j++) //3칸
+		{
+			sf::Vector2f quadPos(shopSize.x * j + 52.f, shopSize.y * i + 180.f);
+			shopList[i * shopCount.x + j].SetPosition(shopOpenUp + quadPos);
+
+			quadPos = { shopSize.x * j + 55.f, shopSize.y * i + 182.f };
+			shopIconList[i * shopCount.x + j].SetPosition(shopOpenUp + quadPos);
+
+			quadPos = { shopSize.x * j + 92.f, shopSize.y * i + 185.f };
+			shopNameList[i * shopCount.x + j].SetPosition(shopOpenUp + quadPos);
+
+			quadPos = { shopSize.x * j + 90.f, shopSize.y * i + 200.f };
+			shopPriceList[i * shopCount.x + j].SetPosition(shopOpenUp + quadPos);
+		}
+	}
+}
+
+void UiHud::ShopScrollDown()
+{
+	for (int i = 0; i < shopCount.y; i++) // 7줄
+	{
+		for (int j = 0; j < shopCount.x; j++) //3칸
+		{
+			sf::Vector2f quadPos(shopSize.x * j + 52.f, shopSize.y * i + 180.f);
+			shopList[i * shopCount.x + j].SetPosition(shopOpenDown + quadPos);
+
+			quadPos = { shopSize.x * j + 55.f, shopSize.y * i + 182.f };
+			shopIconList[i * shopCount.x + j].SetPosition(shopOpenDown + quadPos);
+
+			quadPos = { shopSize.x * j + 92.f, shopSize.y * i + 185.f };
+			shopNameList[i * shopCount.x + j].SetPosition(shopOpenDown + quadPos);
+
+			quadPos = { shopSize.x * j + 90.f, shopSize.y * i + 200.f };
+			shopPriceList[i * shopCount.x + j].SetPosition(shopOpenDown + quadPos);
+		}
+	}
 }
 
 void UiHud::BuyItem(int num)
 {
+	if (priceList[num] > inventory->money)
+	{
+		SetMessageActive(true);
+		return;
+	}
+
 	switch (num)
 	{
 	case 0: 
 		inventory->SetInvenItem(Inventory::InvenState::HealKit, 1);
-		inventory->SetInvenMoney(healKitPrice, -1);
+		inventory->SetInvenMoney(priceList[0], -1);
 		break;
 	case 1:
 		inventory->SetInvenItem(Inventory::InvenState::AirCap, 1);
-		inventory->SetInvenMoney(airCapPrice, -1);
+		inventory->SetInvenMoney(priceList[1], -1);
 		break;
 	case 2:
 		inventory->SetInvenItem(Inventory::InvenState::AirCapSuper, 1);
-		inventory->SetInvenMoney(airCapSuperPrice, -1);
+		inventory->SetInvenMoney(priceList[2], -1);
 		break;
 	case 3:
 		inventory->SetInvenItem(Inventory::InvenState::Bomb, 1);
-		inventory->SetInvenMoney(bombPrice, -1);
+		inventory->SetInvenMoney(priceList[3], -1);
 		break;
 	case 4:
 		inventory->SetInvenItem(Inventory::InvenState::Nuclear, 1);
-		inventory->SetInvenMoney(nuclearPrice, -1);
+		inventory->SetInvenMoney(priceList[4], -1);
 		break;
 	case 5:
 		inventory->SetInvenItem(Inventory::InvenState::Dynamite, 1);
-		inventory->SetInvenMoney(dynamitePrice, -1);
+		inventory->SetInvenMoney(priceList[5], -1);
 		break;
 	case 6:
-		inventory->SetInvenItem(Inventory::InvenState::HealKit, 1);
+		inventory->SetInvenMoney(priceList[6], -1);
+		inventory->cap1 = 1;
 		break;
 	case 7:
-		inventory->SetInvenItem(Inventory::InvenState::HealKit, 1);
+		inventory->SetInvenMoney(priceList[7], -1);
+		inventory->cap2 = 1;
 		break;
 	case 8:
-		inventory->SetInvenItem(Inventory::InvenState::HealKit, 1);
+		inventory->SetInvenMoney(priceList[8], -1);
+		inventory->cap3 = 1;
 		break;
 	case 9:
-		inventory->SetInvenItem(Inventory::InvenState::HealKit, 1);
+		inventory->SetInvenMoney(priceList[9], -1);
+		inventory->cap4 = 1;
 		break;
 	case 10:
-		inventory->SetInvenItem(Inventory::InvenState::HealKit, 1);
+		inventory->SetInvenMoney(priceList[10], -1);
+		inventory->cap5 = 1;
 		break;
 	case 11:
-		inventory->SetInvenItem(Inventory::InvenState::HealKit, 1);
+		inventory->SetInvenMoney(priceList[11], -1);
+		inventory->drill1 = 1;
 		break;
 	case 12:
-		inventory->SetInvenItem(Inventory::InvenState::HealKit, 1);
+		inventory->SetInvenMoney(priceList[12], -1);
+		inventory->drill2 = 1;
 		break;
 	case 13:
-		inventory->SetInvenItem(Inventory::InvenState::HealKit, 1);
+		inventory->SetInvenMoney(priceList[13], -1);
+		inventory->drill3 = 1;
 		break;
 	case 14:
-		inventory->SetInvenItem(Inventory::InvenState::HealKit, 1);
+		inventory->SetInvenMoney(priceList[14], -1);
+		inventory->drill4 = 1;
 		break;
 	case 15:
-		inventory->SetInvenItem(Inventory::InvenState::HealKit, 1);
+		inventory->SetInvenMoney(priceList[15], -1);
+		inventory->drill5 = 1;
 		break;
 	case 16:
-		inventory->SetInvenItem(Inventory::InvenState::HealKit, 1);
+		inventory->SetInvenMoney(priceList[16], -1);
+		inventory->shoe1 = 1;
 		break;
 	case 17:
-		inventory->SetInvenItem(Inventory::InvenState::HealKit, 1);
+		inventory->SetInvenMoney(priceList[17], -1);
+		inventory->shoe2 = 1;
 		break;
 	case 18:
-		inventory->SetInvenItem(Inventory::InvenState::HealKit, 1);
+		inventory->SetInvenMoney(priceList[18], -1);
+		inventory->shoe3 = 1;
 		break;
 	case 19:
-		inventory->SetInvenItem(Inventory::InvenState::HealKit, 1);
+		inventory->SetInvenMoney(priceList[19], -1);
+		inventory->shoe4 = 1;
 		break;
 	case 20:
-		inventory->SetInvenItem(Inventory::InvenState::HealKit, 1);
+		inventory->SetInvenMoney(priceList[20], -1);
+		inventory->shoe5 = 1;
 		break;
-
 	}
 
+	player->SetCap();
+	player->SetDrillPower();
+	player->SetShoes();
 	inventory->SetPlayerInfo();
 
 }
@@ -237,6 +314,10 @@ void UiHud::Init()
 	phd.SetTexture("graphics/shop/FSADIGBOY19-phd.png");
 	phdGlass.SetTexture("graphics/shop/FSADIGBOY19-phdGlass.png");
 
+	upScroll.SetTexture("graphics/shop/FSADIGBOY19-367.png");
+	downScroll.SetTexture("graphics/shop/FSADIGBOY19-369.png");
+
+	bubble.SetTexture("graphics/bubble/FSADIGBOY19-277.png");
 }
 
 void UiHud::Release()
@@ -276,9 +357,6 @@ void UiHud::Reset()
 	airBarFrame2.SetOrigin(Origins::TR);
 	airBarFrame2.SetPosition({ windowSize.x * 0.975f, windowSize.y * 0.34f });
 
-	textMessage.SetW(fontK, L"한글출력테스트", 40, sf::Color::White);
-	textMessage.SetPosition({ 0.f, 0.f });
-
 	quickMenu.SetOrigin(Origins::TC);
 	quickMenu.SetPosition({ windowSize.x * 0.5f, 0.f });
 
@@ -295,13 +373,21 @@ void UiHud::Reset()
 	shopBack.SetOrigin(Origins::TL);
 	shopBack.SetPosition(shopClose);
 
-	buttonSell.SetOrigin({-15,-45});
+	buttonSell.SetOrigin({-10,-45});
 	buttonSell.SetPosition(shopClose);
 
 	phd.SetOrigin({-200.f,-30.f});
 	phd.SetPosition(shopClose);
 	phdGlass.SetOrigin({ -200.f,-30.f });
 	phdGlass.SetPosition(shopClose);
+
+	bubble.SetOrigin({ -60.f, -35.f });
+	bubble.SetPosition(shopOpen);
+	textMessage.SetOrigin({ -90.f, -75.f });
+	textMessage.SetPosition(shopOpen);
+
+	SetMessage(L"돈이 부족해!"); 
+	SetMessageActive(false);
 
 	shopList.resize(shopCount.x * shopCount.y);
 	shopIconList.resize(shopCount.x * shopCount.y);
@@ -359,32 +445,42 @@ void UiHud::Reset()
 		shopNameList[20].SetW(fontK, L"레어슈즈", menuStringSize, sf::Color::White);
 	}
 
-	//아이템가격
+	//아이템가격리스트
 	{
-		shopPriceList[0].SetW(fontK, std::to_wstring(healKitPrice), 13, sf::Color::Yellow);
-		shopPriceList[0].SetW(fontK, L"\\1000", 13, sf::Color::Yellow);
-		shopPriceList[1].SetW(fontK, L"\\500", 13, sf::Color::Yellow);
-		shopPriceList[2].SetW(fontK, L"\\2000", 13, sf::Color::Yellow);
-		shopPriceList[3].SetW(fontK, L"\\100", 13, sf::Color::Yellow);
-		shopPriceList[4].SetW(fontK, L"\\300", 13, sf::Color::Yellow);
-		shopPriceList[5].SetW(fontK, L"\\1000", 13, sf::Color::Yellow);
-		shopPriceList[6].SetW(fontK, L"\\5000", 13, sf::Color::Yellow);
-		shopPriceList[7].SetW(fontK, L"\\10000", 13, sf::Color::Yellow);
-		shopPriceList[8].SetW(fontK, L"\\20000", 13, sf::Color::Yellow);
-		shopPriceList[9].SetW(fontK, L"\\50000", 13, sf::Color::Yellow);
-		shopPriceList[10].SetW(fontK, L"\\100000", 13, sf::Color::Yellow);
-		shopPriceList[11].SetW(fontK, L"\\5000", 13, sf::Color::Yellow);
-		shopPriceList[12].SetW(fontK, L"\\10000", 13, sf::Color::Yellow);
-		shopPriceList[13].SetW(fontK, L"\\20000", 13, sf::Color::Yellow);
-		shopPriceList[14].SetW(fontK, L"\\50000", 13, sf::Color::Yellow);
-		shopPriceList[15].SetW(fontK, L"\\100000", 13, sf::Color::Yellow);
-		shopPriceList[16].SetW(fontK, L"\\5000", 13, sf::Color::Yellow);
-		shopPriceList[17].SetW(fontK, L"\\10000", 13, sf::Color::Yellow);
-		shopPriceList[18].SetW(fontK, L"\\20000", 13, sf::Color::Yellow);
-		shopPriceList[19].SetW(fontK, L"\\50000", 13, sf::Color::Yellow);
-		shopPriceList[20].SetW(fontK, L"\\100000", 13, sf::Color::Yellow);
+		priceList.push_back(1000);
+		priceList.push_back(500);
+		priceList.push_back(2000);
+		priceList.push_back(100);
+		priceList.push_back(300);
+		priceList.push_back(1000);
+		priceList.push_back(5000);
+		priceList.push_back(10000);
+		priceList.push_back(20000);
+		priceList.push_back(50000);
+		priceList.push_back(10000);
+		priceList.push_back(5000);
+		priceList.push_back(10000);
+		priceList.push_back(20000);
+		priceList.push_back(50000);
+		priceList.push_back(10000);
+		priceList.push_back(5000);
+		priceList.push_back(10000);
+		priceList.push_back(20000);
+		priceList.push_back(50000);
+		priceList.push_back(10000);
 	}
 
+
+	//아이템가격
+	for (int i = 0; i < 21; ++i)
+	{
+		shopPriceList[i].SetW(fontK, std::to_wstring(priceList[i]), 13, sf::Color::Yellow);
+	}
+
+	upScroll.SetOrigin({ -347.f,-179.f });
+	downScroll.SetOrigin({ -347.f,-376.f });
+	upScroll.SetPosition(shopClose);
+	downScroll.SetPosition(shopClose);
 }
 
 void UiHud::Update(float dt)
@@ -463,13 +559,38 @@ void UiHud::Update(float dt)
 			bill.setPosition({ -10.f, 50.f });
 			animator.Play("Billing");
 		}
-
 	}
+
 	if (billOn && InputMgr::GetKeyDown(sf::Keyboard::Enter))
 	{
 		billOn = false;
 	}
 
+	if (upScroll.GetGlobalBounds().intersects(pointer.getGlobalBounds()))
+	{
+		if (InputMgr::GetMouseButtonDown(sf::Mouse::Left))
+		{
+			ShopScrollUp();
+		}
+	}
+	else if (downScroll.GetGlobalBounds().intersects(pointer.getGlobalBounds()))
+	{
+		if (InputMgr::GetMouseButtonDown(sf::Mouse::Left))
+		{
+			ShopScrollDown();
+		}
+	}
+
+	//메시지창이 떠있는 시간
+	if (textMessage.GetActive())
+	{
+		textTime += dt;
+		if (textTimer < textTime)
+		{
+			SetMessageActive(false);
+			textTime = 0.f;
+		}
+	}
 
 }
 
@@ -487,7 +608,6 @@ void UiHud::Draw(sf::RenderWindow& window)
 	hpBar.Draw(window);
 	energy.Draw(window);
 
-	//textMessage.Draw(window);
 
 	quickMenu.Draw(window);
 	quickItem1.Draw(window);
@@ -523,6 +643,16 @@ void UiHud::Draw(sf::RenderWindow& window)
 
 	phd.Draw(window);
 	phdGlass.Draw(window);
+
+
+	if (textMessage.GetActive())
+	{
+		bubble.Draw(window);
+		textMessage.Draw(window);
+	}
+	
+	upScroll.Draw(window);
+	downScroll.Draw(window);
 
 	if(billOn)
 	{

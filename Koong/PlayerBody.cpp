@@ -6,6 +6,8 @@
 #include "Dynamite.h"
 #include "Inventory.h"
 
+
+
 PlayerBody::PlayerBody(const std::string& name)
 	: SpriteGo(name), tileMap(tileMap)
 {
@@ -15,6 +17,82 @@ PlayerBody::~PlayerBody()
 {
 }
 
+void PlayerBody::SetCap()
+{
+	if(inventory->cap5)
+	{
+		airMax = 500.f;
+		armorRate = 25.f;
+	}
+	else if (inventory->cap4)
+	{
+		airMax = 400.f;
+		armorRate = 20.f;
+	}
+	else if (inventory->cap3)
+	{
+		airMax = 300.f;
+		armorRate = 15.f;
+	}
+	else if (inventory->cap2)
+	{
+		airMax = 200.f;
+		armorRate = 10.f;
+	}
+	else if (inventory->cap1)
+	{
+		airMax = 150.f;
+		armorRate = 5.f;
+	}
+}
+
+void PlayerBody::SetDrillPower()
+{
+	if (inventory->drill5)
+	{
+		drillPower = 30.f;
+	}
+	else if (inventory->drill4)
+	{
+		drillPower = 25.f;
+	}
+	else if (inventory->drill3)
+	{
+		drillPower = 20.f;
+	}
+	else if (inventory->drill2)
+	{
+		drillPower = 15.f;
+	}
+	else if (inventory->drill1)
+	{
+		drillPower = 10.f;
+	}
+}
+
+void PlayerBody::SetShoes()
+{
+	if (inventory->shoe5)
+	{
+		booster = 1000.f;
+	}
+	else if (inventory->shoe4)
+	{
+		booster = 900.f;
+	}
+	else if (inventory->shoe3)
+	{
+		booster = 800.f;
+	}
+	else if (inventory->shoe2)
+	{
+		booster = 600.f;
+	}
+	else if (inventory->shoe1)
+	{
+		booster = 400.f;
+	}
+}
 
 void PlayerBody::OnItem(int type, bool get)
 {
@@ -36,31 +114,6 @@ void PlayerBody::OnItem(int type, bool get)
 		inventory->goldNum += 1;
 		inventory->SetInvenOre(Inventory::InvenState::Gold);
 		break;
-	case 4:
-		inventory->healKitNum += 1;
-		inventory->SetInvenItem(Inventory::InvenState::HealKit, get);
-		break;
-	case 5:
-		inventory->airCapNum += 1;
-		inventory->SetInvenItem(Inventory::InvenState::AirCap, get);
-		break;
-	case 6:
-		inventory->airCapSuperNum += 1;
-		inventory->SetInvenItem(Inventory::InvenState::AirCapSuper, get);
-		break;
-	case 7:
-		inventory->bombNum += 1;
-		inventory->SetInvenItem(Inventory::InvenState::Bomb, get);
-		break;
-	case 8:
-		inventory->nuclearNum += 1;
-		inventory->SetInvenItem(Inventory::InvenState::Nuclear, get);
-		break;
-	case 9:
-		inventory->dynamiteNum += 1;
-		inventory->SetInvenItem(Inventory::InvenState::Dynamite, get);
-		break;
-
 	default:
 		break;
 	}
@@ -78,23 +131,37 @@ void PlayerBody::UseItem(int num)
 	switch (num)
 	{
 	case 1:
-		inventory->healKitNum -= 1;
-		hp += 50;
+		if (inventory->healKitNum > 0)
+		{
+			inventory->SetInvenItem(Inventory::InvenState::HealKit, 0);
+			hp += 50;
+		}
 		if (hp >= hpMax)
 		{
 			hp = hpMax;
 		}
 		break;
 	case 2:
-		inventory->airCapNum -= 1;
-		air += 50;
+		if (inventory->airCapNum > 0)
+		{
+			inventory->SetInvenItem(Inventory::InvenState::AirCap, 0);
+			air += 50;
+		}
 		if (air >= airMax)
 		{
 			air = airMax;
 		}
 		break;
 	case 3:
-		inventory->bombNum -= 1;
+		if (inventory->bombNum > 0)
+		{
+			inventory->SetInvenItem(Inventory::InvenState::Bomb, 0);
+
+			Explosive* explosive = new Explosive;
+			explosive->SetBomb({ playerCellX, playerCellY });
+			SCENE_MGR.GetCurrentScene()->AddGo(explosive);
+			
+		}
 	default:
 		break;
 	}
@@ -500,11 +567,12 @@ void PlayerBody::Update(float dt)
 									isDrill = false;
 								}
 
-								if (InputMgr::GetKeyDown(sf::Keyboard::Num4))
+								if (InputMgr::GetKeyDown(sf::Keyboard::Num4) && inventory->dynamiteNum > 0)
 								{
 									Dynamite* dynamite = new Dynamite;
 									dynamite->SetDynamite({ i, j });
 									SCENE_MGR.GetCurrentScene()->AddGo(dynamite);
+									inventory->SetInvenItem(Inventory::InvenState::Dynamite, 0);
 								}
 							}
 						
@@ -584,23 +652,7 @@ void PlayerBody::Update(float dt)
 		}
 	}
 
-	if (InputMgr::GetKeyDown(sf::Keyboard::Num3))
-	{
-		Explosive* explosive = new Explosive;
-		explosive->SetBomb({ playerCellX, playerCellY });
-		SCENE_MGR.GetCurrentScene()->AddGo(explosive);
-	}
 
-
-	//아이템 획득 테스트용
-	if (InputMgr::GetKeyDown(sf::Keyboard::Num6))
-	{
-		OnItem(5, 1);
-	}
-	if (InputMgr::GetKeyDown(sf::Keyboard::Num7))
-	{
-		OnItem(5, 0);
-	}
 
 }
 
