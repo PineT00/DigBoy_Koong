@@ -272,6 +272,14 @@ void SceneDev1::UpdateGame(float dt)
 		SetStatus(Status::Pause);
 		return;
 	}
+	if (player->GetHP() <= 0)
+	{
+		deadTime += dt;
+		if (deadTime >= deadTimer)
+		{
+			SetStatus(Status::GameOver);
+		}
+	}
 }
 
 void SceneDev1::UpdateGameOver(float dt)

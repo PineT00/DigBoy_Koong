@@ -99,6 +99,25 @@ void Inventory::OpenInven()
 	armorText.SetPosition(inventory.GetPosition());
 }
 
+void Inventory::SellAll()
+{
+	std::cout << "광석정산" << std::endl;
+	SetInvenMoney((coilNum * coilPrice), 1);
+	coilNum = 0;
+
+	SetInvenMoney((bronzeNum * bronzePrice), 1);
+	bronzeNum = 0;
+
+	SetInvenMoney((silverNum * silverPrice), 1);
+	silverNum = 0;
+
+	SetInvenMoney((goldNum * goldPrice), 1);
+	goldNum = 0;
+
+	SetInvenOre(Empty);
+	std::cout << "현재 보유금 : " << money << std::endl;
+}
+
 
 void Inventory::SetInvenItem(InvenState state, bool Get)
 {
@@ -396,8 +415,18 @@ void Inventory::SetInvenOre(InvenState state)
 	}
 }
 
-void Inventory::SetInvenMoney()
+void Inventory::SetInvenMoney(int coin, int state)
 {
+
+
+	if (state == 1)
+	{
+		money += coin;
+	}
+	else if (state == -1)
+	{
+		money -= coin;
+	}
 	int unitNumM = money % 10;
 	int tensNumM = (money / 10) % 10;
 	int hundredsNumM = (money / 100) % 10;
@@ -449,7 +478,7 @@ void Inventory::LoadInventory(const std::string& filename)
 	silverNum = invenSaveList[8];
 	goldNum = invenSaveList[9];
 
-	SetInvenMoney();
+	SetInvenMoney(0, 0);
 
 	for (int i = 0; i < coilNum; ++i)
 	{
@@ -580,7 +609,7 @@ void Inventory::Reset()
 		stateList.push_back(Empty);
 	}
 
-	SetInvenMoney();
+	SetInvenMoney(0, 0);
 
 	textBack.SetOrigin({ -48.f, -49.f });
 	energyText.SetOrigin({ -50.f, -48.f });

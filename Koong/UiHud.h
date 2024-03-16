@@ -10,6 +10,34 @@ class Shop;
 
 class UiHud : public GameObject
 {
+
+public:
+
+	int healKitPrice = 1000;
+	int airCapPrice = 500;
+	int airCapSuperPrice = 2000;
+	int bombPrice = 100;
+	int nuclearPrice = 300;
+	int dynamitePrice = 1000;
+
+	int cap1Price = 5000;
+	int cap2Price = 10000;
+	int cap3Price = 20000;
+	int cap4Price = 50000;
+	int cap5Price = 100000;
+
+	int drill1Price = 5000;
+	int drill2Price = 10000;
+	int drill3Price = 20000;
+	int drill4Price = 50000;
+	int drill5Price = 100000;
+
+	int shoe1Price = 5000;
+	int shoe2Price = 10000;
+	int shoe3Price = 20000;
+	int shoe4Price = 50000;
+	int shoe5Price = 100000;
+
 protected:
 
 	Animator animator;
@@ -91,6 +119,8 @@ public:
 	void SetAirBar(int air, int maxair);
 
 	void OpenShop();
+	void BuyItem(int num);
+
 
 	void Init() override;
 	void Release() override;

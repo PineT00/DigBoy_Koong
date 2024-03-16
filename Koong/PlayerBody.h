@@ -86,11 +86,11 @@ public:
 	~PlayerBody();
 
 	void OnItem(int type, bool get);
-	void SellAll();
 
 	void UseItem(int num);
 
 	void OnDamage(float Dmg);
+	void OnDie();
 
 	void Init() override;
 	void Reset() override;

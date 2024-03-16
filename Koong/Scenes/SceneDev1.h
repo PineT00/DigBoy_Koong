@@ -26,6 +26,9 @@ protected:
 	float tileMapRightEnd = 0;
 
 public:
+	float deadTime = 0.f;
+	float deadTimer = 1.f;
+
 	SpriteGo* mainScreen = nullptr;
 	SpriteGo* backGround = nullptr;
 	TileMap* tileMap = nullptr;

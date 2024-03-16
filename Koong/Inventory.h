@@ -30,6 +30,7 @@ public:
 	InvenState state;
 
 	std::vector<InvenState> stateList;
+	std::vector<SpriteGo> invenLists;
 	std::vector<SpriteGo> invenIconList;
 	std::vector<SpriteGo> invenNumList;
 
@@ -87,7 +88,7 @@ protected:
 	sf::Vector2i invenCount = { 6, 6 };
 	sf::Vector2f invenSize = { 34, 34 };
 
-	std::vector<SpriteGo> invenLists;
+
 
 	std::vector<sf::Texture*> moneyTexture;
 
@@ -126,11 +127,13 @@ public:
 
 	void SetInvenItem(InvenState state, bool Get);
 	void SetInvenOre(InvenState state);
-	void SetInvenMoney();
+	void SetInvenMoney(int money, int state);
 
 	void LoadInventory(const std::string& filename); //세이브파일 로드
 
 	void OpenInven();
+
+	void SellAll();
 
 	void Init() override;
 	void Release() override;

@@ -71,25 +71,7 @@ void PlayerBody::OnItem(int type, bool get)
 
 }
 
-void PlayerBody::SellAll()
-{
-	std::cout << "광석정산" << std::endl;
-	inventory->money += inventory->coilNum * inventory->coilPrice;
-	inventory->coilNum = 0;
 
-	inventory->money += inventory->bronzeNum * inventory->bronzePrice;
-	inventory->bronzeNum = 0;
-
-	inventory->money += inventory->silverNum * inventory->silverPrice;
-	inventory->silverNum = 0;
-
-	inventory->money += inventory->goldNum * inventory->goldPrice;
-	inventory->goldNum = 0;
-
-	std::cout << "현재 보유금 : " << inventory->money << std::endl;
-	inventory->SetInvenMoney();
-	inventory->SetInvenOre(inventory->Empty);
-}
 
 void PlayerBody::UseItem(int num)
 {
@@ -131,6 +113,11 @@ void PlayerBody::OnDamage(float Dmg)
 		{
 			hp -= (Dmg - armorRate);
 		}
+		if (hp <= 0)
+		{
+			OnDie();
+		}
+
 		animator.Play("OnDamage");
 		animatorHead.Play("OnDamage");
 		velocity.y -= 400.f;
@@ -139,6 +126,15 @@ void PlayerBody::OnDamage(float Dmg)
 		invincible = true;
 	}
 
+
+}
+
+void PlayerBody::OnDie()
+{
+	
+	animator.Play("OnDie");
+	animatorHead.Play("OnDie");
+	gravity = 0.f;
 }
 
 void PlayerBody::Init()
@@ -192,6 +188,17 @@ void PlayerBody::Init()
 		animator.AddClip(clip);
 	}
 
+	{
+		AnimationClip clip;
+		clip.id = "OnDie";
+		clip.fps = 3;
+		clip.loopTypes = AnimationLoopTypes::Single;
+
+		clip.frames.push_back({ "graphics/OnDamage/FSADIGBOY19-Empty.png", {0, 0, 0, 0} });
+
+		animator.AddClip(clip);
+	}
+
 	animatorHead.SetTarget(&head);
 	{
 		AnimationClip clip;
@@ -240,6 +247,16 @@ void PlayerBody::Init()
 		clip.loopTypes = AnimationLoopTypes::Single;
 
 		clip.frames.push_back({ "graphics/OnDamage/FSADIGBOY19-202.png", {0, 0, 47, 55} });
+
+		animatorHead.AddClip(clip);
+	}
+	{
+		AnimationClip clip;
+		clip.id = "OnDie";
+		clip.fps = 3;
+		clip.loopTypes = AnimationLoopTypes::Single;
+
+		clip.frames.push_back({ "graphics/OnDamage/FSADIGBOY19-dead.png", {0, 0, 64, 64} });
 
 		animatorHead.AddClip(clip);
 	}

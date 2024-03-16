@@ -111,26 +111,85 @@ void UiHud::OpenShop()
 	phdGlass.SetPosition(shopHud.GetPosition());
 
 
-	
-	// 
-	// 
-	//else if (inventory.GetPosition() == invenOpen)
-	//{
-	//	inventory.SetPosition(invenClose);
-	//	for (int i = 0; i < invenCount.y; i++) // 6줄
-	//	{
-	//		for (int j = 0; j < invenCount.x; j++) //6칸
-	//		{
-	//			sf::Vector2f quadPos(invenSize.x * j + 45.f, invenSize.y * i + 185.f);
-	//			invenLists[i * invenCount.x + j].SetPosition(invenClose + quadPos);
-	//			invenIconList[i * invenCount.x + j].SetPosition(invenClose + quadPos);
-	//			invenNumList[i * invenCount.x + j].SetPosition(invenClose + quadPos);
-	//		}
-	//	}
-	//}
-	//invenName.SetPosition(inventory.GetPosition());
-	//invenKoong.SetPosition(inventory.GetPosition());
-	//moneyMenu.SetPosition(inventory.GetPosition());
+}
+
+void UiHud::BuyItem(int num)
+{
+	switch (num)
+	{
+	case 0: 
+		inventory->SetInvenItem(Inventory::InvenState::HealKit, 1);
+		inventory->SetInvenMoney(healKitPrice, -1);
+		break;
+	case 1:
+		inventory->SetInvenItem(Inventory::InvenState::AirCap, 1);
+		inventory->SetInvenMoney(airCapPrice, -1);
+		break;
+	case 2:
+		inventory->SetInvenItem(Inventory::InvenState::AirCapSuper, 1);
+		inventory->SetInvenMoney(airCapSuperPrice, -1);
+		break;
+	case 3:
+		inventory->SetInvenItem(Inventory::InvenState::Bomb, 1);
+		inventory->SetInvenMoney(bombPrice, -1);
+		break;
+	case 4:
+		inventory->SetInvenItem(Inventory::InvenState::Nuclear, 1);
+		inventory->SetInvenMoney(nuclearPrice, -1);
+		break;
+	case 5:
+		inventory->SetInvenItem(Inventory::InvenState::Dynamite, 1);
+		inventory->SetInvenMoney(dynamitePrice, -1);
+		break;
+	case 6:
+		inventory->SetInvenItem(Inventory::InvenState::HealKit, 1);
+		break;
+	case 7:
+		inventory->SetInvenItem(Inventory::InvenState::HealKit, 1);
+		break;
+	case 8:
+		inventory->SetInvenItem(Inventory::InvenState::HealKit, 1);
+		break;
+	case 9:
+		inventory->SetInvenItem(Inventory::InvenState::HealKit, 1);
+		break;
+	case 10:
+		inventory->SetInvenItem(Inventory::InvenState::HealKit, 1);
+		break;
+	case 11:
+		inventory->SetInvenItem(Inventory::InvenState::HealKit, 1);
+		break;
+	case 12:
+		inventory->SetInvenItem(Inventory::InvenState::HealKit, 1);
+		break;
+	case 13:
+		inventory->SetInvenItem(Inventory::InvenState::HealKit, 1);
+		break;
+	case 14:
+		inventory->SetInvenItem(Inventory::InvenState::HealKit, 1);
+		break;
+	case 15:
+		inventory->SetInvenItem(Inventory::InvenState::HealKit, 1);
+		break;
+	case 16:
+		inventory->SetInvenItem(Inventory::InvenState::HealKit, 1);
+		break;
+	case 17:
+		inventory->SetInvenItem(Inventory::InvenState::HealKit, 1);
+		break;
+	case 18:
+		inventory->SetInvenItem(Inventory::InvenState::HealKit, 1);
+		break;
+	case 19:
+		inventory->SetInvenItem(Inventory::InvenState::HealKit, 1);
+		break;
+	case 20:
+		inventory->SetInvenItem(Inventory::InvenState::HealKit, 1);
+		break;
+
+	}
+
+	inventory->SetPlayerInfo();
 
 }
 
@@ -166,8 +225,8 @@ void UiHud::Init()
 	quickItem4.SetTexture("graphics/shop/item/FSADIGBOY19-item6.png");
 
 	pointer.setFillColor(sf::Color::Red);
-	pointer.setOrigin({ 2.5f, 2.5f });
-	pointer.setSize({ 20.f,20.f });
+	pointer.setOrigin({ 0.5f, 0.5f });
+	pointer.setSize({ 1.f,1.f });
 	pointer.setPosition({ 0.f, 0.f });
 
 	//상점메뉴
@@ -302,6 +361,7 @@ void UiHud::Reset()
 
 	//아이템가격
 	{
+		shopPriceList[0].SetW(fontK, std::to_wstring(healKitPrice), 13, sf::Color::Yellow);
 		shopPriceList[0].SetW(fontK, L"\\1000", 13, sf::Color::Yellow);
 		shopPriceList[1].SetW(fontK, L"\\500", 13, sf::Color::Yellow);
 		shopPriceList[2].SetW(fontK, L"\\2000", 13, sf::Color::Yellow);
@@ -360,28 +420,56 @@ void UiHud::Update(float dt)
 	{
 		inventory->OpenInven();
 		OpenShop();
-
-		//player->SellAll();
 	}
 
-
-	//sf::FloatRect pointerBound = pointer.getGlobalBounds();
-	
 	if (buttonSell.GetGlobalBounds().intersects(pointer.getGlobalBounds()))
 	{
 		if (!billOn && InputMgr::GetMouseButtonDown(sf::Mouse::Left))
 		{
 			billOn = true;
-			player->SellAll();
+			inventory->SellAll();
 			bill.setPosition({ -10.f, 50.f });
 			animator.Play("Billing");
 		}
 		
 	}
+
+	if (shopHud.GetPosition() == shopOpen)
+	{
+		for (int i = 0; i < shopCount.y; i++) // 7줄
+		{
+			for (int j = 0; j < shopCount.x; j++) //3칸
+			{
+				if (shopList[i * shopCount.x + j].GetGlobalBounds().intersects(pointer.getGlobalBounds()))
+				{
+					//해당칸의 설명 메소드
+					if (InputMgr::GetMouseButtonDown(sf::Mouse::Left))
+					{
+						BuyItem(i * shopCount.x + j);
+					}
+
+				}
+
+			}
+		}
+	}
+
+	if (buttonSell.GetGlobalBounds().intersects(pointer.getGlobalBounds()))
+	{
+		if (!billOn && InputMgr::GetMouseButtonDown(sf::Mouse::Left))
+		{
+			billOn = true;
+			inventory->SellAll();
+			bill.setPosition({ -10.f, 50.f });
+			animator.Play("Billing");
+		}
+
+	}
 	if (billOn && InputMgr::GetKeyDown(sf::Keyboard::Enter))
 	{
 		billOn = false;
 	}
+
 
 }
 
