@@ -51,7 +51,7 @@ public:
 
 	void destroyTile(int x, int y);
 
-	void Set(sf::Vector2i& count, sf::Vector2f& size);
+	void Set(const sf::Vector2i& count, const sf::Vector2f& size);
 
 	void SetSpriteSheetId(const std::string& id);
 	void UpdateTransform();

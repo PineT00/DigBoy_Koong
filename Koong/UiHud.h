@@ -15,6 +15,7 @@ public:
 
 	std::vector<int> priceList;
 
+	bool save = false;
 protected:
 
 	Animator animator;
@@ -36,6 +37,8 @@ protected:
 
 	Inventory* inventory = nullptr;
 	Shop* shop = nullptr;
+	TileMap* tileMap = nullptr;
+	PlayerBody* player;
 
 	TextGo textMessage;
 
@@ -60,7 +63,7 @@ protected:
 
 	sf::Vector2f hpBarSize = { 1.f, 1.f };
 
-	PlayerBody* player;
+
 
 	sf::String airBarBlue = "graphics/ui/FSADIGBOY19-375.png";
 	sf::String airBarYellow = "graphics/ui/FSADIGBOY19-374.png";
@@ -82,6 +85,7 @@ protected:
 	SpriteGo shopHud;
 	SpriteGo shopBack;
 	SpriteGo buttonSell;
+	SpriteGo buttonSave;
 
 	sf::Vector2f shopOpen = { 260.f, 42.f };
 	sf::Vector2f shopClose = { 640.f, 42.f };

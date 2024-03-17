@@ -31,12 +31,18 @@ public:
 
 	SpriteGo* mainScreen = nullptr;
 	SpriteGo* backGround = nullptr;
-	TileMap* tileMap = nullptr;
+	TileMap* tileMap;
 	PlayerBody* player = nullptr;
 	Shop* shop = nullptr;
 	UiHud* hud = nullptr;
 	Inventory* inventory = nullptr;
 
+	SpriteGo* selectScreen = nullptr;
+	SpriteGo* selectNew = nullptr;
+	SpriteGo* selectLoad = nullptr;
+	SpriteGo* selectHowTo = nullptr;
+
+	int select = 1;
 
 	SceneDev1(SceneIds id);
 	virtual ~SceneDev1();
@@ -48,9 +54,10 @@ public:
 	void SaveMap(const std::vector<int>& level, const std::string& filename);
 	void SaveInventory(const std::string& filename);
 
+	void SetSelect(int select);
+
 	void Init() override;
 	void Release() override;
-
 	void Enter() override;
 	void Exit() override;
 

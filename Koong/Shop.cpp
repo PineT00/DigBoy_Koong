@@ -106,20 +106,6 @@ void Shop::Update(float dt)
 	animator1.Update(dt);
 	animator2.Update(dt);
 
-	messageTime += dt;
-
-	if (messageTime > messageTimer1 && messageTime < messageTimer2)
-	{
-		message.SetW(fontK, L"ƒÙ! »˚≥ª∑≈!", 20, sf::Color::Black);
-		ShowMessage({shop.GetPosition().x, shop.GetPosition().y - 180.f});
-	}
-	if (messageTime > messageTimer2)
-	{
-		message.SetW(fontK, L"Ω»¿Ω∏ª∞Ì!", 20, sf::Color::Black);
-		ShowMessage({ shop.GetPosition().x, shop.GetPosition().y - 180.f });
-		messageTime = 0.f;
-	}
-
 }
 
 void Shop::Draw(sf::RenderWindow& window)
@@ -131,7 +117,5 @@ void Shop::Draw(sf::RenderWindow& window)
 	window.draw(propeller);
 	window.draw(portal);
 
-	messageBubble.Draw(window);
-	message.Draw(window);
 
 }

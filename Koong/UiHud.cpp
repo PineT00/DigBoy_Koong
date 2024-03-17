@@ -114,6 +114,7 @@ void UiHud::OpenShop()
 	}
 
 	buttonSell.SetPosition(shopHud.GetPosition());
+	buttonSave.SetPosition(shopHud.GetPosition());
 	phd.SetPosition(shopHud.GetPosition());
 	phdGlass.SetPosition(shopHud.GetPosition());
 
@@ -169,11 +170,12 @@ void UiHud::ShopScrollDown()
 
 void UiHud::BuyItem(int num)
 {
-	//if (priceList[num] > inventory->money)
-	//{
-	//	SetMessageActive(true);
-	//	return;
-	//}
+	if (priceList[num] > inventory->money)
+	{
+		SetMessage(L"돈이 부족해!");
+		SetMessageActive(true);
+		return;
+	}
 
 	switch (num)
 	{
@@ -272,7 +274,7 @@ void UiHud::BuyItem(int num)
 		inventory->invenEquipFeet.SetTexture("graphics/shop/item/FSADIGBOY19-item20.png");
 		break;
 	case 20:
-		inventory->SetInvenMoney(priceList[20], 1);
+		inventory->SetInvenMoney(priceList[20], -1);
 		inventory->shoe5 = 1;
 		inventory->invenEquipFeet.SetTexture("graphics/shop/item/FSADIGBOY19-item21.png");
 		break;
@@ -362,6 +364,7 @@ void UiHud::Init()
 	shopHud.SetTexture("graphics/shop/FSADIGBOY19-shopMenuF.png");
 	shopBack.SetTexture("graphics/shop/FSADIGBOY19-shopMenuB.png");
 	buttonSell.SetTexture("graphics/ui/FSADIGBOY19-sell.png");
+	buttonSave.SetTexture("graphics/shop/FSADIGBOY19-save.png");
 
 	phd.SetTexture("graphics/shop/FSADIGBOY19-phd.png");
 	phdGlass.SetTexture("graphics/shop/FSADIGBOY19-phdGlass.png");
@@ -431,6 +434,9 @@ void UiHud::Reset()
 
 	buttonSell.SetOrigin({-10,-45});
 	buttonSell.SetPosition(shopClose);
+
+	buttonSave.SetOrigin({ 90,-393 });
+	buttonSave.SetPosition(shopClose);
 
 	phd.SetOrigin({-200.f,-30.f});
 	phd.SetPosition(shopClose);
@@ -623,6 +629,15 @@ void UiHud::Update(float dt)
 		SetBillActive(billOn);
 	}
 
+	if (buttonSave.GetGlobalBounds().intersects(pointer.getGlobalBounds()))
+	{
+		if (InputMgr::GetMouseButtonDown(sf::Mouse::Left))
+		{
+			save = true;
+			SetMessage(L"저장되었단다.");
+			SetMessageActive(true);
+		}
+	}
 
 	if (upScroll.GetGlobalBounds().intersects(pointer.getGlobalBounds()))
 	{
@@ -728,8 +743,10 @@ void UiHud::Draw(sf::RenderWindow& window)
 		billMoney.Draw(window);
 	}
 
-
+	buttonSave.Draw(window);
 
 	window.draw(pointer);
 	
 }
+
+

@@ -182,6 +182,31 @@ void SceneDev1::SaveInventory(const std::string& filename)
 	}
 }
 
+void SceneDev1::SetSelect(int select)
+{
+	switch (select)
+	{
+	case 1:
+		selectNew->SetActive(true);
+		selectLoad->SetActive(false);
+		selectHowTo->SetActive(false);
+		break;
+	case 2:
+		selectNew->SetActive(false);
+		selectLoad->SetActive(true);
+		selectHowTo->SetActive(false);
+		break;
+	case 3:
+		selectNew->SetActive(false);
+		selectLoad->SetActive(false);
+		selectHowTo->SetActive(true);
+		break;
+
+	default:
+		break;
+	}
+}
+
 void SceneDev1::Init()
 {
 	inventory = new Inventory("Inventory");
@@ -202,6 +227,7 @@ void SceneDev1::Init()
 	AddGo(backGround);
 
 	tileMap = new TileMap("Ground");
+	tileMap->SetLevel("tables/save/MapTableSave.csv");
 	AddGo(tileMap, World);
 	
 	shop = new Shop("Shop");
@@ -209,6 +235,30 @@ void SceneDev1::Init()
 
 	player = new PlayerBody("Player");
 	AddGo(player);
+
+	selectScreen = new SpriteGo("SelectScreen");
+	selectScreen->SetTexture("graphics/FSADIGBOY19-Select.png");
+	selectScreen->SetOrigin(Origins::TL);
+	selectScreen->SetPosition({ 0.f, 0.f });
+	AddGo(selectScreen, Ui);
+
+	selectNew = new SpriteGo("SelectNew");
+	selectNew->SetTexture("graphics/FSADIGBOY19-272.png");
+	selectNew->SetOrigin(Origins::TL);
+	selectNew->SetPosition({ 0.f, 0.f });
+	AddGo(selectNew, Ui);
+
+	selectLoad = new SpriteGo("SelectLoad");
+	selectLoad->SetTexture("graphics/FSADIGBOY19-273.png");
+	selectLoad->SetOrigin(Origins::TL);
+	selectLoad->SetPosition({ 0.f, 0.f });
+	AddGo(selectLoad, Ui);
+
+	selectHowTo = new SpriteGo("SelectHowTo");
+	selectHowTo->SetTexture("graphics/FSADIGBOY19-271.png");
+	selectHowTo->SetOrigin(Origins::TL);
+	selectHowTo->SetPosition({ 0.f, 0.f });
+	AddGo(selectHowTo, Ui);
 
 	Scene::Init();
 }
@@ -238,6 +288,18 @@ void SceneDev1::Enter()
 	player->SetPosition({ 1400.f, -50.f });
 
 	player->SetActive(false);
+
+	selectNew->SetOrigin(Origins::MC);
+	selectNew->SetPosition({302.f, 265.f});
+	selectLoad->SetOrigin(Origins::MC);
+	selectLoad->SetPosition({ 302.f, 295.f });
+	selectHowTo->SetOrigin(Origins::MC);
+	selectHowTo->SetPosition({ 302.f, 325.f });
+
+	selectScreen->SetActive(false);
+	selectNew->SetActive(false);
+	selectLoad->SetActive(false);
+	selectHowTo->SetActive(false);
 
 	Scene::Enter();
 }
@@ -271,8 +333,6 @@ void SceneDev1::Update(float dt)
 			worldViewCenter.x = Utils::Lerp(worldViewCenter.x, tileMapRightEnd - 330.f, dt * 2.5f);
 		}
 	}
-
-		
 
 
 	worldView.setCenter(worldViewCenter);
@@ -317,12 +377,36 @@ void SceneDev1::UpdateAwake(float dt)
 
 void SceneDev1::UpdateSelect(float dt)
 {
-	if (InputMgr::GetKeyDown(sf::Keyboard::Enter))
+	if (InputMgr::GetKeyDown(sf::Keyboard::Down))
 	{
-		SetStatus(Status::Game);
+		select += 1;
 
-		inventory->LoadInventory("tables/save/Inventory.csv");
+		if (select > 3)
+		{
+			select = 1;
+		}
 	}
+	SetSelect(select);
+	if (InputMgr::GetKeyDown(sf::Keyboard::Enter))
+
+	{
+		if (select == 1)
+		{
+			//tileMap->SetLevel("tables/MapTable60200.csv");
+			SetStatus(Status::Game);
+		}
+		else if (select == 2)
+		{
+			//tileMap->SetLevel("tables/save/MapTableSave.csv");
+			//tileMap->Set(tileMap->GetCellCount(),tileMap->GetCellSize());
+			inventory->LoadInventory("tables/save/Inventory.csv");
+			SetStatus(Status::Game);
+
+		}
+	}
+
+
+
 }
 
 void SceneDev1::UpdateGame(float dt)
@@ -340,6 +424,12 @@ void SceneDev1::UpdateGame(float dt)
 			SetStatus(Status::GameOver);
 		}
 	}
+	if (hud->save)
+	{
+		SaveMap(tileMap->level, "tables/save/MapTableSave.csv");
+		SaveInventory("tables/save/Inventory.csv");
+		hud->save = false;
+	}
 }
 
 void SceneDev1::UpdateGameOver(float dt)
@@ -353,11 +443,6 @@ void SceneDev1::UpdatePause(float dt)
 		SetStatus(Status::Game);
 		return;
 	}
-	else if (InputMgr::GetKeyDown(sf::Keyboard::Enter))
-	{
-		SaveMap(tileMap->level, "tables/save/MapTableSave.csv");
-		SaveInventory("tables/save/Inventory.csv");
-	}
 }
 
 void SceneDev1::SetStatus(Status newStatus)
@@ -369,15 +454,22 @@ void SceneDev1::SetStatus(Status newStatus)
 	{
 	case Status::Awake:
 		mainScreen->SetActive(true);
+		selectScreen->SetActive(false);
 		FRAMEWORK.SetTimeScale(0.f);
 		break;
 	case Status::Select:
 		mainScreen->SetActive(false);
+		selectScreen->SetActive(true);
 		FRAMEWORK.SetTimeScale(0.f);
 		break;
 	case Status::Game:
-		player->SetActive(true);
 		mainScreen->SetActive(false);
+		selectScreen->SetActive(false);
+		selectNew->SetActive(false);
+		selectLoad->SetActive(false);
+		selectHowTo->SetActive(false);
+
+		player->SetActive(true);
 		SOUND_MGR.PlayBgm("sound/FSADIGBOY19-MainBGM.mp3", false);
 		FRAMEWORK.SetTimeScale(1.f);
 		break;

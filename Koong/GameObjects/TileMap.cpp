@@ -132,7 +132,7 @@ void TileMap::SetLevel(const std::string& filename)
 }
 
 
-void TileMap::Set(sf::Vector2i& count, sf::Vector2f& size)
+void TileMap::Set(const sf::Vector2i& count, const sf::Vector2f& size)
 {
     cellCount = count;
     cellSize = size;
@@ -151,8 +151,7 @@ void TileMap::Set(sf::Vector2i& count, sf::Vector2f& size)
     texCoord0[2] = { 42.f, 42.f };
     texCoord0[3] = { 0, 42.f };
 
-
-    SetLevel("tables/MapTable60200.csv");
+    //SetLevel("tables/MapTable60200.csv");
 
     for (int i = 0; i < count.y; ++i)
     {
