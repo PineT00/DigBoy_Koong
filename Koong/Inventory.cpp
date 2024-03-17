@@ -515,16 +515,88 @@ void Inventory::LoadInventory(const std::string& filename)
 		SetInvenItem(Dynamite, 1);
 	}
 
+	//¿Â∫Ò
 
-	for (int i = 0; i < coilNum; ++i)
+	if (invenSaveList[14] == 1)
 	{
-		SetInvenOre(Inventory::InvenState::Coil);
+		cap5 = invenSaveList[14];
+		invenEquipHead.SetTexture("graphics/shop/item/FSADIGBOY19-item11.png");
 	}
+	else if (invenSaveList[13] == 1)
+	{
+		cap4 = invenSaveList[13];
+		invenEquipHead.SetTexture("graphics/shop/item/FSADIGBOY19-item10.png");
+	}
+	else if (invenSaveList[12] == 1)
+	{
+		cap3 = invenSaveList[12];
+		invenEquipHead.SetTexture("graphics/shop/item/FSADIGBOY19-item9.png");
+	}
+	else if (invenSaveList[11] == 1)
+	{
+		cap2 = invenSaveList[11];
+		invenEquipHead.SetTexture("graphics/shop/item/FSADIGBOY19-item8.png");
+	}
+	else if (invenSaveList[10] == 1)
+	{
+		cap1 = invenSaveList[10];
+		invenEquipHead.SetTexture("graphics/shop/item/FSADIGBOY19-item7.png");
+	}
+	player->SetCap();
 
+	if (invenSaveList[19] == 1)
+	{
+		drill5 = invenSaveList[19];
+		invenEquipDrill.SetTexture("graphics/shop/item/FSADIGBOY19-item16.png");
+	}
+	else if (invenSaveList[18] == 1)
+	{
+		drill4 = invenSaveList[18];
+		invenEquipDrill.SetTexture("graphics/shop/item/FSADIGBOY19-item15.png");
+	}
+	else if (invenSaveList[17] == 1)
+	{
+		drill3 = invenSaveList[17];
+		invenEquipDrill.SetTexture("graphics/shop/item/FSADIGBOY19-item14.png");
+	}
+	else if (invenSaveList[16] == 1)
+	{
+		drill2 = invenSaveList[16];
+		invenEquipDrill.SetTexture("graphics/shop/item/FSADIGBOY19-item13.png");
+	}
+	else if (invenSaveList[15] == 1)
+	{
+		drill1 = invenSaveList[15];
+		invenEquipDrill.SetTexture("graphics/shop/item/FSADIGBOY19-item12.png");
+	}
+	player->SetDrillPower();
 
-
-
-
+	if (invenSaveList[24] == 1)
+	{
+		shoe5 = invenSaveList[24];
+		invenEquipFeet.SetTexture("graphics/shop/item/FSADIGBOY19-item21.png");
+	}
+	else if (invenSaveList[23] == 1)
+	{
+		shoe4 = invenSaveList[23];
+		invenEquipFeet.SetTexture("graphics/shop/item/FSADIGBOY19-item20.png");
+	}
+	else if (invenSaveList[22] == 1)
+	{
+		shoe3 = invenSaveList[22];
+		invenEquipFeet.SetTexture("graphics/shop/item/FSADIGBOY19-item19.png");
+	}
+	else if (invenSaveList[21] == 1)
+	{
+		shoe2 = invenSaveList[21];
+		invenEquipFeet.SetTexture("graphics/shop/item/FSADIGBOY19-item18.png");
+	}
+	else if (invenSaveList[20] == 1)
+	{
+		shoe1 = invenSaveList[20];
+		invenEquipFeet.SetTexture("graphics/shop/item/FSADIGBOY19-item17.png");
+	}
+	player->SetShoes();
 
 	money = invenSaveList[25];
 	coilNum = invenSaveList[6];

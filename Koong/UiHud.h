@@ -19,6 +19,15 @@ protected:
 
 	Animator animator;
 	sf::Sprite bill;
+	SpriteGo billCoil;
+	SpriteGo billBronze;
+	SpriteGo billSilver;
+	SpriteGo billGold;
+	TextGo billLineCoil;
+	TextGo billLineBronze;
+	TextGo billLineSilver;
+	TextGo billLineGold;
+	TextGo billMoney;
 
 	bool billOn = false;
 
@@ -111,6 +120,8 @@ public:
 	void ShopScrollDown();
 	void BuyItem(int num);
 
+	void SetBill();
+	void SetBillActive(bool active);
 
 	void Init() override;
 	void Release() override;

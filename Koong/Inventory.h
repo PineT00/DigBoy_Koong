@@ -79,6 +79,10 @@ public:
 	bool shoe4 = 0;
 	bool shoe5 = 0;
 
+	SpriteGo invenEquipHead;
+	SpriteGo invenEquipDrill;
+	SpriteGo invenEquipFeet;
+
 protected:
 
 	PlayerBody* player;
@@ -104,15 +108,9 @@ protected:
 	SpriteGo invenDrill;
 	SpriteGo invenFeet;
 
-	SpriteGo invenEquipHead;
-	SpriteGo invenEquipDrill;
-	SpriteGo invenEquipFeet;
-
 
 	sf::Vector2i invenCount = { 6, 6 };
 	sf::Vector2f invenSize = { 34, 34 };
-
-
 
 	std::vector<sf::Texture*> moneyTexture;
 

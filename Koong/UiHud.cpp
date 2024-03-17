@@ -169,11 +169,11 @@ void UiHud::ShopScrollDown()
 
 void UiHud::BuyItem(int num)
 {
-	if (priceList[num] > inventory->money)
-	{
-		SetMessageActive(true);
-		return;
-	}
+	//if (priceList[num] > inventory->money)
+	//{
+	//	SetMessageActive(true);
+	//	return;
+	//}
 
 	switch (num)
 	{
@@ -204,62 +204,77 @@ void UiHud::BuyItem(int num)
 	case 6:
 		inventory->SetInvenMoney(priceList[6], -1);
 		inventory->cap1 = 1;
+		inventory->invenEquipHead.SetTexture("graphics/shop/item/FSADIGBOY19-item7.png");
 		break;
 	case 7:
 		inventory->SetInvenMoney(priceList[7], -1);
 		inventory->cap2 = 1;
+		inventory->invenEquipHead.SetTexture("graphics/shop/item/FSADIGBOY19-item8.png");
 		break;
 	case 8:
 		inventory->SetInvenMoney(priceList[8], -1);
 		inventory->cap3 = 1;
+		inventory->invenEquipHead.SetTexture("graphics/shop/item/FSADIGBOY19-item9.png");
 		break;
 	case 9:
 		inventory->SetInvenMoney(priceList[9], -1);
 		inventory->cap4 = 1;
+		inventory->invenEquipHead.SetTexture("graphics/shop/item/FSADIGBOY19-item10.png");
 		break;
 	case 10:
 		inventory->SetInvenMoney(priceList[10], -1);
 		inventory->cap5 = 1;
+		inventory->invenEquipHead.SetTexture("graphics/shop/item/FSADIGBOY19-item11.png");
 		break;
 	case 11:
 		inventory->SetInvenMoney(priceList[11], -1);
 		inventory->drill1 = 1;
+		inventory->invenEquipDrill.SetTexture("graphics/shop/item/FSADIGBOY19-item12.png");
 		break;
 	case 12:
 		inventory->SetInvenMoney(priceList[12], -1);
 		inventory->drill2 = 1;
+		inventory->invenEquipDrill.SetTexture("graphics/shop/item/FSADIGBOY19-item13.png");
 		break;
 	case 13:
 		inventory->SetInvenMoney(priceList[13], -1);
 		inventory->drill3 = 1;
+		inventory->invenEquipDrill.SetTexture("graphics/shop/item/FSADIGBOY19-item14.png");
 		break;
 	case 14:
 		inventory->SetInvenMoney(priceList[14], -1);
 		inventory->drill4 = 1;
+		inventory->invenEquipDrill.SetTexture("graphics/shop/item/FSADIGBOY19-item15.png");
 		break;
 	case 15:
 		inventory->SetInvenMoney(priceList[15], -1);
 		inventory->drill5 = 1;
+		inventory->invenEquipDrill.SetTexture("graphics/shop/item/FSADIGBOY19-item16.png");
 		break;
 	case 16:
 		inventory->SetInvenMoney(priceList[16], -1);
 		inventory->shoe1 = 1;
+		inventory->invenEquipFeet.SetTexture("graphics/shop/item/FSADIGBOY19-item17.png");
 		break;
 	case 17:
 		inventory->SetInvenMoney(priceList[17], -1);
 		inventory->shoe2 = 1;
+		inventory->invenEquipFeet.SetTexture("graphics/shop/item/FSADIGBOY19-item18.png");
 		break;
 	case 18:
 		inventory->SetInvenMoney(priceList[18], -1);
 		inventory->shoe3 = 1;
+		inventory->invenEquipFeet.SetTexture("graphics/shop/item/FSADIGBOY19-item19.png");
 		break;
 	case 19:
 		inventory->SetInvenMoney(priceList[19], -1);
 		inventory->shoe4 = 1;
+		inventory->invenEquipFeet.SetTexture("graphics/shop/item/FSADIGBOY19-item20.png");
 		break;
 	case 20:
-		inventory->SetInvenMoney(priceList[20], -1);
+		inventory->SetInvenMoney(priceList[20], 1);
 		inventory->shoe5 = 1;
+		inventory->invenEquipFeet.SetTexture("graphics/shop/item/FSADIGBOY19-item21.png");
 		break;
 	}
 
@@ -268,6 +283,43 @@ void UiHud::BuyItem(int num)
 	player->SetShoes();
 	inventory->SetPlayerInfo();
 
+}
+
+void UiHud::SetBill()
+{
+	bill.setPosition({ -10.f, 50.f });
+	billLineCoil.Set(fontK, std::to_string(inventory->coilPrice) + "          " + std::to_string(inventory->coilNum) + "        \\" + std::to_string(inventory->coilNum * inventory->coilPrice), 15, sf::Color::Black);
+	billLineBronze.Set(fontK, std::to_string(inventory->bronzePrice) + "          " + std::to_string(inventory->bronzeNum) + "        \\" + std::to_string(inventory->bronzeNum * inventory->bronzePrice), 15, sf::Color::Black);
+	billLineSilver.Set(fontK, std::to_string(inventory->silverPrice) + "          " + std::to_string(inventory->silverNum) + "        \\" + std::to_string(inventory->silverNum * inventory->silverPrice), 15, sf::Color::Black);
+	billLineGold.Set(fontK, std::to_string(inventory->goldPrice) + "        " + std::to_string(inventory->goldNum) + "        \\" + std::to_string(inventory->goldNum * inventory->goldPrice), 15, sf::Color::Black);
+	billMoney.Set(fontK, "\\" + std::to_string(inventory->coilNum * inventory->coilPrice + inventory->bronzeNum * inventory->bronzePrice + inventory->silverNum * inventory->silverPrice + inventory->goldNum * inventory->goldPrice), 18, sf::Color::Black);
+
+	billLineCoil.SetPosition({ 90.f, 160.f });
+	billLineBronze.SetPosition({ 90.f, 190.f });
+	billLineSilver.SetPosition({ 90.f, 220.f });
+	billLineGold.SetPosition({ 90.f, 250.f });
+
+	billCoil.SetPosition({ 30.f, 150.f });
+	billBronze.SetPosition({ 30.f, 180.f });
+	billSilver.SetPosition({ 30.f, 210.f });
+	billGold.SetPosition({ 30.f, 240.f });
+
+	billMoney.SetPosition({ 130.f, 430.f });
+}
+
+void UiHud::SetBillActive(bool active)
+{
+	billLineCoil.SetActive(active);
+	billLineBronze.SetActive(active);
+	billLineSilver.SetActive(active);
+	billLineGold.SetActive(active);
+
+	billCoil.SetActive(active);
+	billBronze.SetActive(active);
+	billSilver.SetActive(active);
+	billGold.SetActive(active);
+
+	billMoney.SetActive(active);
 }
 
 void UiHud::Init()
@@ -318,6 +370,12 @@ void UiHud::Init()
 	downScroll.SetTexture("graphics/shop/FSADIGBOY19-369.png");
 
 	bubble.SetTexture("graphics/bubble/FSADIGBOY19-277.png");
+
+	billCoil.SetTexture("graphics/ore/FSADIGBOY19-24.png");
+	billBronze.SetTexture("graphics/ore/FSADIGBOY19-23.png");
+	billSilver.SetTexture("graphics/ore/FSADIGBOY19-22.png");
+	billGold.SetTexture("graphics/ore/FSADIGBOY19-21.png");
+
 }
 
 void UiHud::Release()
@@ -364,8 +422,6 @@ void UiHud::Reset()
 	quickItem2.SetPosition({ windowSize.x * 0.394f, 3.f });
 	quickItem3.SetPosition({ windowSize.x * 0.446f, 3.f });
 	quickItem4.SetPosition({ windowSize.x * 0.500f, 3.f });
-
-	bill.setPosition({-10.f, 50.f});
 
 	//상점메뉴
 	shopHud.SetOrigin(Origins::TL);
@@ -481,6 +537,8 @@ void UiHud::Reset()
 	downScroll.SetOrigin({ -347.f,-376.f });
 	upScroll.SetPosition(shopClose);
 	downScroll.SetPosition(shopClose);
+
+	SetBillActive(0);
 }
 
 void UiHud::Update(float dt)
@@ -516,19 +574,11 @@ void UiHud::Update(float dt)
 	{
 		inventory->OpenInven();
 		OpenShop();
+		billOn = false;
+		SetBillActive(billOn);
 	}
 
-	if (buttonSell.GetGlobalBounds().intersects(pointer.getGlobalBounds()))
-	{
-		if (!billOn && InputMgr::GetMouseButtonDown(sf::Mouse::Left))
-		{
-			billOn = true;
-			inventory->SellAll();
-			bill.setPosition({ -10.f, 50.f });
-			animator.Play("Billing");
-		}
-		
-	}
+
 
 	if (shopHud.GetPosition() == shopOpen)
 	{
@@ -538,7 +588,6 @@ void UiHud::Update(float dt)
 			{
 				if (shopList[i * shopCount.x + j].GetGlobalBounds().intersects(pointer.getGlobalBounds()))
 				{
-					//해당칸의 설명 메소드
 					if (InputMgr::GetMouseButtonDown(sf::Mouse::Left))
 					{
 						BuyItem(i * shopCount.x + j);
@@ -555,16 +604,25 @@ void UiHud::Update(float dt)
 		if (!billOn && InputMgr::GetMouseButtonDown(sf::Mouse::Left))
 		{
 			billOn = true;
+			animator.Play("Billing");
+
+			SetBill();
+			SetBillActive(billOn);
+
 			inventory->SellAll();
 			bill.setPosition({ -10.f, 50.f });
-			animator.Play("Billing");
+
+
 		}
+
 	}
 
 	if (billOn && InputMgr::GetKeyDown(sf::Keyboard::Enter))
 	{
 		billOn = false;
+		SetBillActive(billOn);
 	}
+
 
 	if (upScroll.GetGlobalBounds().intersects(pointer.getGlobalBounds()))
 	{
@@ -591,6 +649,8 @@ void UiHud::Update(float dt)
 			textTime = 0.f;
 		}
 	}
+
+
 
 }
 
@@ -657,7 +717,18 @@ void UiHud::Draw(sf::RenderWindow& window)
 	if(billOn)
 	{
 		window.draw(bill);
+		billLineCoil.Draw(window);
+		billLineBronze.Draw(window);
+		billLineSilver.Draw(window);
+		billLineGold.Draw(window);
+		billCoil.Draw(window);
+		billBronze.Draw(window);
+		billSilver.Draw(window);
+		billGold.Draw(window);
+		billMoney.Draw(window);
 	}
+
+
 
 	window.draw(pointer);
 	

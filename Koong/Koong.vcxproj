@@ -138,9 +138,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Animator.cpp" />
-    <ClCompile Include="DataTables\DataTable.cpp" />
-    <ClCompile Include="DataTables\DataTableMgr.cpp" />
-    <ClCompile Include="DataTables\StringTable.cpp" />
     <ClCompile Include="GameObjects\Dynamite.cpp" />
     <ClCompile Include="GameObjects\Explosive.cpp" />
     <ClCompile Include="Framework\Framework.cpp" />
@@ -175,10 +172,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animator.h" />
-    <ClInclude Include="DataTables\DataTable.h" />
-    <ClInclude Include="DataTables\DataTableMgr.h" />
-    <ClInclude Include="DataTables\rapidcsv.h" />
-    <ClInclude Include="DataTables\StringTable.h" />
     <ClInclude Include="GameObjects\Dynamite.h" />
     <ClInclude Include="GameObjects\Explosive.h" />
     <ClInclude Include="Framework\Framework.h" />
