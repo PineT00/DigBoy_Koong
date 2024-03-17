@@ -30,6 +30,7 @@ public:
 	InvenState state;
 
 	std::vector<InvenState> stateList;
+
 	std::vector<SpriteGo> invenLists;
 	std::vector<SpriteGo> invenIconList;
 	std::vector<SpriteGo> invenNumList;
@@ -91,7 +92,7 @@ protected:
 	SpriteGo inventory;
 
 	float invenPosX = 0.f;
-	sf::Vector2f invenClose = { -300.f, 40.f };
+	sf::Vector2f invenClose = { -350.f, 40.f };
 	sf::Vector2f invenOpen = { -10.f, 40.f };
 
 	int invenlimit = 3;

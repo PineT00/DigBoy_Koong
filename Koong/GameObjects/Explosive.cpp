@@ -112,6 +112,7 @@ void Explosive::Update(float dt)
 	{
 		bomb.setOrigin({ 10.f, 10.f });
 		animatorBomb.Play("Boom");
+		SOUND_MGR.PlaySfx("sound/FSADIGBOY19-Bomb.mp3");
 		bombTime = 0.f;
 		explode = true;
 

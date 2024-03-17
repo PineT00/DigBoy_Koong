@@ -104,8 +104,6 @@ void TileMap::SetLevel(const std::string& filename)
     std::ifstream file(filename);
     std::string line;
 
-    //int value = std::stoi(line);
-
     if (file.is_open())
     {
         while (getline(file, line))
@@ -113,11 +111,11 @@ void TileMap::SetLevel(const std::string& filename)
             std::istringstream iss(line);
             int value;
 
-            while (iss >> value) //iss의 값을 value로 옮기는데 성공하면
+            while (iss >> value)
             {
                 level.push_back(value);
 
-                if (iss.peek() == ',') //다음 읽을 문자 확인
+                if (iss.peek() == ',')
                     iss.ignore();
                 else
                     break;
@@ -151,7 +149,7 @@ void TileMap::Set(const sf::Vector2i& count, const sf::Vector2f& size)
     texCoord0[2] = { 42.f, 42.f };
     texCoord0[3] = { 0, 42.f };
 
-    //SetLevel("tables/MapTable60200.csv");
+    SetLevel("tables/MapTable60200.csv");
 
     for (int i = 0; i < count.y; ++i)
     {

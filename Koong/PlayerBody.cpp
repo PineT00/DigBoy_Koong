@@ -117,7 +117,7 @@ void PlayerBody::OnItem(int type, bool get)
 	default:
 		break;
 	}
-
+	SOUND_MGR.PlaySfx("sound/FSADIGBOY19-12.mp3", false);
 	std::cout << "±¤¼®È¹µæ" << std::endl;
 	std::cout << "ÇöÀç±¤¼® ¼ö : " << inventory->coilNum << ", " << inventory->bronzeNum << ", " << inventory->silverNum << ", " << inventory->goldNum << std::endl;
 
@@ -180,14 +180,22 @@ void PlayerBody::OnDamage(float Dmg)
 		{
 			hp -= (Dmg - armorRate);
 		}
+
+
+
 		if (hp <= 0)
 		{
 			OnDie();
 		}
+		else
+		{
+			animator.Play("OnDamage");
+			animatorHead.Play("OnDamage");
+			SOUND_MGR.PlaySfx("sound/FSADIGBOY19-Hurt.mp3", false);
+		}
 
-		animator.Play("OnDamage");
-		animatorHead.Play("OnDamage");
-		velocity.y -= 400.f;
+
+		velocity.y -= 200.f;
 		velocity.x = 0.f;
 
 		invincible = true;
@@ -198,10 +206,10 @@ void PlayerBody::OnDamage(float Dmg)
 
 void PlayerBody::OnDie()
 {
-	
 	animator.Play("OnDie");
 	animatorHead.Play("OnDie");
 	gravity = 0.f;
+	SOUND_MGR.PlaySfx("sound/FSADIGBOY19-Hurt.mp3", false);
 }
 
 void PlayerBody::Init()
@@ -506,8 +514,6 @@ void PlayerBody::Update(float dt)
 			{
 				air = airMax;
 			}
-			//std::cout << playerCellX << ", " << playerCellY << std::endl;
-
 
 			// ÁÖº¯ 8°³ÀÇ ÀÎÁ¢ÇÑ ¼¿¿¡ ´ëÇØ¼­¸¸ Ãæµ¹ Ã¼Å©
 			for (int i = playerCellY - 1; i <= playerCellY + 1; ++i)

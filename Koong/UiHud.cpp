@@ -729,6 +729,12 @@ void UiHud::Draw(sf::RenderWindow& window)
 	upScroll.Draw(window);
 	downScroll.Draw(window);
 
+	if (shopHud.GetPosition() == shopOpen)
+	{
+		buttonSave.Draw(window);
+	}
+
+
 	if(billOn)
 	{
 		window.draw(bill);
@@ -743,7 +749,8 @@ void UiHud::Draw(sf::RenderWindow& window)
 		billMoney.Draw(window);
 	}
 
-	buttonSave.Draw(window);
+
+
 
 	window.draw(pointer);
 	

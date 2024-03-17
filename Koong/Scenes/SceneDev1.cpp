@@ -42,7 +42,7 @@ void SceneDev1::SaveMap(const std::vector<int>& level, const std::string& filena
 		{
 			file << level[i];
 
-			// 마지막 열이 아니라면 쉼표를 추가
+			// 마지막 열이 아니면 쉼표를 추가
 			if ((i + 1) % 60 == 0) {
 				file << "\n";
 			}
@@ -301,6 +301,8 @@ void SceneDev1::Enter()
 	selectLoad->SetActive(false);
 	selectHowTo->SetActive(false);
 
+	SOUND_MGR.PlayBgm("sound/FSADIGBOY19-33.mp3", false);
+
 	Scene::Enter();
 }
 
@@ -372,6 +374,8 @@ void SceneDev1::UpdateAwake(float dt)
 	if (InputMgr::GetKeyDown(sf::Keyboard::Enter))
 	{
 		SetStatus(Status::Select);
+
+
 	}
 }
 
@@ -388,7 +392,6 @@ void SceneDev1::UpdateSelect(float dt)
 	}
 	SetSelect(select);
 	if (InputMgr::GetKeyDown(sf::Keyboard::Enter))
-
 	{
 		if (select == 1)
 		{
@@ -403,6 +406,8 @@ void SceneDev1::UpdateSelect(float dt)
 			SetStatus(Status::Game);
 
 		}
+		SOUND_MGR.PlayBgm("sound/FSADIGBOY19-4.mp3", true);
+
 	}
 
 
@@ -453,6 +458,7 @@ void SceneDev1::SetStatus(Status newStatus)
 	switch (currStatus)
 	{
 	case Status::Awake:
+
 		mainScreen->SetActive(true);
 		selectScreen->SetActive(false);
 		FRAMEWORK.SetTimeScale(0.f);
@@ -470,7 +476,6 @@ void SceneDev1::SetStatus(Status newStatus)
 		selectHowTo->SetActive(false);
 
 		player->SetActive(true);
-		SOUND_MGR.PlayBgm("sound/FSADIGBOY19-MainBGM.mp3", false);
 		FRAMEWORK.SetTimeScale(1.f);
 		break;
 	case Status::GameOver:

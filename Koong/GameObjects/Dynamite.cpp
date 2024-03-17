@@ -94,6 +94,7 @@ void Dynamite::Update(float dt)
 	{
 		SetOrigin({ 10.f, 10.f });
 		animator.Play("Boom");
+		SOUND_MGR.PlaySfx("sound/FSADIGBOY19-Bomb.mp3");
 		bombTime = 0.f;
 		explode = true;
 
