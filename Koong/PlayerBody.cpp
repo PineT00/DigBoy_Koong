@@ -541,8 +541,20 @@ void PlayerBody::Update(float dt)
 									else
 									{
 										hp -= (fallDmg - armorRate);
+										if (hp <= 0)
+										{
+											hp = 0.f;
+										}
 									}
-									std::cout << "À¸¾Ç!" << std::endl;
+
+									if (hp <= 0)
+									{
+										OnDie();
+									}
+									else
+									{
+										SOUND_MGR.PlaySfx("sound/FSADIGBOY19-Hurt.mp3", false);
+									}
 								}
 
 								pos.y = tileBounds.top;
