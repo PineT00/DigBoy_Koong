@@ -81,7 +81,7 @@ public:
 	void SetCap();
 	void SetDrillPower();
 	void SetShoes();
-
+	
 	float GetDrillPower() const { return drillPower; }
 	float GetBooster() { return booster; }
 	float GetArmor() { return armorRate; }

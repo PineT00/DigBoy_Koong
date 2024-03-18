@@ -28,10 +28,8 @@
 #include "ResourceMgr.h"
 #include "SceneMgr.h"
 #include "SoundMgr.h"
-#include "DataTableMgr.h" //¾ÆÁ÷ ¾È¾¸
 
 
 #include "Scene.h"
 #include "GameObject.h"
-#include "StringTable.h"
 #include "Animator.h"
